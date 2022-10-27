@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Token Generator</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app="tokenApp" ng-controller="tokenCtrl">
+  <div>
+    Please Enter Id and Password <br><br>
+    <form ng-submit="DisplayDownline()">
+      <label>
+        <input type="radio" ng-model="server.type" value="0"> Production
+      </label>
+      <label>
+        <input type="radio" ng-model="server.type" value="1"> Dev
+      </label><br><br>
+      <input type="text" ng-model="tusername" size="20" placeholder="Distributor No.">
+          <input type="password" ng-model="tpassword" size="20" placeholder="Password">
+      <input type="submit" value="Generate">
+    </form>
+  </div>
+  <div>{{token}}</div>
+  <div>{{autoship}}</div>
+  <div>{{order}}</div>
+<script>
+  var app = angular.module('tokenApp', []);
+  app.controller('tokenCtrl', function($scope, $http, $window) {
+    $scope.server = {
+      type: 0
+    };
+
+    var bas = [
+    {id:"207828782",pwd:"1866", autonum:"1312953"},
+{id:"208553382",pwd:"8028", autonum:"1312969"},
+{id:"201179482",pwd:"0724", autonum:"1310544"},
+{id:"209405182",pwd:"2725", autonum:"1313301"},
+{id:"189876382",pwd:"5675", autonum:"1313313"},
+{id:"210899882",pwd:"1500", autonum:"1313335"},
+{id:"211359282",pwd:"8664", autonum:"1313349"},
+{id:"210079682",pwd:"1241", autonum:"1313063"},
+{id:"210542982",pwd:"8876", autonum:"1313079"},
+{id:"202327582",pwd:"5221", autonum:"1310589"},
+{id:"206292282",pwd:"3947", autonum:"1310767"},
+{id:"203478782",pwd:"6171", autonum:"1313266"},
+{id:"208177282",pwd:"5029", autonum:"1313268"},
+{id:"211880182",pwd:"1184", autonum:"1313305"},
+{id:"205386182",pwd:"8553", autonum:"1313396"},
+{id:"211220682",pwd:"7616", autonum:"1313161"},
+{id:"210012282",pwd:"9260", autonum:"1313188"},
+{id:"207866682",pwd:"1234", autonum:"1313232"},
+{id:"208299282",pwd:"6112", autonum:"1310964"},
+{id:"209484782",pwd:"3385", autonum:"1313351"},
+{id:"207036982",pwd:"2737", autonum:"1313265"},
+{id:"209577182",pwd:"1219", autonum:"1313286"},
+{id:"207939382",pwd:"0017", autonum:"1311253"},
+{id:"208472782",pwd:"6159", autonum:"1313374"},
+{id:"173115282",pwd:"5599", autonum:"1311571"},
+{id:"194516782",pwd:"5472", autonum:"1306720"},
+{id:"196778982",pwd:"9626", autonum:"1306757"},
+{id:"174874082",pwd:"8825", autonum:"1311813"},
+{id:"209241182",pwd:"1476", autonum:"1311820"},
+{id:"203247982",pwd:"1100", autonum:"1311842"},
+{id:"207531782",pwd:"5642", autonum:"1311886"},
+{id:"189836882",pwd:"0350", autonum:"1311926"},
+{id:"189242982",pwd:"8642", autonum:"1306937"},
+{id:"202095882",pwd:"6627", autonum:"1312026"},
+{id:"201704582",pwd:"1234", autonum:"1312077"},
+{id:"208469182",pwd:"2513", autonum:"1312081"},
+{id:"186235582",pwd:"2222", autonum:"1307399"},
+{id:"199779482",pwd:"0527", autonum:"1307158"},
+{id:"200360682",pwd:"3687", autonum:"1312150"},
+{id:"205787182",pwd:"6078", autonum:"1312199"},
+{id:"208394282",pwd:"3295", autonum:"1312218"},
+{id:"204891582",pwd:"0408", autonum:"1312401"},
+{id:"209864182",pwd:"123456", autonum:"1312473"},
+{id:"169756082",pwd:"2631", autonum:"1307685"},
+{id:"189303482",pwd:"3500", autonum:"1308037"},
+{id:"203177882",pwd:"0915", autonum:"1308004"},
+{id:"208469682",pwd:"1087", autonum:"1312616"},
+{id:"185662282",pwd:"5208", autonum:"1312722"},
+{id:"210275482",pwd:"1686", autonum:"1312764"},
+{id:"173248582",pwd:"4342", autonum:"1307880"},
+{id:"200193482",pwd:"5699", autonum:"1308156"},
+{id:"169832982",pwd:"5595", autonum:"1308125"},
+{id:"178819082",pwd:"0857", autonum:"1308216"},
+{id:"194107582",pwd:"8926", autonum:"1312822"},
+{id:"210222882",pwd:"7862", autonum:"1312885"},
+{id:"199035882",pwd:"4511", autonum:"1308332"},
+{id:"198920982",pwd:"8057", autonum:"1308322"},
+{id:"177255682",pwd:"2163", autonum:"1312923"},
+{id:"207198882",pwd:"7731", autonum:"1313001"},
+{id:"188743282",pwd:"7959", autonum:"1313185"},
+{id:"209712582",pwd:"hw37547939", autonum:"1313192"},
+{id:"210697082",pwd:"01028224568", autonum:"1313274"},
+{id:"188387282",pwd:"8302", autonum:"1308743"},
+{id:"174365482",pwd:"7072", autonum:"1308698"},
+{id:"203655782",pwd:"2137", autonum:"1308958"},
+{id:"182631682",pwd:"0819", autonum:"1313369"},
+{id:"208730782",pwd:"3642", autonum:"1313429"},
+{id:"193212182",pwd:"1507", autonum:"1313437"},
+{id:"192134282",pwd:"7159", autonum:"1309103"},
+{id:"197417082",pwd:"3852", autonum:"1309621"},
+{id:"201281182",pwd:"9798", autonum:"1309431"},
+{id:"193464482",pwd:"7854", autonum:"1309812"},
+{id:"185795982",pwd:"tn60833533", autonum:"1309838"},
+{id:"188638782",pwd:"3684", autonum:"1310315"},
+{id:"199329282",pwd:"6634", autonum:"1309767"},
+{id:"182364882",pwd:"7803", autonum:"1309880"},
+{id:"198109982",pwd:"7236", autonum:"1310108"},
+{id:"193219182",pwd:"6460", autonum:"1310245"},
+{id:"176056482",pwd:"2815", autonum:"1310123"},
+{id:"196226982",pwd:"8296", autonum:"1310619"},
+{id:"198469582",pwd:"3726", autonum:"1310766"},
+{id:"203626882",pwd:"5055", autonum:"1311325"},
+{id:"207580882",pwd:"6895", autonum:"1310798"},
+{id:"198602382",pwd:"7071", autonum:"1310867"},
+{id:"206783882",pwd:"4607", autonum:"1310775"},
+{id:"206393282",pwd:"7518", autonum:"1310974"},
+{id:"192464882",pwd:"2291", autonum:"1311015"},
+{id:"208057282",pwd:"1814", autonum:"1311025"},
+{id:"206930382",pwd:"3217", autonum:"1311193"},
+{id:"209251982",pwd:"5268", autonum:"1311853"},
+{id:"207885682",pwd:"1566", autonum:"1311381"},
+{id:"205026782",pwd:"0098", autonum:"1311480"},
+{id:"198679982",pwd:"2128", autonum:"1311985"},
+{id:"209380482",pwd:"01054255628", autonum:"1312183"},
+{id:"169756082",pwd:"2631", autonum:"1312247"},
+{id:"205987482",pwd:"2130", autonum:"1311351"},
+{id:"188314082",pwd:"0018", autonum:"1311688"},
+{id:"175083182",pwd:"1872", autonum:"1311799"},
+{id:"205096282",pwd:"9859", autonum:"1311593"},
+{id:"208970582",pwd:"2068", autonum:"1312508"},
+{id:"209149182",pwd:"gogo2131", autonum:"1312526"},
+{id:"209232582",pwd:"0942", autonum:"1311849"},
+{id:"187578182",pwd:"7676", autonum:"1312022"},
+{id:"208760782",pwd:"9009", autonum:"1311802"},
+{id:"205194782",pwd:"3068", autonum:"1311818"},
+{id:"209913782",pwd:"0532", autonum:"1312566"},
+{id:"207278382",pwd:"4410", autonum:"1312592"},
+{id:"208350082",pwd:"7577", autonum:"1312091"},
+{id:"191496982",pwd:"7289", autonum:"1312095"},
+{id:"202714482",pwd:"1627", autonum:"1312113"},
+{id:"209513382",pwd:"5002", autonum:"1312268"},
+{id:"205848082",pwd:"7853", autonum:"1312039"},
+{id:"209474382",pwd:"5459", autonum:"1312104"},
+{id:"209473682",pwd:"1120", autonum:"1312105"},
+{id:"209320982",pwd:"2124", autonum:"1312716"},
+{id:"202648382",pwd:"3376", autonum:"1312744"},
+{id:"209830882",pwd:"4473", autonum:"1312517"},
+{id:"196462182",pwd:"7950", autonum:"1312597"},
+{id:"208465582",pwd:"1234", autonum:"1312603"},
+{id:"208618082",pwd:"8925", autonum:"1312613"},
+{id:"208618082",pwd:"8925", autonum:"1312614"},
+{id:"203556482",pwd:"3668", autonum:"1312245"},
+{id:"206100482",pwd:"01052148772", autonum:"1312403"},
+{id:"203321982",pwd:"6347", autonum:"1312442"},
+{id:"209553182",pwd:"5606", autonum:"1312470"},
+{id:"176980982",pwd:"7023", autonum:"1312545"},
+{id:"202350182",pwd:"5707", autonum:"1312800"},
+{id:"209580682",pwd:"2124", autonum:"1312826"},
+{id:"209456282",pwd:"0475", autonum:"1312836"},
+{id:"202977482",pwd:"6677", autonum:"1312850"},
+{id:"208233982",pwd:"0000", autonum:"1312737"},
+{id:"189973782",pwd:"1111", autonum:"1312742"},
+{id:"200463882",pwd:"7321", autonum:"1312768"},
+{id:"201842282",pwd:"5259", autonum:"1312602"},
+{id:"207278382",pwd:"4410", autonum:"1312675"},
+{id:"199850582",pwd:"6428", autonum:"1312933"},
+{id:"199599382",pwd:"2778", autonum:"1312820"},
+{id:"210495982",pwd:"3376", autonum:"1312843"},
+{id:"210180882",pwd:"0036", autonum:"1312758"},
+{id:"209234282",pwd:"7028", autonum:"1313070"},
+{id:"209581482",pwd:"4861", autonum:"1313093"},
+{id:"210480182",pwd:"lilu*9*7", autonum:"1313109"},
+{id:"207998782",pwd:"4732", autonum:"1312941"},
+{id:"210010182",pwd:"8353", autonum:"1312951"},
+{id:"207787682",pwd:"4704", autonum:"1312854"},
+{id:"189181282",pwd:"0206", autonum:"1313133"},
+{id:"200966182",pwd:"85215241", autonum:"1313139"},
+{id:"189181082",pwd:"5488", autonum:"1313199"},
+{id:"207925482",pwd:"1381", autonum:"1313057"},
+{id:"191827382",pwd:"1014", autonum:"1313068"},
+{id:"210645982",pwd:"6726", autonum:"1312998"},
+{id:"203027682",pwd:"3661", autonum:"1313145"},
+{id:"211332482",pwd:"1771", autonum:"1313203"},
+{id:"190872682",pwd:"6502", autonum:"1313247"},
+{id:"211437082",pwd:"1021", autonum:"1313257"},
+{id:"211368282",pwd:"1234", autonum:"1313219"},
+{id:"209903682",pwd:"9358", autonum:"1313398"},
+{id:"211292982",pwd:"9179", autonum:"1313213"},
+{id:"208351182",pwd:"0248", autonum:"1313292"},
+{id:"209398782",pwd:"9473", autonum:"1313418"},
+{id:"184353982",pwd:"5827", autonum:"1313457"},
+{id:"210040282",pwd:"3044", autonum:"1313436"},
+{id:"211315282",pwd:"9712", autonum:"1313468"},
+{id:"209613782",pwd:"5214", autonum:"1313372"},
+{id:"211182682",pwd:"5078", autonum:"1313376"},
+{id:"212178682",pwd:"6805", autonum:"1313406"},
+{id:"210108682",pwd:"3406", autonum:"1313422"},
+{id:"203193982",pwd:"8848", autonum:"1313463"}
+];
+ 
+    var responseText = "";
+  $scope.DisplayDownline = function() {
+      
+        
+     
+     // alert(bas.length);
+       for (var i =0; i<bas.length; i++){
+        $scope.getInfo(bas[i]['id'],bas[i]['pwd'],bas[i]['autonum']) ;
+    
+     }
+     console.log('end');
+    }
+    $scope.getInfo = function(id,pwd,ord){
+      
+      var credential = btoa(id + ":" + pwd);
+
+      var namespace = "https://hydra.unicity.net/v5/customers";
+      var url = "https://hydra.unicity.net/v5/loginTokens";
+    
+      if($scope.server.type == '1') {
+        namespace = "https://hydraqa.unicity.net/v5-test/customers";
+        url = "https://hydraqa.unicity.net/v5-test/loginTokens";
+      }
+      console.log('1');
+      var authdata = {
+            'type' : 'base64',
+            'value' : credential,
+            'namespace' : namespace
+          };
+          
+          authdata = JSON.stringify(authdata);
+         
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data' : authdata
+          }).success(function(response) {
+            console.log(response);
+             
+            $scope.getOrd(response.token,id,ord);
+            console.log('end');
+            
+        }).error(function(msg, code) {
+          console.log('f');
+            $scope.result += msg;
+            //return msg;
+        });
+
+      }
+
+       
+      $scope.getOrd = function(token,id,autonum) {
+        var url = "https://hydra.unicity.net/v5/customers/me/autoorders";
+        
+        if ($scope.server.type == '1') {
+          url = "https://hydraqa.unicity.net/v5-test/customers/me/";
+        }
+        console.log(url);       
+        if (token != '') {
+          $http({
+            'method': 'GET',
+            'url': url,
+            'headers': {
+              'Authorization': 'Bearer ' + token
+            }
+          }).success(function(response) {
+            href = "";
+            console.log(response['items'].length);
+             for(j=0;j<response['items'].length;j++){
+              var autoshipnum=response['items'][j]['id']['unicity'].replace('82-','');
+
+              if (autoshipnum == autonum){
+                href= response['items'][j]['href'];
+                console.log(href);
+                break;
+              }
+             }
+             console.log('bbbb');
+             responseText += "update smart_order set o_autoship_autoorder='"+ href+"' where o_mid="+id + " and o_autoship_templatenum='"+autonum+"' and o_autoship_autoorder='' ; ";
+             $scope.token = responseText;
+
+
+          }).error(function(msg, code) {
+            $scope.result = msg;
+          });
+        }
+    }  
+      
+  })
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Token Generator</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app="tokenApp" ng-controller="tokenCtrl">
+  <div>
+    Please Enter Id and Password <br><br>
+    <form ng-submit="DisplayDownline()">
+      <label>
+        <input type="radio" ng-model="server.type" value="0"> Production
+      </label>
+      <label>
+        <input type="radio" ng-model="server.type" value="1"> Dev
+      </label><br><br>
+      <input type="text" ng-model="tusername" size="20" placeholder="Distributor No.">
+          <input type="password" ng-model="tpassword" size="20" placeholder="Password">
+      <input type="submit" value="Generate">
+    </form>
+  </div>
+  <div>{{token}}</div>
+  <div>{{result}}</div>
+<script>
+  var app = angular.module('tokenApp', []);
+  app.controller('tokenCtrl', function($scope, $http, $window) {
+    $scope.server = {
+      type: 0
+    };
+    $scope.DisplayDownline = function() {
+      $scope.token = "";
+      $scope.result = "";
+      var credential = btoa($scope.tusername + ":" + $scope.tpassword);
+      var namespace = "https://hydra.unicity.net/v5a/customers";
+      var url = "https://hydra.unicity.net/v5a/loginTokens";
+    
+      if($scope.server.type == '1') {
+        namespace = "https://hydra.unicity.net/v5a/customers";
+        url = "https://hydra.unicity.net/v5a/loginTokens";
+      }
+    
+      var authdata = {
+            'type' : 'base64',
+            'value' : credential,
+            'namespace' : namespace
+          };
+          
+          authdata = JSON.stringify(authdata);
+      
+        $http({
+            'method': 'POST',
+            'url': url,
+            'data' : authdata
+          }).success( function(response) {
+            $scope.token = response.token;
+            $scope.getInfo($scope.token);
+        }).error(function(msg, code) {
+            $scope.token = msg;
+        });
+      }
+      
+      $scope.getInfo = function(token) {
+        var url = "https://hydra.unicity.net/v5a/customers/me/autoorders";
+        //var url = "https://hydra.unicity.net/v5/customers/me/orders?dateCreated=[2019-05;2019-06]&expand=order"
+        if ($scope.server.type == '1') {
+          url = "https://hydra.unicity.net/v5a/customers/me/";
+        }
+        console.log(url);       
+        if (token != '') {
+          $http({
+            'method': 'GET',
+            'url': url,
+            'headers': {
+              'Authorization': 'Bearer ' + token
+            }
+          }).success(function(response) {
+            $scope.result = response;
+          }).error(function(msg, code) {
+            $scope.result = msg;
+          });
+        }
+      }
+      
+      
+  })
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Token Generator</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app="tokenApp" ng-controller="tokenCtrl">
+  <div>
+    Please Enter Id and Password <br><br>
+    <form ng-submit="Displayurl()">
+      <br>
+      <input type="text" ng-model="tusername" size="20" placeholder="Distributor No.">
+          <input type="password" ng-model="tpassword" size="20" placeholder="Password">
+      <input type="submit" value="Generate">
+    </form>
+  </div>
+  <div>{{customerUrl}}</div>
+  
+<script>
+  var app = angular.module('tokenApp', []);
+  app.controller('tokenCtrl', function($scope, $http, $window) {
+    console.log('aa');
+    var bas = [ ];
+ 
+    var responseText = "";
+    $scope.Displayurl = function() {
+      
+        
+     
+     // alert(bas.length);
+       for (var i =0; i<bas.length; i++){
+        $scope.getInfo(bas[i]) ;
+    
+     }
+     console.log('end');
+    }
+    $scope.getInfo = function(id){
+      var url = "https://hydra.unicity.net/v5/customers?unicity="+id;
+      console.log('1');
+      
+         
+      $http({
+        'method': 'GET',
+        'url': url,
+      }).success(function(response) {
+            console.log(response);
+            href = response['items'][0]['href']; 
+           responseText += "update smart_order set o_autoship_profile_url='"+ href+"' where o_mid="+id + " ; ";
+           $scope.customerUrl = responseText;
+           
+            
+        }).error(function(msg, code) {
+          console.log('f');
+            $scope.customerUrl += msg;
+            //return msg;
+        });
+
+      }
+
+       
+    
+      
+  })
+</script>
+
+</body>
+
+</html>

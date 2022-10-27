@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8">
+
+<html>
+<head>
+	<title>KR API</title>
+
+	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
+</head>
+
+<body>
+		<h1>Authenticate V5</h1>
+	usernameV5: <input type="text" id="usernameV5" value="15745082"><br/>
+	passwordV5: <input type="text" id="passwordV5" value="2020unic!"><br/>
+	<input type="submit" id="authenticateV5_submit" value="OKay"><br/>
+	<textarea id="authenticateV5_result" rows="12" cols="150"></textarea><br/>
+	token: <input type="text" id="token" value=""><br/><br/>
+	<script type="text/javascript">
+		$(document).ready( function () {
+		// AuthenticateV5 button click event
+			$('#authenticateV5_submit').on('click', function() {
+				var usernameV5 = $('#usernameV5').val();
+				var passwordV5 = $('#passwordV5').val();
+				// setup ajax call
+				var data = {
+					'type':'base64', 
+					'value':btoa(usernameV5 + ":" + passwordV5), 
+					'namespace':'https://hydra.unicity.net/v5a/employees'
+				};
+				// convert data to json
+				data = JSON.stringify(data);
+				// send ajax call
+				$.ajax({
+					'type':'POST',
+					'headers':{'Content-Type':'application/json'},
+					'url':'https://hydra.unicity.net/v5a/loginTokens',
+					'data':data,
+					'success':function (result) {
+						$('#authenticateV5_result').val(JSON.stringify(result,undefined,4));
+						$('#token').val(result.token);
+						$('#customer_href').val(result.customer.href);
+
+					},
+					'error':function () {
+						$('#authenticateV5_result').val('There was an error with your request.');
+					}
+				});
+				// let user know that request is in progress
+				$('#authenticateV5_result').val('Request in progress . . .');
+			});
+		});
+		</script>
+</body>
+</html>

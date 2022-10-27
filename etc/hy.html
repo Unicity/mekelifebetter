@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script>
+  var checkConfirm ='';
+  function selectMenu(){
+	  checkConfirm= $('input[name="valCheck"]:checked').val();
+	  $(".result").html('');
+	  if(checkConfirm == 1){
+		$("#joinInfo").css("display","none");	
+		$("#paymentInfo").css("display","block");
+	  }else{
+		  $("#joinInfo").css("display","block");	
+		  $("#paymentInfo").css("display","none");
+	  }
+  }	
+	function submitForm(){
+		checkConfirm= $('input[name="valCheck"]:checked').val();
+		
+		
+		if(checkConfirm == 0){
+			var memberInfo = $('#memberNum').val();
+			$.ajax({
+				'type':'GET',
+				'headers':{'Authorization':'VAN hK1fmDEKCSrj55zn:xHJjExZxIYUDZSSO'},
+				'url':  'https://api.efnc.co.kr/v1/members/'+ memberInfo,
+				'success':function (result) {
+					$(".result").html(JSON.stringify(result, undefined, 4));
+				}, 'error':function () {
+					$(".result").html('신청 정보가 없습니다. ');
+				}
+			});
+		}else{
+			var orderNum = $('#orderNum').val();
+			$.ajax({
+				'type':'GET',
+				'headers':{'Authorization':'VAN hK1fmDEKCSrj55zn:xHJjExZxIYUDZSSO'},
+				'url':  'https://api.efnc.co.kr/v1/payments/cms/'+ orderNum,
+				'success':function (result) {
+					$(".result").html(JSON.stringify(result, undefined, 4));
+				}, 'error':function () {
+					$(".result").html('신청 정보가 없습니다. ');
+				}
+			});
+		}
+	}
+</script>
+</head>
+<body>
+  <div>
+    <form name="memberForm" >
+    	<label>
+				<input type="radio" id="member1" name="valCheck" onclick="selectMenu()" value="0" checked="checked"> 회원등록
+			</label>
+			<label>
+				<input type="radio" id="memver2" name="valCheck" onclick="selectMenu()" value="1"> 출금등록
+			</label><br><br>
+			
+    	<div id="joinInfo" style="float: left; margin-left: 2px">
+      		<input type="text" id="memberNum" name="memberNum" size="20" placeholder="회원번호">
+      	</div>
+      	
+      	<div id="paymentInfo" style="float: left; margin-left: 2px;display: none;">
+      		<input type="text" id="orderNum" name="orderNum" size="20" placeholder="주문번호">
+      	</div>
+      	<div>
+      		<a href="javascript:submitForm();" id="applybutton" style="margin-left: 5px;">확인</a>
+    	</div>
+    	<br/>
+    	<textarea class="result" id="nTypeShow" style="width: 500px;height: 500px;" readonly="readonly">
+             
+        </textarea>
+    </form>
+  </div>
+
+</body>
+</html>

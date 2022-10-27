@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script>
+			var checkConfirm ='';
+			function selectMenu(){
+		  		checkConfirm= $('input[name="valCheck"]:checked').val();
+	
+		  		if(checkConfirm == 1){
+					$("#joinInfo").css("display","none");	
+					$("#paymentInfo").css("display","block");
+				}else{
+					$("#joinInfo").css("display","block");	
+					$("#paymentInfo").css("display","none");
+				}
+			}	
+			function submitForm(){
+				checkConfirm= $('input[name="valCheck"]:checked').val();
+				var memberInfo = $('#memberNum').val();
+				var rcptNum = $('#receiptNum').val();
+				 var data = {
+								"paymentKind":"CMS",
+								"receiptFlag":"Y",
+								"receiptNumber":rcptNum
+				 }
+				 if(checkConfirm==0){
+				 	var foNum = $('#foNum').val();
+					$.ajax({
+						'type':'GET',
+						'headers':{'Authorization':'VAN hK1fmDEKCSrj55zn:xHJjExZxIYUDZSSO'},
+						'url':  'https://api.efnc.co.kr/v1/members/'+ foNum,
+						'success':function (result) {
+							if(result.member.receiptNumber ==null){
+								alert("신청하신 현금 영수증이 없습니다.")
+							}else{
+								alert("현재 현금 영수증 번호는 "+result.member.receiptNumber+" 입니다.")
+							}
+						}, 'error':function (result) {
+							alert("등록된 회원이 없습니다." + JSON.stringify(result))
+						}
+					});
+				 }else{
+					if(confirm(rcptNum +' '+"현금 영수증 번호가 맞습니까?")){
+						 $.ajax({
+							'type':'PUT',
+							'headers':{'Content-Type':'application/json','Authorization':'VAN hK1fmDEKCSrj55zn:xHJjExZxIYUDZSSO'},
+							 'data': JSON.stringify(data),
+							'url':  'https://api.efnc.co.kr/v1/members/'+ memberInfo,
+							'success':function (result) {
+								alert("신청이 완료 되었습니다.");
+							},
+	
+		                    error: function (result) {
+	
+		                    	alert("오류 입니다. IT부서에 문의 주세요");
+		                    	alert(JSON.stringify(result));
+	
+		                    }
+						});
+					} 
+				 }
+			}
+		</script>
+		
+	</head>
+	<body>
+		 <div>
+		    <form name="memberForm" >
+			    <label>
+					<input type="radio" id="member1" name="valCheck" onclick="selectMenu()" value="0" checked="checked"> 현금영수증 번호 조회
+				</label>
+				<label>
+					<input type="radio" id="memver2" name="valCheck" onclick="selectMenu()" value="1"> 현금 영수증 등록 및 변경
+				</label><br><br>
+				
+		    	<div id="joinInfo" style="float: left; margin-left: 2px">
+		      		<input type="text" id="foNum" name="foNum" size="20" placeholder="회원번호">
+		      	</div>
+		      	<div id="paymentInfo" style="float: left; margin-left: 2px;display: none;">
+		      		<input type="Number" id="memberNum" name="memberNum" size="20" placeholder="회원번호">
+		      		<input type="Number" id="receiptNum" name="receiptNum" size="20" placeholder="현금 영수증 번호">
+		      	</div>
+		      	<div>
+		      		<a href="javascript:submitForm();" id="applybutton" style="margin-left: 5px;">확인</a>
+		    	</div>
+		    	<br/>
+		    
+		    </form>
+  		</div>
+	</body>
+</html>	

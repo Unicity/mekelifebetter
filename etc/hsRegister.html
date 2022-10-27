@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<title>Token Generator</title>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app="tokenApp" ng-controller="hsRctrl">
+	<div>
+		Please Enter Id and Password <br><br>
+		<form ng-submit="hsRegister()">
+			<label>
+			<input type="submit" value="Generate">
+      <div>{{results}}</div>
+		</form>
+	</div>
+	 
+<script>
+	var app = angular.module('tokenApp', []);
+	app.controller('hsRctrl', function($scope, $http, $window) {
+		 
+		$scope.hsRegister = function() {
+  		var data = [
+            { memberId: "id" , transactionId: "order"  ,  paymentDate: "date"  , callAmount: "amount"  },
+ 
+      ];
+	 	
+	   for (var i =0; i<data.length; i++){
+        $scope.register(data[i]['memberId'],data[i]['transactionId'],data[i]['paymentDate'],data[i]['callAmount']) ;
+      }
+    }
+    
+    $scope.register = function(id, orderId, payDate, amount) {
+      var url = "https://api.efnc.co.kr/v1/payments/cms?Authorization=VAN hK1fmDEKCSrj55zn:xHJjExZxIYUDZSSO";
+      var datum = {
+        "memberId": id,   
+        "transactionId": orderId,   
+        "paymentDate": payDate,  
+        "callAmount": amount
+      };
+
+      datum = JSON.stringify(datum);
+
+     	$http({
+      		'method': 'POST',
+      		'url': url,
+       		'data' : datum
+        }).success( function(response) {
+      	  $scope.results = 'done'+id+' '+response.token;
+      	 
+    	  }).error(function(msg, code) {
+          $scope.results = msg;
+        });
+    }
+  })
+</script>
+
+</body>
+
+</html>

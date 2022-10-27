@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='ko-KR'>
+<head>
+	<meta charset="UTF-8">
+	<title>Unicity Korea Knowledge Management System</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<link rel="stylesheet" href="./css/signin.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+      <form class="form-signin" name="loginForm" method="post" action="./pages/loginProcess.php">
+        <h2 class="form-signin-heading">Unicity Korea KMS</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" required autofocus />
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required autocomplete="nope" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+      </form>
+    </div> <!-- /container -->
+
+</body>
+</html>
