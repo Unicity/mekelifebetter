@@ -49,7 +49,7 @@ session_start();
       $times = mktime();  // 현재 서버의 시간을 timestamp 값으로 가져옴
 
       $nowDate = date("Y-m-d h:i:s", $times);  // 초 -> 년-월-일 시:분:초  변환
-
+    $alert="완료";
     try {
         $objReader = PHPExcel_IOFactory::createReaderForFile($filename);
         
@@ -184,7 +184,9 @@ session_start();
             mysql_query($saveQuery) or die("autoship_update_error".mysql_error());
             echo "업로드 완료 ";
             
+    	
         }
+        echo "<script>alert('$alert');history.back();</script>";
     }catch (exception $e) {
         echo "엑셀 파일을 읽는 도중 오류가 발생 하였습니다.";
     }

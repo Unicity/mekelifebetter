@@ -23,6 +23,9 @@ $num = $_POST['num'];
 $entry_date = $_POST['entry_date'];
 $address = $_POST['fAddress'];
 $mobilePhone= $_POST['mobilePhone'];
+$appYn= $_POST['app_yn'];
+
+
 
 $already = '이미 신청이 완료 되어 재접수 불가 합니다.';
 $now_date = date("Y-m-d H:i:s");
@@ -68,7 +71,7 @@ mysql_query($logQuery) or die("ChangeSponsorlogQuery-".mysql_error());
         $alert = '신청이 완료 되었습니다.';
        
     
-        $qurey ="insert into tb_change_sponsor (member_no, member_name, sponsor_no, sponsor_name, address, sponsor_agree_yn, reg_status,ch_sponsor_no, ch_sponsor_name,apply_date,agree_date, entry_date,phoneNum ) value('".$distID."','".$distName."','".$sponsorID."','".$sponsorName."','".$address."','','".$reg_status."','".$chSponsorID."','".$chSponsorName."','".$now_date."','','".$entry_date."','".$mobilePhone."')";
+        $qurey ="insert into tb_change_sponsor (member_no, member_name, sponsor_no, sponsor_name, address, sponsor_agree_yn, reg_status,ch_sponsor_no, ch_sponsor_name,apply_date,agree_date, entry_date,phoneNum,app_yn ) value('".$distID."','".$distName."','".$sponsorID."','".$sponsorName."','".$address."','','".$reg_status."','".$chSponsorID."','".$chSponsorName."','".$now_date."','','".$entry_date."','".$mobilePhone."','".$appYn."')";
         
         mysql_query($qurey) or die("Query Error");
     

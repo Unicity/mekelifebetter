@@ -27,9 +27,6 @@
 		$_POST = json_decode(str_replace('\"','"',$initData['_POST']['_POST']),1);
 		$_POST['action']='changeSponsor';
 	}
-	
-
-
 	$distID = $_POST['fId'];
 	$distName = $_POST['fName'];
 	$rsponsorId = $_POST['sponsorId'];
@@ -38,24 +35,12 @@
 	$entryDate = $_POST['entryDate'];
 	$mobilePhone = $_POST['mobilePhone'];
 	$appCheck = $_POST['appYn'];
-
-	//$chNum = $_POST['chNum'];
-	//$chSponsorName = $_POST['chSponsorName'];
-
-	//echo ">>".$chNum."<br/>";
-
-	//echo ">>>".$chSponsorName;
+	$checkName = $_POST['checkName'];
+	$baName = $_POST['baName'];
+	$phoneCheck = $_POST['phoneCheck'];
 	$appYn = $_POST['mYn'];
 	$parentInputName = $_POST['parentInputName'];
 	$jsonValue = $_POST['jsonValue'];
-
-
-    
-	//echo "distID:==>".$distID;
-	//echo $appYn; 
-	//echo $fAddress;
-	//echo "M".$mobilePhone;
-
 $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 
 	if($appCheck=='Y'){
@@ -76,6 +61,8 @@ $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 		$_SESSION['sponsorId'] = $rsponsorId; 
 		$_SESSION['sponsorName'] = $rsponsorName; 
 		$_SESSION['entryDate'] = $entryDate; 
+		$_SESSION['appYn'] = $appCheck; 
+		$_SESSION['baName'] = $distName ; 
 		
 
 	}
@@ -105,11 +92,9 @@ $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 	
 	// CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
 	
-	if($appCheck!='Y'){
-	$returnurl = (isset($_SERVER['HTTPS']) ? "https" : "https")."://".$_SERVER['HTTP_HOST']."/sp/signup/cert_success.php?flagId=$distID";	// 성공시 이동될 URL - Success
-	}else if($appCheck=='Y'){
-		$returnurl = (isset($_SERVER['HTTPS']) ? "https" : "https")."://".$_SERVER['HTTP_HOST']."/sp/signup/cert_success.php?flagId=$distID";
-	}
+
+	$returnurl = (isset($_SERVER['HTTPS']) ? "https" : "https")."://".$_SERVER['HTTP_HOST']."/sp/signup/cert_success.php?flagId=$distID";
+	
 	$errorurl = (isset($_SERVER['HTTPS']) ? "https" : "https")."://".$_SERVER['HTTP_HOST']. "/sp/signup/cert_fail.php";		// 실패시 이동될 URL - Fail
 	
 	// reqseq값은 성공페이지로 갈 경우 검증을 위하여 세션에 담아둔다.
@@ -241,6 +226,7 @@ $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 							<input type="hidden" name="entry_date" value="<?php echo $entryDate?>">
 							<input type="hidden" name="fAddress" value="<?php echo $fAddress?>">
 							<input type="hidden" name="mobilePhone" value="<?php echo $mobilePhone?>">
+							<input type="hidden" name="app_yn" value="<?php echo $appCheck?>">
     						<style> 
                                     #mask {
                                             position: absolute;
@@ -385,10 +371,12 @@ $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 				var parentInputName = '<?php echo $parentInputName?>';
 				var fAddress = '<?php echo $fAddress?>';
 				var mobilePhone = '<?php echo $mobilePhone?>';
-	
+
 				if(appYn=='Y'){
 					go_next_sign1(parentInputName)
 				}
+
+
 
 			});
 
@@ -449,6 +437,7 @@ $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 				}else{
 					alert("신청인과 본인인증 성함이 다릅니다");
 					$("#applyShow").css('display','none');
+			
 				}		
 		 	}
 
@@ -463,17 +452,16 @@ $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 
 			function go_next_sign1(val){
 
-				var distName = '<?php echo $distName?>'
-
-				//var s_nm = $("#parentInputName").val();
-
-				if(distName ==val ){
-					//alert("이름이 동일 합니다.");
+				var baName  = '<?php echo $baName ?>';
+				var  aa = 	$("#distName").val(distName);
+				if(baName  ==val ){
+				
 					$("#applyShow").css('display','block');
-					
+					$("#distName").val(baName);
 				}else{
 					alert("신청인과 본인인증 성함이 다릅니다");
 					$("#applyShow").css('display','none');
+					$("#distName").val(baName);
 				}	
 
 			}

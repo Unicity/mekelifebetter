@@ -1207,7 +1207,7 @@ class PclZip
         if (PCLZIP_ERROR_EXTERNAL == 1) {
             return(PclErrorCode());
         } else {
-            return($this->error_code);
+            return($this->);
         }
     }
     // --------------------------------------------------------------------------------
@@ -1243,7 +1243,7 @@ class PclZip
             PCLZIP_ERR_DIRECTORY_RESTRICTION => 'PCLZIP_ERR_DIRECTORY_RESTRICTION',
         );
 
-        if (isset($v_name[$this->error_code])) {
+        if (isset($v_name[$this->])) {
             $v_value = $v_name[$this->error_code];
         } else {
             $v_value = 'NoName';

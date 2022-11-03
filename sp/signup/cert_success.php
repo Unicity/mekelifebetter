@@ -218,10 +218,6 @@ var mChkDate = "<?php echo $confirmTime ?>";
 			<?
 		}
 		?>
-
-		//$logQuery= "insert into ChangeSponsorLog (name, logDate, spName, updateInsert,Id) value('".$name."',now(),'".$name."','".$updateInsert."','".$distID."')";
-
-		//mysql_query($logQuery) or die("ChangeSponsorSMSQuery-".mysql_error());
 		
 		alert("본인 인증이 성공 하였습니다.");
 		window.opener.agreeForm.parentInputName.value = s_nm;
@@ -240,11 +236,16 @@ var mChkDate = "<?php echo $confirmTime ?>";
 	<input type="hidden" name="jsonValue" id="jsonValue" value="" />
 	<input type="hidden" name="mYn" id="mYn" value="Y" />
 	<input type="hidden" name="fId" value="<?php echo $flagId?>">
-	<input type="text" name="fName" value="<?php echo $_SESSION["S_NM"]?>">
+	
+	<input type="text" name="checkName" value="<?php echo $_SESSION["S_NM"]?>">
+	<input type="text" name="baName" value="<?php echo $_SESSION['baName']?>">
+	<input type="text" name="phoneCheck" value="check">
+
 	<input type="text" name="sponsorId" value="<?php echo $_SESSION['sponsorId'] ?>">
 	<input type="text" name="sponsorName" value="<?php echo $_SESSION['sponsorName']?>">
 	<input type="text" name="entryDate" value="<?php echo $_SESSION['entryDate']?>">
 	<input type="text" name="fAddress" value="<?php echo $_SESSION['fAddress']?>">
+	<input type="text" name="appYn" value="<?php echo $_SESSION['appYn']?>">
 	
 
 
