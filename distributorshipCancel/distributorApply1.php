@@ -2,7 +2,7 @@
 		
 ?>
 <?php
-	include "includes/config/config.php";	
+	
 	cert_validation();
 	$sid = $_POST['sid'];
 	//$sid = '15745082';
@@ -788,4 +788,3 @@
 	</form>
   </body>
 </html>
-<?php include_once("./includes/google.php");?>

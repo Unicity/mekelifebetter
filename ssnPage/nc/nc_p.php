@@ -4,6 +4,8 @@
  $strName = $_POST["name"];		
  $strName = iconv("utf-8", "euc-kr", $strName);
 
+
+
 	$sSiteCode = "Q662"; 		// NICE평가정보에서 발급한 실명확인 서비스 사이트코드
 	$sSitePw = "14622139";			// NICE평가정보에서 발급한 실명확인 서비스 사이트패스워드
    
@@ -11,6 +13,7 @@
 	// ex) $cb_encode_path = 'C:\\module\\cb_namecheck.exe'
 	//     $cb_encode_path = '/root/module/RNCheck'
 	$cb_encode_path = "/home/httpd/unicity/cb_namecheck/cb_namecheck";
+		     
 
 	// 데이터 위변조 검사용 변수 (생략 가능)
 	$sReqKey = "Q662";
@@ -49,7 +52,7 @@ if(!empty($strJumin) && !empty($strName))
 }
 else
 {
-	$sRtnMsg = "입력값 미전달 오류: 성명이나 주민번호가 전달되지 않았습니다.";
+	$sRtnMsg = "입력값 미전달 오류: 성명이나 주민번호를 다시 확인 해주세요.";
 }
 
 if(!empty($iReturnCode))

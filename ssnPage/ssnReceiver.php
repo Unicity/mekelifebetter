@@ -22,6 +22,10 @@ $str1 = substr($birthDay, 5, 2);
 $str2 = substr($birthDay, 8, 2); 
 
 $str = $str0.$str1.$str2;
+
+
+
+
 ?>
 <?
 	//if ($_SERVER['SERVER_PORT'] == "80") {
@@ -43,8 +47,58 @@ $str = $str0.$str1.$str2;
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes">
 <script type="text/javascript" src="./includes/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="./includes/js/ssn.js?ver=<?=rand(111,999)?>"></script>
 <link rel="stylesheet" type="text/css" href="./css/joo.css" />
+<script type="text/javascript">
+	function nc(){
+		var jumin1 =  $('#ssn1').val();
+		var jumin2 =  $('#ssn2').val();
+		var name = $('#distName1').val();
+		
+		var juCheck= jumin2.substring(0, 1);
+
+			if(juCheck == '5' || juCheck=='6'){
+				js_register();
+			}else{
+				var request = $.ajax({
+						url:'./nc/nc_p.php',
+						type:"POST",
+						
+						data: {
+							"name":name,
+							"jumin1":jumin1,
+							"jumin2":jumin2
+				    		},
+						
+							dataType:"html"
+				});
+
+				request.done(function(msg) {
+					console.log(msg)
+					
+					if (msg.trim() != "인증성공") {
+						
+						alert(msg);
+						
+					}else{
+						js_register();
+					}
+
+				});
+
+			request.fail(function(jqXHR, textStatus) {
+				alert("Request failed : " +textStatus);
+				return false;
+			});
+		}
+
+		
+
+		
+
+	}
+</script>
 </head>
 <body>
 	<div class="wrapper">
@@ -67,28 +121,27 @@ $str = $str0.$str1.$str2;
 						<div class="member">
 							<h2>회원번호</h2>
 							<div class="wrap">
-								<input type="text" placeholder="회원번호" name="distID" id="distID"/>
+								<input type="text" placeholder="회원번호" name="distID" id="distID" value="<?php echo $chkID ?>"/>
 								<input type="hidden" id="chkID" name="chkID" value="false">
 								<input type="hidden" id="chkJumin" name="chkJumin" value="false">
+								<input type="hidden" id="distName1">
 								<a href="javascript:js_search()">확인</a>
 							</div>
-							<p id="distName"><span></span></p>
+							<p id="distName" name="distName"><span></span></p>
 
 						</div>
 						<div class="number">
 							<h2>주민번호</h2>
 							<div>
-								<span><input type="text" placeholder="" name="ssn1" id="ssn1" maxlength="6"/></span>
+								<span><input type="text" placeholder="" name="ssn1" id="ssn1" maxlength="6" style = "height:40px;"/></span>
 								<span class="dot">-</span>
-								<span ><input type="text" placeholder="" name="ssn2" id="ssn2" maxlength="7" /></span>
+								<span ><input type="password" placeholder="" name="ssn2" id="ssn2" maxlength="7" style = "height:40px;" /></span>
 							</div>
 							<p id="SSNError"><span></span></p>
 						</div>
-						<div class="btn_box btn_register">
-							<a href="javascript:js_register()">등록하기</a>
-						</div>
-						<div class="btn_box btn_register_ing" style="display:none">
-							<a href="javascript:;" style="background:none; color:#11c2c9">등록중입니다. 잠시 기다려 주세요...</a>
+						<div class="btn_box">
+							<!--<a href="javascript:js_register()">등록하기</a>-->
+							<a href="javascript:nc()">등록하기</a>
 						</div>
 						<div style="margin-top:10px;">
 						<p><i><font color="red">&#8251;수당 지급이 보류된 회원께서는 주민번호 등록 후 반드시 본인이 회사에 연락 주셔서 지급 요청 하시기 바랍니다.<br/>(본인이 아닐 경우,지급 요청이 불가 합니다.)</font></i></p>

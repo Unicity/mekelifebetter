@@ -32,13 +32,12 @@ if($type=='new'){
     $cancel_no="";   //승인번호
     $check_result="";   //발행상태
     $cancel_reason="";  //취소사유
-    $center="";         //센터명
+    $center=$s_adm_dept;         //센터명
 }else if ($type=='modify'){
     $query="select * from tb_cashReceipts where 1 = 1 and order_no =".$orderNo ."  and member_no=".$idVal." and cash_num=".$cashNum;
 
     $result = mysql_query($query);
     $list = mysql_fetch_array($result);
-
     $s_date = $list[s_date];
     $check_result = $list[check_result];
     $member_no = $list[member_no];
@@ -55,8 +54,6 @@ if($type=='new'){
     $cash_num=$list[cash_num];
 
 }
-
-
 
 $today = date("Ymd");
 
@@ -97,7 +94,7 @@ $today = date("Ymd");
                         <tr>
                             <th>발행상태</th>
                             <td>
-                                <select name="check_result">
+                                <select name="check_result" >
                                     <option value="" selected>선택</option>
                                     <option value="발행완료" <?if($check_result=='발행완료'){?>selected<?}?>>발행완료</option>
                                     <option value="발행취소" <?if($check_result=='발행취소'){?>selected<?}?>>발행취소</option>
@@ -120,7 +117,7 @@ $today = date("Ymd");
                             <td><input type="text" name="order_no" value="<?php echo $order_no?>" maxlength="9" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></td>
                         </tr>
                         <tr>
-                            <th>반품번호</th>
+                            <th><font color = "red"><b>반품번호</b></font></th>
                             <td><input type="text" name="back_no" value="<?php echo $back_no?>" maxlength="9" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></td>
                         </tr>
                         <tr>
@@ -130,7 +127,7 @@ $today = date("Ymd");
                         <tr>
                             <th>신분확인 방법</th>
                             <td>
-                                <select name="check_text">
+                                <select name="check_text" onchange="resultChange()">
                                     <option value="" selected>선택</option>
                                     <option value="자진발급" <?if($check_text=='자진발급'){?>selected<?}?>>자진발급</option>
                                     <option value="휴대전화"<?if($check_text=='휴대전화'){?>selected<?}?>>휴대전화</option>
@@ -148,11 +145,11 @@ $today = date("Ymd");
                             <td><input type="text" name="approval_num" value="<?php echo $approval_num?>" maxlength="9" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></td>
                         </tr>
                         <tr>
-                            <th>취소승인번호</th>
+                            <th><font color = "red"><b>취소승인번호</b></font></th>
                             <td><input type="text" name="cancel_no" value="<?php echo $cancel_no?>" maxlength="9" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></td>
                         </tr>
                         <tr>
-                            <th>취소사유</th>
+                            <th>취소/재발행 사유</th>
                             <td><input type="text" name="cancel_reason" value="<?php echo $cancel_reason?>" style="width:300px;"></td>
                         </tr>
                         <tr>
@@ -272,9 +269,6 @@ $today = date("Ymd");
         }else if (document.frm_m.order_no.value == ''){
             alert('주문번호를 입력 하세요');
             return false;
-        }else if (document.frm_m.back_no.value == ''){
-            alert('반품번호를 입력 하세요');
-            return false;
         }else if (document.frm_m.amount.value == ''){
             alert('금액을 입력 하세요');
             return false;
@@ -287,29 +281,30 @@ $today = date("Ymd");
         }else if (document.frm_m.approval_num.value == ''){
             alert('승인번호를 입력 하세요');
             return false;
-        }else if (document.frm_m.cancel_no.value == ''){
-            alert('취소승인번호를 입력 하세요');
-            return false;
         }else if (document.frm_m.check_result.value == ''){
             alert('발행상태를 선택 하세요');
-            return false;
-        }else if (document.frm_m.cancel_reason.value == ''){
-            alert('취소 사유를 입력 하세요');
             return false;
         }
 
         if(document.frm_m.order_no.value.length < 9){
             alert('주문번호를 다시 확인 해주세요');
             return false;
-        }else if (document.frm_m.back_no.value.length < 9){
-            alert('반품번호를 다시 확인 해주세요');
-            return false;
         }else if (document.frm_m.approval_num.value.length < 9){
             alert('승인번호를 다시 확인 해주세요');
             return false;
-        }else if (document.frm_m.cancel_no.value.length < 9){
-            alert('취소승인번호를 다시 확인 해주세요');
-            return false;
+        }
+
+        if(document.frm_m.check_result.value=='발행취소'){
+           if(document.frm_m.back_no.value==''){
+             alert('반품 번호는 필수 입니다.')
+             return false;
+           }else if (document.frm_m.cancel_reason.value==''){
+            alert('취소 사유 필수 입니다.')
+             return false;
+           }else if (document.frm_m.cancel_no.value==''){
+            alert('취소 승인 번호 필수 입니다.')
+             return false;
+           }  
         }
 
         document.frm_m.action= "./cashReceipts_center_save.php";
@@ -319,8 +314,21 @@ $today = date("Ymd");
 
     function updateInfo(){
         if(dept!=s_dept){
-            alert('DSC가 달라서 수정 할 수 없습니다.');
+            alert('본인 DSC 데이터만 수정 할 수 있습니다.');
             return false;
+        }
+
+        if(document.frm_m.check_result.value=='발행취소'){
+            if(document.frm_m.back_no.value==''){
+             alert('반품 번호는 필수 입니다.')
+             return false;
+           }else if (document.frm_m.cancel_reason.value==''){
+            alert('취소 사유 필수 입니다.')
+             return false;
+           }else if (document.frm_m.cancel_no.value==''){
+            alert('취소 승인 번호 필수 입니다.')
+             return false;
+           }  
         }
 
         document.frm_m.action= "./cashReceipts_center_save.php";
@@ -330,7 +338,7 @@ $today = date("Ymd");
 
     function goDelete(){
         if(dept!=s_dept){
-            alert('DSC가 달라서 삭제 할 수 없습니다.');
+            alert('본인 DSC 데이터만 수정 할 수 있습니다.');
             return false;
         }
 
@@ -338,6 +346,13 @@ $today = date("Ymd");
             document.frm_m.action= "./cashReceipts_center_save.php";
             document.frm_m.flag.value = 'delete'
 		    document.frm_m.submit();
+        }
+    }
+
+    function resultChange(){
+
+        if(document.frm_m.check_text.value == '자진발급'){
+            $('input[name=check_num]').val('0100001234');
         }
     }
    

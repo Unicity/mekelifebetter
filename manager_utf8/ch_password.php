@@ -7,7 +7,6 @@ header("Pragma: no-cache");
 header("Expires: Mon,26 Jul 1997 05:00:00 GMT");
 ?>
 
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -17,8 +16,6 @@ header("Expires: Mon,26 Jul 1997 05:00:00 GMT");
                 crossorigin="anonymous">
         </script>
 
- 
-        
 		<title>비밀번호 변경</title>
 		
     </head>
@@ -31,8 +28,11 @@ header("Expires: Mon,26 Jul 1997 05:00:00 GMT");
                 <label>아이디:<label>
                 <input type="text" id="baId" name="baId" placeholder="Distributor No.">
 
-                <label>휴대폰 번호:<label>
+                <label>infokor 휴대폰 번호:<label>
                 <input type="text" id="phNum" name="phNum" placeholder="Phone No.">
+
+                <label>문자 휴대폰 번호:<label>
+                <input type="text" id="textNum" name="textNum" placeholder="Text Phone No.">
                 <input type="submit" value="submit">
             <div>
         </form>    

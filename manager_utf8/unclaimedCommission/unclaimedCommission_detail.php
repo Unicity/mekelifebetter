@@ -164,6 +164,7 @@ session_start();
 			"090" => "카카오뱅크", 
 			"089" => "케이뱅크", 
 			"264" => "키움증권", 
+			"092" => "토스뱅크", 
 			"270" => "하나대투증권", 
 			"081" => "하나은행", 
 			"262" => "하이투자증권", 
@@ -405,6 +406,7 @@ session_start();
 										<option value='090'>카카오뱅크</option>
 										<option value='089'>케이뱅크</option>
 										<option value='264'>키움증권</option>
+										<option value='092'>토스뱅크</option>
 										<option value='270'>하나대투증권</option>
 										<option value='081'>하나은행</option>
 										<option value='262'>하이투자증권</option>

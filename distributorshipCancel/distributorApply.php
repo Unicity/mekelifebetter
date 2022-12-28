@@ -1,6 +1,6 @@
 <?php
 include "includes/config/common_functions.php";
-include "includes/config/config.php";	
+
 
 	cert_validation();
 	$sid = $_POST['sid'];

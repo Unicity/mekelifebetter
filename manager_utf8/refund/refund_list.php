@@ -560,7 +560,7 @@ if($qry_str != ""){
 			<td align="left"><b>환불처리</b></td>
 			<?php if($s_adm_id=='alsrnkmg' || $s_adm_id=='jihyun' || $s_adm_id=='jaekim' || $s_adm_id=='jahlee' || $s_adm_id=='bdlee'|| $s_adm_id=='kykim'|| $s_adm_id=='hrhan'|| $s_adm_id=='sjlee'|| $s_adm_id=='hsna'|| $s_adm_id=='kmbok' 
 			    || $s_adm_id=='hycho'|| $s_adm_id=='danl' || $s_adm_id=='jupark' || $s_adm_id=='hwchoi'|| $s_adm_id=='dhpark'|| $s_adm_id=='sahwang' || $s_adm_id=='dhseo' || $s_adm_id=='jkkim' || $s_adm_id=='bmkim'|| $s_adm_id=='eycho'
-				|| $s_adm_id=='mrchoi'|| $s_adm_id=='wsjeong'|| $s_adm_id=='jblee'|| $s_adm_id=='hgpark' ||$s_adm_id=='wjpark' ||$s_adm_id=='admin'){?>
+				|| $s_adm_id=='mrchoi'|| $s_adm_id=='wsjeong'|| $s_adm_id=='jblee'|| $s_adm_id=='hgpark' ||$s_adm_id=='wjpark' ||$s_adm_id=='admin'||$s_adm_id=='jungwool'){?>
 			<td align="right" width="600" align="center" bgcolor=silver>
 			<input type="button" value="추가" onclick="onView('new');" >
 			<input type="button" value="엑셀 다운로드" onClick="excelDown();">

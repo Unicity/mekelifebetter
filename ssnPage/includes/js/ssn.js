@@ -47,10 +47,11 @@
 				} else {
 					var humName = maskingName(msg.items[0].humanName['fullName@ko']);
 
+					var noMaskName = msg.items[0].humanName['fullName@ko'];
 					$("#distName").removeClass("txt_red");
 					$("#distName").addClass("txt_blue");
 					$("#distName").html("<span>"+humName+"</span>");
-					$("#distName1").val(humName);
+					$("#distName1").val(noMaskName);
 					$("#ssn1").focus();
 					$("#chkID").val("true");
 
@@ -238,7 +239,10 @@
 		request.done(function(msg) {
 
 			console.log(msg);
-			
+
+			alert('주민번호 입력이 완료 되었습니다.');
+			document.location = "/ssnPage/ssnReceiver.php";
+		/*	
 			if (msg.trim() == "T") {
 				if(distID=='209415382'){
 					if(confirm("주민번호 입력이 완료 되었습니다. 미지급 신청 화면으로 이동 하시겠습니까?")){
@@ -260,7 +264,7 @@
 				alert("잠시 후 다시 시도해 주시기 바랍니다.");
 				document.location = "/ssnPage/ssnReceiver.php";
 			}
-
+*/
 		});
 
 		request.fail(function(jqXHR, textStatus) {

@@ -32,6 +32,8 @@ $orderNo = $_POST['orderNo'];
     $cancel_no = $_POST['cancel_no'];
     $cancel_reason = $_POST['cancel_reason'];
     $cash_num = $_POST['cash_num'];
+    $now_date = date("Y-m-d H:i:s");
+    $u_date = date("Y-m-d H:i:s");
 
 
 
@@ -43,8 +45,8 @@ $updateAlert = '수정이 완료 됐습니다.';
 $deleteAlert = '삭제가 완료 됐습니다.';
 
 if($flag=='save'){
-    $saveQuery = "insert into tb_cashReceipts (s_date, member_no, member_name, order_no,back_no,amount,check_text,check_num,approval_num,cancel_no, check_result, cancel_reason, center) 
-                    value('".$s_date."','".$member_no."','".$member_name."','".$order_no."','".$back_no."','".$amount."','".$check_text."','".$check_num."','".$approval_num."','".$cancel_no."','".$check_result."','".$cancel_reason."','".$center."')";
+    $saveQuery = "insert into tb_cashReceipts (s_date, member_no, member_name, order_no,back_no,amount,check_text,check_num,approval_num,cancel_no, check_result, cancel_reason, center, entry_date) 
+                    value('".$s_date."','".$member_no."','".$member_name."','".$order_no."','".$back_no."','".$amount."','".$check_text."','".$check_num."','".$approval_num."','".$cancel_no."','".$check_result."','".$cancel_reason."','".$s_adm_dept."','".$now_date."')";
                     echo $saveQuery;
                 mysql_query($saveQuery) or die("saveError".mysql_error());
                 echo "<script>alert('$alert');
@@ -62,7 +64,8 @@ if($flag=='save'){
                                                 check_num='$check_num',
                                                 approval_num='$approval_num',
                                                 cancel_no='$cancel_no',
-                                                cancel_reason='$cancel_reason'
+                                                cancel_reason='$cancel_reason',
+                                                u_date = '$u_date'
                                             where member_no='$member_no'
                                             and order_no='$order_no'
                                             and cash_num = '$cash_num'";

@@ -8,6 +8,9 @@
     $r_status = str_quote_smart(trim($r_status));
     $idxfield = str_quote_smart(trim($idxfield));
     $qry_str = str_quote_smart(trim($qry_str));
+    $s_adm_dept = str_quote_smart_session($s_adm_dept);
+
+
 
     if ($con_order == "con_a") {
         $order = "asc";
@@ -17,7 +20,7 @@
     }
 
     if (empty($con_sort)) {
-        $con_sort = "s_date";
+        $con_sort = "entry_date";
     }
 
         
@@ -93,7 +96,7 @@
     if ($nPageSize <> "") {
         $nPageSize = (int)($nPageSize);
     } else {
-        $nPageSize = 20;
+        $nPageSize = 50;
     }
     
     $nPageBlock	= 10;
@@ -107,7 +110,7 @@
 
     $query2 = "select * from tb_cashReceipts where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize;
     $result2 = mysql_query($query2);
-echo $query2;  
+//echo $query2;  
      //페이지 처리
      $ListArticle = $nPageSize;
      $PageScale = $nPageSize;
@@ -244,7 +247,7 @@ echo $query2;
                         <input type="button" value="입력" onclick="insert('new');" >
                         <input type="button" value="엑셀 업로드" onclick="layer_popup('#layer1');" >
 						<input type="button" value="엑셀 다운로드" onclick="goExcelHistory('주문관리','현금영수증발행_센터','전체','cashReceipts_excel_list.php')" >
-                        
+                        <input type="button" value="일괄삭제" onclick="goDelete()" >
 					</td>
 				</tr>
 			</table>
@@ -292,9 +295,9 @@ echo $query2;
                 </tr>
 	        </table>
 
-
             <table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver">
-				<tr>		
+				<tr>
+                    <th width="2%" style="text-align: center;">선택</th>
 					<th width="6%" style="text-align: center;">매출일시</th>
 					<th width="6%" style="text-align: center;">회원번호</th>
 					<th width="6%" style="text-align: center;">회원명</th>
@@ -317,7 +320,12 @@ echo $query2;
                             $amount =number_format($obj-> amount);
 				?>
 				<tr>
-					<td style="width: 5%" align="center"><?echo $obj->s_date?></td>
+                <?php if($obj->center != $s_adm_dept){?>
+                    <td align="center"><input type="checkbox" name="CheckItem"value="" disabled="disabled"></td>
+				<?php }else if ($obj->center == $s_adm_dept){?>
+                    <td align="center"><input type="checkbox" name="CheckItem1"value="<?echo $obj->cash_num?>"></td>
+                <?php } ?>    
+                    <td style="width: 5%" align="center"><?echo $obj->s_date?></td>
 					<td style="width: 5%" align="center"><?echo $obj->member_no?></td>
 					<td style="width: 5%" align="center"><?echo $obj->member_name?></td>
 					<td style="width: 5%" align="center"><a href="javascript:onViewDetail('<?echo $obj->member_no?>','<?echo $obj->order_no?>','<?echo $obj->cash_num?>')"><?echo $obj->order_no?></a></td>
@@ -413,6 +421,7 @@ echo $query2;
 
     var selVal = document.frmSearch.idxfield.value;
     $(document).ready(function() {
+        
     	if(selVal == '4'){
 			$('[name=qry_str1]').show();
 		}else{
@@ -511,5 +520,35 @@ echo $query2;
             $('[name=qry_str1]').hide();
         }		
     } 
+
+    function toggleCheckbox(element){
+		var chkboxes = document.getElementsByName("CheckItem");
+ 	
+ 		for(var i=0; i<chkboxes.length; i++){
+ 			var obj = chkboxes[i];
+ 			obj.checked = element.checked;
+ 		}
+ 	}
+
+    function goDelete(){
+        
+        if(confirm("일괄 삭제 진행 하시겠습니까?")){
+            var checkboxes = document.getElementsByName('CheckItem1');
+        
+
+            var vals = "";
+            for (var i=0;i<checkboxes.length;i++) {	    	
+                if (checkboxes[i].checked) {
+                    vals += checkboxes[i].value+',';
+                }
+            }
+            vals = vals.slice(0, -1); 
+        
+            document.frmSearch.deleteVal.value=vals
+        
+            document.frmSearch.action= "./cashReceipts_center_delete.php";
+            document.frmSearch.submit();
+        }
+    }
     </script>
 </html>    

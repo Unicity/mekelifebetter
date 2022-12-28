@@ -1,5 +1,6 @@
 <?php 
-	include "includes/config/config.php";
+	//include "includes/config/config.php";
+	include "../dbconn_utf8.inc";
 	$applyId = $_POST['id'];
 	$UserName = $_POST['UserName'];
 	$Phone = $_POST['Phone'];
