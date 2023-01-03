@@ -1,0 +1,21 @@
+name: build to unicore
+on: 
+  push:            
+    branches:
+      - dev
+
+jobs:
+  unicore-Build-ssh-action:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.4        
+        with:
+          host: ${{ secrets.HOST }}          
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          timeout: 40s  # 30초 기본        
+          script: |
+            echo "테스트 출력"
