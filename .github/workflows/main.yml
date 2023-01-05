@@ -12,10 +12,10 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4        
         with:
-          host: ${{ secrets.HOST }}          
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          host: 210.116.80.33          
+          username: mingu 
+          password: bioslife1!
+          port: 22000
           timeout: 40s  # 30초 기본        
           script: |
             echo "테스트 출력"
