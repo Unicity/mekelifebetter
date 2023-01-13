@@ -4,4 +4,4 @@ branches:
   only:
     - dev
 after_success:
-  - ./deploy.sh
+  - curl --ftp-create-dirs T filename sftp://${FTP_USER}:${FTP_PASS}@210.116.80.33:22000/home/mingu
