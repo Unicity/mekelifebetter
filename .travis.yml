@@ -18,7 +18,7 @@ script:
   - chmod 600 deploy_rsa
   - ssh-add deploy_rsa
   - echo "Syncing files to SFTP server"
-  - lftp -c "set sftp:auto-confirm yes; open sftp://$SFTP_USER:$SFTP_PASS@$210.116.80.33:22000/home/mingu; mirror -R --ignore-time ."
+  - lftp -c "set sftp:auto-confirm yes; open sftp://$FTP_USER:$FTP_PASS@$210.116.80.33:22000/home/mingu; mirror -R --ignore-time ."
 
 deploy:
   provider: script
