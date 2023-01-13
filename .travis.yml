@@ -1,23 +1,14 @@
 language: php
 php:
-- 7.4
-before_install:
-- openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv -in deploy_rsa.enc -out deploy_rsa -d
-install:
-- echo "Installing lftp"
-- sudo apt-get install lftp
-script:
-- echo "Deploying to SFTP server"
-- echo "Setting up ssh-agent"
-- eval "$(ssh-agent -s)"
-- echo "Adding ssh key to ssh-agent"
-- chmod 600 deploy_rsa
-- ssh-add deploy_rsa
-- echo "Syncing files to SFTP server"
-- lftp -c "set sftp:auto-confirm yes; open sftp://$FTP_USER:$FTP_PASS@$210.116.80.33:22000/home/mingu;
-  mirror -R --ignore-time ."
+  - 7.4
+before_deploy:
+  - composer install --no-dev --optimize-autoloader
 deploy:
-  provider: script
-  script: bash script/deploy.sh
+  provider: sftp
+  host: 210.116.80.33
+  port: 22000
+  user: $FTP_USER
+  password: $FTP_PASSWORD
+  path: '/'
   on:
-    branch: dev
+    branch: master
