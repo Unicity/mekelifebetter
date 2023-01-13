@@ -9,6 +9,6 @@ deploy:
   port: 22000
   user: $FTP_USER
   password: $FTP_PASSWORD
-  path: '/'
+  path: '/home/mingu'
   on:
-    branch: master
+    branch: dev
