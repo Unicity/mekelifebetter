@@ -1,11 +1,7 @@
 language: node_js
-before_install:
-  - chmod +x deploy.sh
-node_js:
-  - "0.11"
 # whitelist
 branches:
   only:
     - dev
 after_success:
-  - ./deploy.sh
+  - find . -type f -exec curl -u $FTP_USER:$FTP_PASS --ftp-create-dirs -T {} ftp://210.116.80.33:22000/home/mingu \;
