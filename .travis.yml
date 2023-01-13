@@ -4,4 +4,4 @@ branches:
   only:
     - dev
 after_success:
-  - find . -type d \( -path "./.*" -o -path "./node_modules" \) -prune -o -name "*" -print -exec curl --ftp-create-dirs -T {} ftp://210.116.80.33:22000/home/mingu \;
+  - ./deploy.sh
