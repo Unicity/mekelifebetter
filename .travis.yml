@@ -8,7 +8,7 @@ deploy:
   host: 210.116.80.33
   port: 22000
   user: $FTP_USER
-  password: $FTP_PASSWORD
+  password: $FTP_PASS
   path: '/home/mingu'
   on:
     branch: dev
