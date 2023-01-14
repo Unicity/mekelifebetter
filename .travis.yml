@@ -18,7 +18,7 @@ script:
 - chmod 600 id_rsa
 - ssh-add id_rsa
 - echo "Syncing files to SFTP server"
-- lftp -c "set sftp:auto-confirm yes; open sftp://$FTP_USER:$FTP_PASS@$210.116.80.33:22000/home/mingu;
+- lftp -c "set sftp:auto-confirm yes; open sftp://$FTP_USER:$FTP_PASS@$FTP_HOST:$FTP_PORT/home/mingu;
   mirror -R --ignore-time ."
 deploy:
   on:
