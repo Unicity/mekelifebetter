@@ -1,21 +1,22 @@
-name: build to unicore
-on: 
-  push:            
-    branches:
-      - dev2
-
+on:
+  push:
+    branches:    
+      - dev
+      
+name: Build and Publish Averment
 jobs:
-  unicore-Build-ssh-action:
+  FTP-Deploy-Action:
+    name: FTP-Deploy-Action
     runs-on: ubuntu-latest
-    name: Build
     steps:
-      - name: SSH Remote Commands
-        uses: appleboy/ssh-action@v0.1.4        
-        with:
-          host: 210.116.80.33          
-          username: mingu 
-          password: bioslife1!
-          port: 22000
-          timeout: 40s  # 30초 기본        
-          script: |
-            echo "테스트 출력"
+    - uses: actions/checkout@dev
+      
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: ${{ secrets.HOST }}
+        FTP_USERNAME: ${{ secrets.USERNAME }}
+        FTP_PASSWORD: ${{ secrets.PASSWORD }}
+        LOCAL_DIR: /home/mingu
+        METHOD: sftp
+        PORT: ${{ secrets.PORT }}
