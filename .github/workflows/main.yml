@@ -19,6 +19,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}                       
         local_path: './*'
-        remoteDir: '/home/mingu'
+        remote_path: '/home/mingu'
         port: ${{ secrets.PORT }}
         sftp_only: true
