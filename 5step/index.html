@@ -1,0 +1,179 @@
+<?php 
+    include_once("./inc/function.php");
+    check_useragent();
+?>
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<title>5 Step</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="./css/style.css" rel="stylesheet">
+     <link href="./css/modal.css" rel="stylesheet"> 
+    <script type="text/javascript" src="./js/spinner/spin.js"></script>
+    
+    <script>
+    
+    
+    function loginSubmit() {
+        var username = document.getElementById("username");
+    	var password = document.getElementById("inputPassword");
+ 		
+    	if (username.value == "") {
+    		username.style.backgroundColor = '#F7BCB8';
+    		return ;
+    	}
+    	if (password.value == "") {
+    		password.style.backgroundColor = '#F7BCB8';
+    		return ;
+    	}
+        
+        var target = document.getElementById('spinner');
+        var spinner = new Spinner().spin();
+        target.appendChild(spinner.el);
+    	document.getElementById('back').style.position = "absolute";
+        document.getElementById('back').style.top = "0";
+        document.getElementById('back').style.left = "0";
+        document.getElementById('back').style.width = "100%";
+        document.getElementById('back').style.height = "100%";
+        document.getElementById('back').style.background = "#000";
+        document.getElementById('back').style.opacity = "0.5";
+        document.getElementById('back').style.filter = "alpha(opacity=50)";
+
+
+        document.loginForm.username.value = username.value;
+    	document.loginForm.inputPassword.value = inputPassword.value;
+
+    	document.loginForm.action = './inc/loginProcess.php';
+    	document.loginForm.submit();
+
+    }
+    function myFunction(x) {
+    	x.style.background = "white";
+	}
+    function setCookie(isChecked){
+        var d = new Date();
+        d.setTime(d.getTime() + (1*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = "hidepopup="+isChecked+";" + expires + ";path=/";
+    }
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+    function checkCookie(){
+        var isPopupAllowed = getCookie("hidepopup");
+        if (isPopupAllowed != "1") {
+             document.getElementById('id01').style.display='block'
+        } else {
+             document.getElementById('id01').style.display='none'
+        } 
+    }
+    function closePopup(){
+        var isChecked = document.getElementById('hidePopUp').checked;
+        if (isChecked == true){
+            setCookie('1');
+        } 
+        document.getElementById('id01').style.display='none'
+    }
+
+    
+
+    </script> 
+  </head>
+
+  <!--  <body onload="checkCookie()"> -->
+    <body>
+    <div id='back'>
+    </div>
+    <div id='spinner'></div>
+    <div class="container" style="padding:0px; margin:0px;">
+      <form class="form-signin" name="loginForm" method="post">
+        <div class="form-signin-heading"></div>
+        
+        <div class="form-signin-body">
+            <div class="btnfield">
+        	   <a class="btn" href="javascript:loginSubmit()"><div class="roundbutton">로그인</div></a>
+        	</div>
+            <div style="margin-top:0px;margin-bottom:2%; text-align: left; padding-left:2%;">
+                 <a href="https://member-kr.unicity.com/tools/?action=register&url=makelifebetter.co.kr/5step&lang=kr" target="_blank" style="color:#0068b7; font-size: 13px;text-decoration: inherit;">&nbsp; 처음이용자등록  </a>  &nbsp; &nbsp;| &nbsp;
+                <a href="https://member-kr.unicity.com/tools/?action=forgot&url=makelifebetter.co.kr/5step&lang=kr" target="_blank"  style="color:#6A6A6A;font-size: 13px;text-decoration: inherit; ">  비밀번호 재설정 </a> &nbsp;  
+            </div>
+        	<div class="txtfield" style="display:block;">
+                <label for="username" class="sr-only">아이디</label>
+		        <input type="text" id="username" name="username" class="form-control" placeholder="아이디" required="1" autofocus="1" onfocus="myFunction(this)">
+		        <label for="inputPassword" class="sr-only">비밀번호</label>
+		        <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="비밀번호" onfocus="myFunction(this)">
+                
+		    </div>
+          
+	    </div>
+         <div style="position: relative; top:-4%; left:10px; ">
+                    <a href="./pages/registerConsent.php" style="color:#ed6d00;font-size: 13px;text-decoration: inherit; "> 비회원 사용자등록  </a>  &nbsp;| &nbsp;
+                    <a href="./pages/usernameSearchChecker.php" style="color:#6A6A6A;font-size: 13px;text-decoration: inherit; ">  아이디 찾기 </a> &nbsp;| &nbsp; 
+                     <a href="./pages/passwordResetChecker.php" style="color:#6A6A6A;font-size: 13px;text-decoration: inherit; ">  비밀번호 재설정 </a> &nbsp;  
+            </div>
+            
+      </form>
+
+    </div> <!-- /container -->
+   <!--  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content" style="background-color: transparent;">
+      <div class="w3-container" style="text-align:center; background-image:url('./images/popup.png'); background-position: center;background-repeat: no-repeat;height: 444px;width:100%">
+     
+        <span onclick="closePopup()" class="w3-button w3-display-topright" style="">&times;</span>
+       
+       
+        <div style=" position: absolute; top:92%; left:5%;">오늘하루 그만보기 <input type="checkbox" name="hidePopUp" id="hidePopUp"></div>
+      </div>
+    </div>
+  </div>-->
+</div>
+    <script type="text/javascript">
+
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+    </script>
+
+<script type="text/javascript">
+
+try {
+
+var pageTracker = _gat._getTracker("UA-2473890-31");
+
+pageTracker._trackPageview();
+
+} catch(err) {}</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61452359-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

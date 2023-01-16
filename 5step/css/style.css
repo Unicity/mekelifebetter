@@ -1,0 +1,409 @@
+
+html, body {
+    height: 640px;
+    background-color: #F2F2F2;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+h1 { 
+    display: block;
+    font-size: 3em;
+    margin-top: 0.04em;
+    margin-bottom: 0.04em;
+    margin-left: 13%;
+    margin-right: 10%;
+    font-weight: 600;
+    color: #5d5f5f;
+}
+
+a:link, a:visited {
+	font-size:1em;
+	color: #e4e5e5;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    background-color: #e4e5e5;
+}
+
+.navbar li {
+    float: left;
+    width: 100%;
+    margin-left:5px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: #000;
+}
+
+.navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px 10px;
+    text-decoration: none;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+/* Change the link color to #111 (black) on hover */
+.navbar li a:hover {
+    background-color: #111;
+    text-decoration: none;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.monthHeader select {
+  border: 1px solid #eee;
+  background-color: transparent;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: #eee;
+  font-size: 120%;
+  text-align: center;
+ }
+
+.form-signin {
+  width: 360px;
+  height:640px;
+  margin: auto;
+  padding: auto;
+}
+
+.form-signin .form-signin-heading {
+	width: 360px;
+	height: 552px;
+	background-image: url("../images/login-01.png"); 
+	background-size: 360 552;
+  background-repeat: no-repeat;
+}
+
+
+.form-signin .form-signin-body {
+	width: 360px;
+	height: 150px;
+	background-color: #E9EAEA;
+}
+ 
+.form-signin .form-control {
+	position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  
+}
+.form-signin input[type="text"] {
+  	width : 240px;
+    text-align: left;
+    padding-left: 10px;
+  	margin-left:10px;
+  	margin-bottom: 5px;
+  	border-radius: 0;
+  	-moz-box-shadow: inset 3px 3px 3px #888; 
+  	-webkit-box-shadow: inset 3px 3px 3px #888; 
+  	box-shadow: inset 3px 3px 3px #888; 
+
+}
+
+.form-signin input[type="password"] {
+	width : 240px;
+	margin-left: 10px;
+  	margin-bottom: 10px;
+  	border-radius: 0;
+  	-moz-box-shadow: inset 3px 3px 3px #888; 
+  	-webkit-box-shadow: inset 3px 3px 3px #888; 
+  	box-shadow: inset 3px 3px 3px #888;
+}
+
+.form-signin .btnfield {
+	width: 25%;
+	float: right;
+}
+.form-signin .txtfield {
+	width: 70%;
+	float:left;
+}
+.form-signin .btn {
+	float: right;
+	width: 80px;
+	height: 83px;
+	padding: 0px;
+	margin-right: 15%;
+  margin-top: 40%;
+}
+.form-signin .roundbutton {
+    background-color: #656565;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    border: 0px ;
+    box-shadow: inset 3px 3px 3px #888;
+    text-align: center;
+    padding-left: 5px;
+    padding-top: 40%;
+    font-color: #888;
+}
+.navbar {
+	position: relative;
+	background-color: #e4e5e5;
+	top:0;
+	left:0;
+	width:100%;
+	margin: 15px 0 0 0;
+	padding: 0px;
+}
+
+.navbar .home-nav {
+	width:31%;
+	height:39px;
+	background-color: #3dc8ff;
+	background: -webkit-linear-gradient(#3dc8ff, #14387d); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#14387d, #3dc8ff); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#14387d, #3dc8ff); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#3dc8ff, #14387d); /* Standard syntax */
+    font-size: 8;
+    -moz-box-shadow:  3px 3px 3px #888; 
+  	-webkit-box-shadow:  3px 3px 3px #888; 
+  	box-shadow:  3px 3px 3px #888;
+}
+.navbar .ranking-nav {
+	width:31%;
+	height:39px;
+	background-color: #49d961 ;
+	background: -webkit-linear-gradient(#49d961, #17782c); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#17782c, #49d961); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#17782c, #49d961); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#49d961, #17782c); /* Standard syntax */
+    font-size: 8;
+    -moz-box-shadow:  3px 3px 3px #888; 
+  	-webkit-box-shadow:  3px 3px 3px #888; 
+  	box-shadow:  3px 3px 3px #888;
+}
+.navbar .mypage-nav {
+	width:31%;
+	height:39px;
+	background-color: #ef9940 ;
+	  background: -webkit-linear-gradient(#ef9940, #ab560d); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#ab560d, #ef9940); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#ab560d, #ef9940); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#ef9940, #ab560d); /* Standard syntax */
+    font-size: 8;
+    -moz-box-shadow:  3px 3px 3px #888; 
+  	-webkit-box-shadow:  3px 3px 3px #888; 
+  	box-shadow:  3px 3px 3px #888;
+}
+.calendar {
+	padding: 0 5px 0 5px;
+	margin: 0;
+	width: 100%;
+	height:100%;
+}
+.calendar .monthHeader{
+  background: red; /* For browsers that do not support gradients */
+  /* For Safari 5.1 to 6.0 */
+  background: -webkit-linear-gradient(left,#3dc8ff,#14387d,#49d961,#17782c,#ef9940,#ab560d);
+  /* For Opera 11.1 to 12.0 */
+  background: -o-linear-gradient(left,#3dc8ff,#14387d,#49d961,#17782c,#ef9940,#ab560d);
+  /* For Fx 3.6 to 15 */
+  background: -moz-linear-gradient(left,#3dc8ff,#14387d,#49d961,#17782c,#ef9940,#ab560d);
+  /* Standard syntax */
+  background: linear-gradient(to right,#3dc8ff ,#49d961 ,#ef9940); 
+  
+  width: 100%;
+
+  text-align: center;
+ 
+}
+.calendar table{
+	  width: 100%;
+  	height: 100px;
+}
+.calendar table thead td{
+	
+	height: 40px;
+	font-weight: 200;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+.calendar tbody td{
+  text-align: center;
+  height:35px;
+  background-color: #eff1f4;
+	color: #928d8e;
+  border: 1px solid #d2e0ea;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.dailyDetail {
+   
+  border: 1px solid #d2e0ea;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+   
+}
+.dailyDetail .heading {
+  background: red; /* For browsers that do not support gradients */
+  /* For Safari 5.1 to 6.0 */
+  background: -webkit-linear-gradient(left,#3dc8ff,#14387d,#49d961,#17782c,#ef9940,#ab560d);
+  /* For Opera 11.1 to 12.0 */
+  background: -o-linear-gradient(left,#3dc8ff,#14387d,#49d961,#17782c,#ef9940,#ab560d);
+  /* For Fx 3.6 to 15 */
+  background: -moz-linear-gradient(left,#3dc8ff,#14387d,#49d961,#17782c,#ef9940,#ab560d);
+  /* Standard syntax */
+  background: linear-gradient(to right,#3dc8ff ,#49d961 ,#ef9940); 
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  margin: 0;
+  width: 100%;
+  height: 35px;
+}
+.dailyDetail .contentbody{
+  width: 90%;
+  margin-top: 5%;
+  margin-left: 5%;
+  text-align: left;
+}
+.unicityscience {
+  display:inline-block;
+  background-color: #000;
+  width:85%;
+  height:38px;
+  margin-left: -4px;
+  margin-right: -4px;
+  color:#FFF;
+  text-align: center;
+  padding-top:2%;
+  font-size: 110%;
+  font-weight: lighter;
+  
+}
+.program {
+  display:block;
+  width: 100%;
+  text-align: left;
+  
+}
+.program .consent
+{
+  display: block;
+  margin: 8% 2%;
+}
+.program .consent span {
+  margin-left: 1%;
+  font-size: smaller; 
+  font-weight:700;
+}
+.program .terms
+{
+  border: solid 1px #BDBDBD;
+  height: 150px;
+  padding: 5%;
+  background-color: #FFF;
+  overflow-y: auto;
+  font-size: 70%;
+}
+.program .personalinfo{
+  margin-top:5%;
+  padding-left:1%;
+}
+
+.program input[type="number"], input[type="text"]
+{
+  width:100%;
+  padding-left:1%;
+}
+
+.program ul {
+    list-style-type: circle;
+}
+ 
+.program .consent select {
+ margin: 3% 0 3% 2%; 
+ border:1px solid;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 25%;
+    width: 80%;
+}
+.button { 
+    background-color: white; 
+    color: black; 
+    width: 95%;
+    height: 50px;
+    margin: 0% 2% 5% 2%;
+}
+.halfbutton { 
+  border: 1px solid #4CAF50;
+  background-color: white; 
+  color: black; 
+  width: 45%;
+  height: 50px;
+  margin: 0% 2% 5% 2%;
+   
+}
+.smallbutton { 
+    border: none;
+    background-color: #4CAF50; 
+    color: white; 
+    width: 98%;
+    height: 25px;
+    margin: 5% 0% 0% 0%;
+}
+.personalinfo {
+    border-bottom: solid 2px #4CAF50;
+    background-color: #FFF;
+    width:100%; 
+    margin-left:0%;
+    height:60px; 
+    text-align:center; 
+    vertical-align: middle;
+  }
+.title{
+  position:relative; top:40%; 
+  text-align: left;
+}
+  
+ .pinfo {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+ .pinfo td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    vertical-align: middle;
+    height: 65px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.pinfo  input[type="number"], input[type="text"]
+{
+  border: 1px solid #ddd; 
+  height: 40px;
+  width: 170px;
+  text-align: right;
+  padding-right:10px;
+}
+
+.errorBorder {
+  border: 2px solid red; 
+}
+
+.normalBorder {
+  border: 1px solid #ddd; 
+}

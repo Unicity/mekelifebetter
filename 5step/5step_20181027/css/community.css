@@ -1,0 +1,291 @@
+
+html, body {
+  height: 640px;
+
+  background-color: #e4e5e5;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+
+h1 { 
+  display: block;
+  font-size: 3em;
+  margin-top: 0.04em;
+  margin-bottom: 0.04em;
+  margin-left: 13%;
+  margin-right: 10%;
+  font-weight: 600;
+  color: #5d5f5f;
+}
+
+h2 { 
+  display: block;
+  font-size: 2em;
+  margin-top: 5%;
+  margin-bottom: 0.04em;
+  margin-left: 15%;
+  margin-right: 13%;
+  font-weight: 600;
+  color: #5d5f5f;
+}
+
+a:link, a:visited {
+	font-size:1em;
+	color: #e4e5e5;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  background-color: #e4e5e5;
+}
+
+li {
+  float: left;
+  width: 100%;
+  margin-left:5px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #000;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 10px;
+  text-decoration: none;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+  text-decoration: none;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+select {
+  border: 1px solid #eee;
+  background-color: transparent;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: #eee;
+  font-size: 120%;
+  text-align: center;
+}
+
+.navbar {
+	position: relative;
+	background-color: #e4e5e5;
+	top:0;
+	left:0;
+	width:100%;
+	margin: 15px 0 0 0;
+	padding: 0px;
+}
+
+.navbar .home-nav {
+	width:31%;
+	height:39px;
+	background-color: #3dc8ff;
+	background: -webkit-linear-gradient(#3dc8ff, #14387d); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#14387d, #3dc8ff); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#14387d, #3dc8ff); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#3dc8ff, #14387d); /* Standard syntax */
+  font-size: 8;
+  -moz-box-shadow:  3px 3px 3px #888; 
+  -webkit-box-shadow:  3px 3px 3px #888; 
+  box-shadow:  3px 3px 3px #888;
+}
+.navbar .ranking-nav {
+	width:31%;
+	height:39px;
+	background-color: #49d961 ;
+	background: -webkit-linear-gradient(#49d961, #17782c); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#17782c, #49d961); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#17782c, #49d961); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#49d961, #17782c); /* Standard syntax */
+  font-size: 8;
+  -moz-box-shadow:  3px 3px 3px #888; 
+  -webkit-box-shadow:  3px 3px 3px #888; 
+  box-shadow:  3px 3px 3px #888;
+}
+.navbar .mypage-nav {
+  width:31%;
+	height:39px;
+	background-color: #ef9940 ;
+	background: -webkit-linear-gradient(#ef9940, #ab560d); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#ab560d, #ef9940); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#ab560d, #ef9940); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#ef9940, #ab560d); /* Standard syntax */
+  font-size: 8;
+  -moz-box-shadow:  3px 3px 3px #888; 
+  -webkit-box-shadow:  3px 3px 3px #888; 
+  box-shadow:  3px 3px 3px #888;
+} 
+.contents {
+  margin: 0;
+  width: 95%;
+}
+
+.contents .contentsTitle {
+  display:block;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.contents .inputfield {
+  width: 100%;
+  transition: ease-in-out, width .35s ease-in-out;
+}
+
+.contents .contentsDescription {
+  display:block;
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.contents .contentsDescription label{
+  vertical-align: top;
+}
+
+.contents .contentsButton {
+  display:block;
+  margin: auto;
+  width: 50%;
+}
+
+.button1 {
+    background-color: #555555;  
+    width: 100%;
+    height: 40px;
+    border: none;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 15px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.button2 {
+    background-color: #555555;  
+    width: 46%;
+    height: 40px;
+    border: none;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+  
+    font-size: 16px;
+    margin: 15px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.button3 {
+    background-color: #888888;  
+    width: 80%;
+    height: 30px;
+    border: none;
+    color: #111111;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin-top: 3px;
+    margin-left: 70%;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.wrong {
+   border: 2px solid red;
+}
+#feeds {
+  display:block;
+  margin: 5px;
+  width: 100%;
+  overflow: auto;
+  height: 470px;
+}
+#replylist {
+  display:block;
+  margin: 2px 5px;
+  width: 95%;
+  overflow: auto;
+  height: 470px;
+}
+
+.feed{
+  background-color: #FFFFFF;
+  display:block;
+  margin: 2px 1px;
+  width: 100%;
+  height: 50px;
+  color: #5d5f5f;
+}
+.feed .feedno {
+  float: left;
+  width: 30px;
+  height: 50px;
+  margin-left: 10px;
+  padding-top: 15px;
+   
+}
+.feed .title {
+  margin-left:3%;
+  margin-bottom: 2%;
+}
+.feed .writer {
+  margin-left:3%;
+  font-size:0.75em;
+  font-color: #aaaaaa;
+}
+.newicon {
+  width:28px;
+  vertical-align: top;
+}
+.replycounter {
+  float:right;
+  text-align: center;
+  border: 1px solid #eee;
+  background-color: transparent;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-top:5px;
+  margin-right:10px;
+  font-size: 0.8em;
+  width:40px;
+}
+.addNewReply {
+  display: inline-block;
+  width:100%;
+}
+.addNewReply input[type="text"] {
+  margin-left: 3%;
+  width: 75%;
+  font-size: 1em;
+  height: 50px;
+}
+.addNewReply input[type="button"] {
+  width: 18%;
+  height: 55px;
+  background-color: #FFFFFF;  
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+}

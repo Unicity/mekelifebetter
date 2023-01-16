@@ -1,0 +1,300 @@
+@charset "utf-8";
+
+/*
+.gradient {
+ 
+	margin: 0px; 
+    padding: 0px;
+    width: 100%;
+    margin-left: 40px;
+
+}
+.gradient .cholesterol1 {
+
+        background: linear-gradient(to left,
+                  #d1ff00,#aaff00,#92ff00, #5aff00,#00ff00);
+        width: 20%;
+        height: 10%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;   
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+         
+    }
+    .gradient .cholesterol2 {
+        background: linear-gradient(to left,
+                #ffde00,#ffe800,#ffff00, #e6ff00,#e4ff00);
+        width: 20%;
+        height: 10%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;            
+    }
+    
+    .gradient .cholesterol3 {
+        background: linear-gradient(to left,
+              #ff9600,#ffa300,#ffbb00,#ffd100,#ffdb00);
+
+        width: 20%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;              
+    }
+    .gradient .cholesterol4 {
+        background: linear-gradient(to left,
+                #ff1900,#ff3700,#ff5100,#ff5e00,#ff9000);
+        width: 20%;
+        height: 10%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;     
+         border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;          
+    }
+    .gradient .cholesterol5 {
+        background: linear-gradient(to left,
+                #ED0000,#FF0000,#FF3636,#DB3A00,#ED4C00);
+        width: 20%;
+        height: 10%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;       
+       
+    }
+    
+    
+    .gradient .hdl1 {
+        background: linear-gradient(to left,
+                 #ED4C00,#DB3A00,#FF3636, #FF0000,#ED0000);
+                 
+                
+        width: 20%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;   
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+         
+    }
+    .gradient .hdl2 {
+        background: linear-gradient(to left,
+                #FFE400,#FFDF24,#FFBB00, #FF5E00,#ED4C00);
+                
+        width: 20%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;               
+    }
+    
+    .gradient .hdl3 {
+        background: linear-gradient(to left,
+              #E1FF36,#FFFF5A,#FFFF24,#FFF612,#FFE400);
+        width: 20%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;               
+    }
+    .gradient .hdl4 {
+        background: linear-gradient(to left,
+                #31B92A,#8AB70F,#B2D00D,#BDFF12,#E1FF36);
+        width: 20%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;               
+    }
+    .gradient .hdl5 {
+        background: linear-gradient(to left,
+                #0D8307,#169D10,#24A71E,#2BA824,#31B92A);
+               
+        width: 20%;
+        margin: 0px;
+        padding: 0px;  
+        float: left;
+        text-align: center;       
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;        
+    }
+*/
+	.StepImg {
+    	width : 100%;
+    	margin: 10px;
+    }
+    .base {
+    	   width: 100%;
+    	   height: 100%;
+    	 
+    }
+    
+    .base .step{
+    	    margin-left: 30px;
+    	    margin-right: 5px;
+    	    
+    }
+    .base .stepInput{
+    		margin:7px;
+    }
+    .base .dayStepTotal{
+    	
+    	margin-left: 10px;	
+    }
+    
+    .base .txt{
+    	margin-top: 20px;
+    	margin-left: 30px;  
+    	margin-bottom : 10px;	
+    	border: 1px;
+    	font-size: 3px;
+    	
+    	
+    }
+    
+    .buttonSubmit{
+    	margin-left: 60px;
+    }
+	
+	.step3base {
+   		width: 100%;
+    	height: 480px;
+    	  
+    }
+    .step3base .tableStyle{
+    	margin-right:50px;
+    	padding: 0px;
+    
+    }
+    
+    .step3base .font{
+    	font-size: 15px;
+    	margin-top: 10px;
+    	margin-bottom : 10px;
+    	margin-left: 150px;
+    	
+    }
+	.step5base {
+    	   width: 100%;
+    	   height: 100%;
+
+    }
+    
+
+    
+    .step5base .step{
+    	    margin-left: 30px;
+    	    margin-right: 30px;
+    	    
+    }
+    
+     .step5base .img{
+    		margin:20 px;
+
+    }
+    
+    .step5base .leftSize{
+    	text-align: left;
+    	margin-left: 20px;
+    }
+    
+    .step5base .tableStyle{
+    	margin-right: 50px;
+    	padding: 0px;
+    }
+    
+    .step5base .font{
+    	margin-left: 148px;
+    	font-size: 14px;
+   		margin-top: 10px;
+    	margin-bottom : 10px;
+    }
+    
+    .step5base .font2{
+    	margin-left: 148px;
+    	font-size: 14px;
+   		margin-top: 15px;
+    	
+    }
+    
+    .step5base .tableStyle .tdFont{
+    	padding-left: 25px;
+    	margin-left: 25px;
+    	font-size: 14px;	
+    }
+    
+    .step5base .tableStyle .vertical{
+    	vertical-align: top;	
+    }
+    
+    .step5base .backImg{
+    		 background-image: url("../images/background.png");
+    		 height: 320px;
+    }
+	
+	.step5buttonSubmit{
+    	margin-left: 60px;
+    }
+    
+    .step4base {
+    	   width: 100%;
+    	   height: 100%;
+
+    }
+    
+    .step4base .step{
+    	    margin-left: 30px;
+    	    margin-right: 30px;
+    	    
+    }
+    
+     .step4base .img{
+    		margin:20 px;
+
+    }
+	
+	.step4base .backImg{
+    		 background-image: url("../images/step4BackImg.png");
+    		 height: 320px;
+    }
+    
+    .step4base .tableStyle{
+    	margin-right: 50px;
+    	padding: 0px;
+    }
+    
+    
+    .step4base .font{
+    	margin-left: 150px;
+    	font-size: 15px;
+   		margin-top: 0px;
+    	margin-bottom : 10px;
+    }
+    
+    .step4base .font2{
+    	margin-left: 150px;
+    	font-size: 15px;
+    	margin-bottom : 10px;
+    	margin-top: 7px;
+   		
+    }
+    
+    .step4base .tableStyle .verticalM{
+    	vertical-align: middle;	
+    }
+    
+    .step4base .tableStyle .tdFont{
+    	padding-left: 20px;
+    	margin-left: 20px;
+    	font-size: 14px;	
+    }
+    
+    .step4base .tableStyle .vertical{
+    	vertical-align: top;	
+    }
