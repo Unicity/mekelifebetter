@@ -16,6 +16,6 @@ jobs:
         FTP_SERVER: ${{ secrets.HOST }}
         FTP_USERNAME: ${{ secrets.USERNAME }}
         FTP_PASSWORD: ${{ secrets.PASSWORD }}
-        LOCAL_DIR: /home/mingu
+        LOCAL_DIR: /
         METHOD: sftp
         PORT: ${{ secrets.PORT }}
