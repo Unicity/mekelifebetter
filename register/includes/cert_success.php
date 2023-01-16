@@ -113,8 +113,8 @@
 			$birthdate = GetValue($plaindata , "BIRTHDATE");
 			$gender = GetValue($plaindata , "GENDER");  //0(Female), 1(Male) -- 1,2가 아님 주의!
 			$nationalinfo = GetValue($plaindata , "NATIONALINFO");	//내/외국인정보 -  0: 내국인, 1:외국인
-			$dupinfo = GetValue($plaindata , "DI");
-			$conninfo = GetValue($plaindata , "CI");
+			//$dupinfo = GetValue($plaindata , "DI");
+			//$conninfo = GetValue($plaindata , "CI");
 			$mobile_no = GetValue($plaindata , "MOBILE_NO");
 
 			//echo 'session : '.$_SESSION["REQ_SEQ"].'<br> req : '.$requestnumber;
@@ -167,8 +167,8 @@
 			}else{
 				$resultCode = "성공";
 				// DI 값 등을 세션에 ,,				
-				$_SESSION["S_CI"] = $conninfo;
-				$_SESSION["S_DI"] = $dupinfo;
+				$_SESSION["S_CI"] = ''; //$conninfo;
+				$_SESSION["S_DI"] = ''; //$dupinfo;
 				$_SESSION["S_BIRTH"] = $birthdate;
 				$_SESSION["S_GENDER"] = $gender;
 				$_SESSION["S_NM"] = $name;

@@ -6,7 +6,12 @@ session_start();
   header('Content-Type: text/html; charset=utf-8');
 require_once "../dbconn_utf8.inc"; 
 require_once "./admin_session_check.inc";
+$s_adm_id = str_quote_smart_session($s_adm_id);
 $s_adm_dept = str_quote_smart_session($s_adm_dept);
+
+$s_adm_dept_name = $s_adm_dept."(".$s_adm_id.")";
+
+$now_date = date("Y-m-d H:i:s");
 
 require_once "./PHPExcel/PHPExcel.php"; 
 $objPHPExcel = new PHPExcel();
@@ -14,6 +19,7 @@ require_once "./PHPExcel/PHPExcel/IOFactory.php";
 
 $filename = $_FILES['excelFile']['tmp_name'];
 
+$excelAlert = '업로드 완료';
 
 try {
     $objReader = PHPExcel_IOFactory::createReaderForFile($filename);
@@ -47,12 +53,16 @@ try {
         
         //echo $s_date . ", " . $member_no . ", " . $member_name .", " . $order_no .", " . $amount .", " . $check_text .", " . $check_num .", " . $approval_num .", " . $check_result .", " . $cancel_reason . "<br>";
         
-        $saveQuery = "insert into tb_cashReceipts (s_date, member_no, member_name, order_no,back_no,amount,check_text,check_num,approval_num,cancel_no, check_result, cancel_reason, center) 
-                    value('".$s_date."','".$member_no."','".$member_name."','".$order_no."','".$back_no."','".$amount."','".$check_text."','".$check_num."','".$approval_num."','".$cancel_no."','".$check_result."','".$cancel_reason."','".$s_adm_dept."')";
-       
+        $saveQuery = "insert into tb_cashReceipts (s_date, member_no, member_name, order_no,back_no,amount,check_text,check_num,approval_num,cancel_no, check_result, cancel_reason, center,entry_date, center2) 
+                    value('".$s_date."','".$member_no."','".$member_name."','".$order_no."','".$back_no."','".$amount."','".$check_text."','".$check_num."','".$approval_num."','".$cancel_no."','".$check_result."','".$cancel_reason."','".$s_adm_dept."','".$now_date ."','".$s_adm_dept_name."')";
+
                 mysql_query($saveQuery) or die("excel_upload_error".mysql_error());
+               
         
     }
+    echo  $saveQuery;  
+    echo "<script>alert('$excelAlert');
+    history.go(-1);</script>";
 }catch (exception $e) {
         echo "엑셀 파일을 읽는 도중 오류가 발생 하였습니다.";
     }

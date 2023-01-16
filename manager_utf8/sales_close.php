@@ -15,7 +15,7 @@
 		<form name="frmSearch" method="post" action="sales_close_search.php">	
 			<table cellspacing="0" cellpadding="10" class="title">
 				<tr>
-					<td align="left"><b>마감관리</b></td>
+					<td align="left" style='width:80px;'><b>마감관리</b></td>
 					<td align="left" bgcolor=silver>
 						날짜
 						<input type="text" name="sDate" id="sDate" value="">

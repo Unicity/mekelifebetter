@@ -13,7 +13,7 @@
             <thead>
                 <tr>
                     <th>이전항목</th>
-                    <th>필수/선택 개인정보, 고유식별정보</th>
+                    <th>한글성명, 영문성명, 휴대폰번호,  회원번호, 생년월일, 성별, 비밀번호, 주소, 이메일 주소, 후원자 성명, 후원자 회원번호, 계좌번호, 은행명</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@
                     <td>USA (미국)</td>
                 </tr>
                 <tr>
-                    <td>일전 일시</td>
+                    <td>이전일시</td>
                     <td>회원가입시, 매출주문 발생 시</td>
                 </tr>
                 <tr>
@@ -31,7 +31,9 @@
                 </tr>
                 <tr>
                     <td>이전 받는 자</td>
-                    <td>Unicity International, Inc.</td>
+                    <td>Unicity International, Inc.<br>
+						Office Location<br>1712 South East Bay Blvd<br>Suite 101<br>Provo, UT 84606 U.S.A.<br>1-800-UNICITY (864-2489)
+					</td>
                 </tr>
                 <tr>
                     <td>이용 목적</td>
@@ -39,7 +41,10 @@
                 </tr>
                 <tr>
                     <td><b>보유 및 이용기간</b></td>
-                    <td><b>회원 탈퇴 시 또는 관련법령이 정한 보유기간까지</b></td>
+                    <td>회원 탈퇴 후, 관련법령이 정한 보유기간까지
+						<br>전자상거래 등에서의 소비자 보호에 관한 법률 5년
+						<br>상법 보관 5년
+					</td>
                 </tr>
             </tbody>
         </table>

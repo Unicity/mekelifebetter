@@ -1,4 +1,5 @@
 <?php 
+//API방식
 $ekey = "A91D2B6121AA07C748B9CA4323963E69";
 $msalt = "MA01";
 $kscode = "1372";

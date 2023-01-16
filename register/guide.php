@@ -24,7 +24,8 @@ function goCertification(type){
 //	}else{
 //		
 //	}
-	location.href = "certification.php?memberType="+type+"&direct="+direct;	
+	location.href = "certification.php?memberType="+type+"&direct="+direct;
+	
 }
 </script>
 <div class="cont_wrap">

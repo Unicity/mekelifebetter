@@ -19,7 +19,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/register/includes/mysql-wrapper.php";
 //database login info
 	//define('DB_HOST', 'localhost');
 	//define('DB_HOST', '10.107.133.149');
-	define('DB_HOST', '210.116.103.149');
+	define('DB_HOST', '192.168.20.39');
 	define('DB_USER', 'unicity_db_user');
 	define('DB_PASS', 'unicity!2011');
 //	define('RANDBUS', 'randit.php');

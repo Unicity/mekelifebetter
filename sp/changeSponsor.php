@@ -435,7 +435,7 @@ $_GET['direct']=$_GET['direct']?$_GET['direct']:'n';
 					$("#applyShow").css('display','block');
 					
 				}else{
-					alert("신청인과 본인인증 성함이 다릅니다");
+					alert("신청인과 본인인증 성함이 다릅니다. 신청인 : "+distName +" 본인인증 : " + s_nm);
 					$("#applyShow").css('display','none');
 			
 				}		

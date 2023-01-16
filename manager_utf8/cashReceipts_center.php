@@ -4,7 +4,7 @@
     include "./inc/global_init.inc";
     include "../dbconn_utf8.inc";
     include "../AES.php";
-    include "excel_modal.php";
+    include "./excel_modal.php";
     $r_status = str_quote_smart(trim($r_status));
     $idxfield = str_quote_smart(trim($idxfield));
     $qry_str = str_quote_smart(trim($qry_str));
@@ -110,7 +110,7 @@
 
     $query2 = "select * from tb_cashReceipts where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize;
     $result2 = mysql_query($query2);
-//echo $query2;  
+  
      //페이지 처리
      $ListArticle = $nPageSize;
      $PageScale = $nPageSize;
@@ -240,6 +240,7 @@
             <input type="hidden" name="RefundNo" value="">
             <input type="hidden" name="deleteVal" value="">
             <input type="hidden" name="cashNum" value="">
+            <input type="hidden" name="que" value="<?echo $que?>">
             <table cellspacing="0" cellpadding="0 " class="title" border="0" width="100%">
 				<tr>
 					<td align="left"><b>현금영수증발행_센터</b></td>
@@ -337,7 +338,7 @@
                     <td style="width: 5%" align="center"><?echo $obj->cancel_no?></td>
 					<td style="width: 5%" align="center"><?echo $obj->check_result?></td>
 					<td style="width: 5%" align="center"><?echo $obj->cancel_reason?></td>
-					<td style="width: 5%" align="center"><?echo $obj->center?></td>
+					<td style="width: 5%" align="center"><?echo $obj->center2?></td>
 					
                 </tr>
                     <?php }
@@ -549,6 +550,15 @@
             document.frmSearch.action= "./cashReceipts_center_delete.php";
             document.frmSearch.submit();
         }
+    }
+
+
+    function excelDown(){
+
+        var frm = document.frmSearch;
+            frm.target = "";
+            frm.action = "cashReceipts_centerExcel.php";
+            frm.submit();
     }
     </script>
 </html>    

@@ -14,6 +14,8 @@ $s_flag = str_quote_smart_session($s_flag);
 $s_adm_id = str_quote_smart_session($s_adm_id);
 $s_adm_dept = str_quote_smart_session($s_adm_dept);
 
+$s_adm_dept_name = $s_adm_dept."(".$s_adm_id.")";
+
 $flag = $_POST['flag'];
 $idVal = $_POST['idVal'];
 $orderNo = $_POST['orderNo'];
@@ -45,8 +47,8 @@ $updateAlert = '수정이 완료 됐습니다.';
 $deleteAlert = '삭제가 완료 됐습니다.';
 
 if($flag=='save'){
-    $saveQuery = "insert into tb_cashReceipts (s_date, member_no, member_name, order_no,back_no,amount,check_text,check_num,approval_num,cancel_no, check_result, cancel_reason, center, entry_date) 
-                    value('".$s_date."','".$member_no."','".$member_name."','".$order_no."','".$back_no."','".$amount."','".$check_text."','".$check_num."','".$approval_num."','".$cancel_no."','".$check_result."','".$cancel_reason."','".$s_adm_dept."','".$now_date."')";
+    $saveQuery = "insert into tb_cashReceipts (s_date, member_no, member_name, order_no,back_no,amount,check_text,check_num,approval_num,cancel_no, check_result, cancel_reason, center, entry_date, center2) 
+                    value('".$s_date."','".$member_no."','".$member_name."','".$order_no."','".$back_no."','".$amount."','".$check_text."','".$check_num."','".$approval_num."','".$cancel_no."','".$check_result."','".$cancel_reason."','".$s_adm_dept."','".$now_date."','".$s_adm_dept_name."')";
                     echo $saveQuery;
                 mysql_query($saveQuery) or die("saveError".mysql_error());
                 echo "<script>alert('$alert');

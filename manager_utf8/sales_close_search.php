@@ -4,14 +4,33 @@
     include "../dbconn_utf8.inc";   
 	///header('Content-Type: application/json'); 
 	$sDate = $_POST['sDate'];
+	echo $sDate;
+
+
+	if ($page <> "") {
+        $page = (int)($page);
+    } else {
+        $page = 1;
+    }
+    if ($nPageSize <> "") {
+        $nPageSize = (int)($nPageSize);
+    } else {
+        $nPageSize = 50;
+    }
+    
+    $nPageBlock	= 10;
+    $offset = $nPageSize*($page-1);
+
+	
+
 
 	$key57 = "PGK2001104957+CoYi1AXJbI="; //2001104957 
 	$key65 = "PGK200110486599vRwEZlPaA="; //2001104865
 	$key09 = "PGK2001106709c+npfisgxdQVOdFnSdHjHQ=="; //2001106709
 	
 	// 2001104957
-/*
-	$url = "https://pgims.ksnet.co.kr/payinfo/TradDataSvlt.do?&target_date=20221102&file_sele=PGLST";
+
+	$url = "https://pgims.ksnet.co.kr/payinfo/TradDataSvlt.do?&target_date=20221225&file_sele=PGLST";
 	$ch = curl_init();                                 
 	curl_setopt($ch, CURLOPT_URL, $url);         
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);    
@@ -21,15 +40,11 @@
 	curl_close($ch);
 
 	$result =iconv("EUC-KR", "UTF-8", $response); 
-
 	$result = json_decode($result,true);
 	$count = $result['data_cnt'];
-	//echo $count;
-	//return $result;
-
+  
 	//2001104865
-
-	$urlFor65 = "https://pgims.ksnet.co.kr/payinfo/TradDataSvlt.do?&target_date=20221102&file_sele=PGLST";
+	$urlFor65 = "https://pgims.ksnet.co.kr/payinfo/TradDataSvlt.do?&target_date=20221225&file_sele=PGLST";
 	$ch = curl_init();                                 
 	curl_setopt($ch, CURLOPT_URL, $urlFor65);         
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);    
@@ -39,13 +54,15 @@
 	curl_close($ch);
 
 	$resultFor65 =iconv("EUC-KR", "UTF-8", $responseFor65); 
-
 	$resultFor65 = json_decode($resultFor65,true);
 	$countFor65 = $resultFor65['data_cnt'];
 
-	//2001106709
 
-	$urlFor09 = "https://pgims.ksnet.co.kr/payinfo/TradDataSvlt.do?&target_date=20221102&file_sele=PGLST";
+	
+
+
+	//2001106709
+	$urlFor09 = "https://pgims.ksnet.co.kr/payinfo/TradDataSvlt.do?&target_date=20221225&file_sele=PGLST";
 	$ch = curl_init();                                 
 	curl_setopt($ch, CURLOPT_URL, $urlFor09);         
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);    
@@ -55,13 +72,12 @@
 	curl_close($ch);
 
 	$resultFor09 =iconv("EUC-KR", "UTF-8", $responseFor09); 
-
 	$resultFor09 = json_decode($resultFor09,true);
 	$countFor09 = $resultFor09['data_cnt'];
 
-	// Allat unikrnt
-	$urlForAllat = 'https://dn.mcash.co.kr/support/dn_file.php?id=unicityit02&pwd=Mingu1004!&no=42319&date=20221130';
 
+	// Allat unikrnt
+	$urlForAllat = 'https://dn.mcash.co.kr/support/dn_file.php?id=unicityit02&pwd=Mingu1004!&no=42319&date=20221225';
 	$ch = curl_init();                                 
 	curl_setopt($ch, CURLOPT_URL, $urlForAllat);         
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);    
@@ -83,9 +99,10 @@
 
  	$allat = array();
 	$array = array();
-*/
-	$urlForAllatBo = 'https://dn.mcash.co.kr/support/dn_file.php?id=unicityit02&pwd=Mingu1004!&no=42211&date=20221126';
 
+
+//Allat unikrbo	
+	$urlForAllatBo = 'https://dn.mcash.co.kr/support/dn_file.php?id=unicityit02&pwd=Mingu1004!&no=42211&date=20221225';
 	$ch = curl_init();                                 
 	curl_setopt($ch, CURLOPT_URL, $urlForAllatBo);         
 	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);    
@@ -101,38 +118,76 @@
 
 	$delimitersBo =",";
 	$explodesBo = explode($delimitersBo, $commaBo);
-	//echo print_r($explodesBo);
 	unset($explodesBo[0]);
-	echo print_r($explodesBo);
+	array_unshift($explodesBo, "allatNo","initial");
+	
 	$arrayDataBo=array_chunk($explodesBo, 11);
-	//echo print_r($arrayDataBo);
-
 	$countForAllatBo=count($arrayDataBo);
 
  	$allatBo = array();
 	$arrayBo = array();
 
 	
-	for($i=1; $i<$countForAllatBo; $i++){
-		$allatBo = $arrayDataBo[$i];
-		$key = array_search( '<LIST>', $allatBo );
-		array_splice( $allatBo, $key, -12 );
+	//for($i=1; $i<$countForAllatBo; $i++){
+		//$allatBo = $arrayDataBo[$i];
+		//$key = array_search( '<LIST>', $allatBo );
+		//array_splice( $allatBo, $key, -12 );
 
 		//print_r($allatBo);
 
-		$arrayBo["storeOrderNum"]= $allatBo[0];
-		$arrayBo["allatOrderNum"]= $allatBo[1];
-		$arrayBo["orderNum"]= $allatBo[2];
-		$arrayBo["serviceId"]= $allatBo[3];
-		$arrayBo["payDate"]= $allatBo[4];
-		$arrayBo["cardNum"]= $allatBo[5];
-		$arrayBo["authNum"]= $allatBo[6];
-		$arrayBo["amount"]= $allatBo[7];
+		//$arrayBo["storeOrderNum"]= $allatBo[0];
+		//$arrayBo["allatOrderNum"]= $allatBo[1];
+		//$arrayBo["orderNum"]= $allatBo[2];
+		//$arrayBo["serviceId"]= $allatBo[3];
+		//$arrayBo["payDate"]= $allatBo[4];
+		//$arrayBo["cardNum"]= $allatBo[5];
+		//$arrayBo["authNum"]= $allatBo[6];
+		//$arrayBo["amount"]= $allatBo[7];
 
-		$rstBo = json_encode($arrayBo);	
-	}
+		//echo $arrayBo["allatOrderNum"];
+
+		//$rstBo = json_encode($arrayBo);	
+	//}
 
 	
+	
+	//infoTrax
+
+// 토큰 생성
+	$id='kr_ar';
+    $pw='Nrwk%vOSo&ht&fJ!sxvVyjIwy8t4';
+  
+    $ch = curl_init();
+    $url = "https://hydraqa.unicity.net/v5a-test/loginTokens?expand=whoami";
+    $sendData = array();
+    $sendData["source"] = array("medium" => "Template");
+    $sendData["type"] = "base64";
+    $sendData["value"] = base64_encode("{$id}:{$pw}");
+    $sendData["namespace"] = "https://hydraqa.unicity.net/v5a-test/employees";
+	$ch = curl_init();  
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($sendData));
+    $response = curl_exec($ch);
+    $json_result = json_decode($response, true);
+	$token = $json_result['token']; 
+
+// 데이터 호출
+	$infoTraxUrl = 'https://hydraqa.unicity.net/v5a-test/reports/dailysalesreport?market=KR&dateCreated=2022-08-29';
+
+	$ch = curl_init();                                 
+	curl_setopt($ch, CURLOPT_URL, $infoTraxUrl);         
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);    
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization: Bearer '.$token));
+	$responseInfo = curl_exec($ch);
+    $json_resultInfo = json_decode($responseInfo, true);
+	$infoCnt=count($json_resultInfo);
+	curl_close($ch);
 ?>
 
 <html>
@@ -163,7 +218,6 @@
         <a href="#tab1" class="btn">2001104957</a>
         <div id="tab1" class="cont">
 			<body>
-		
 				<table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver">
 					<tr>
 						<th width="5%" style="text-align: center;">상점번호</th>				
@@ -215,7 +269,9 @@
 							$allo_mont = $result['data'][$i]['allo_mont']; // 할부개월수 00: 일시불
 							$order_numb = $result['data'][$i]['order_numb']; //주문번호
 							$order_pers_name = $result['data'][$i]['order_pers_name']; // 주문자명	
-							
+				
+						
+
 							//마지막 문자 추출
 							$order_last = substr($order_numb, -1);
 							
@@ -226,10 +282,20 @@
 								$pattern = '# (.*?) #';
 							}
 							preg_match($pattern, $order_numb, $matches);
-							
+						
 							//주문번호 추출
 							$orderArr = explode('_',$order_numb);
 							$orderArrM = explode(' ',$order_numb);
+
+							
+//echo strlen($orderArr[0]);
+
+							if(strlen($orderArr[0]) > 9){
+								$orderArr[0] = substr($orderArr[0],0,9); 
+								
+							}
+
+
 						?>
 							<tr>
 								<td style="width: 5%" align="center"><?echo $shop_id ?></td>
@@ -243,10 +309,9 @@
 								<td style="width: 5%" align="center"><?echo $order_numb?></td>
 							<?}?>		
 								<td style="width: 5%" align="center"><?echo $matches[1]?></td>
-								
 								<td style="width: 5%" align="center"><?echo $order_last?></td>
 								<td style="width: 5%" align="center"><?echo $order_pers_name ?></td>
-								<td style="width: 5%" align="center"><?echo $amount ?></td>
+								<td style="width: 5%" align="center"><?echo number_format($amount) ?></td>
 								<td style="width: 5%" align="center"><?echo $appr_numb ?></td>
 							</tr>
 						<?php 
@@ -256,6 +321,7 @@
 			</body>
 		</div>
       </li>
+
       <li>
         <a href="#tab2" class="btn">2001104865</a>
         <div id="tab2" class="cont">
@@ -334,7 +400,7 @@
 							<!--td style="width: 5%" align="center"><?echo $order_numb?></td>-->
 							<td style="width: 5%" align="center"><?echo $order_numb?></td>
 							<td style="width: 5%" align="center"><?echo $order_pers_name ?></td>
-							<td style="width: 5%" align="center"><?echo $amount ?></td>
+							<td style="width: 5%" align="center"><?echo number_format($amount) ?></td>
 							<td style="width: 5%" align="center"><?echo $appr_numb ?></td>
 						</tr>
 					<?php 
@@ -423,7 +489,7 @@
 								<!--td style="width: 5%" align="center"><?echo $order_numb?></td>-->
 								<td style="width: 5%" align="center"><?echo $order_numb?></td>
 								<td style="width: 5%" align="center"><?echo $order_pers_name ?></td>
-								<td style="width: 5%" align="center"><?echo $amount ?></td>
+								<td style="width: 5%" align="center"><?echo number_format($amount) ?></td>
 								<!--<td style="width: 5%" align="center"><?echo $appr_numb ?></td>-->
 							</tr>
 						<?php 
@@ -442,7 +508,6 @@
 					<tr>
 						<th width="5%" style="text-align: center;">상점거래번호</th>				
 						<th width="5%" style="text-align: center;">모빌리언스 거래번호</th>
-			
 						<th width="5%" style="text-align: center;">서비스아이디</th>
 						<th width="5%" style="text-align: center;">거래일자</th>
 						<th width="5%" style="text-align: center;">카드번호</th>
@@ -475,7 +540,7 @@
 								<td style="width: 5%" align="center"><?echo $array["payDate"]?></td>
 								<td style="width: 5%" align="center"><?echo $array["cardNum"]?></td>
 								<td style="width: 5%" align="center"><?echo $array["authNum"]?></td>
-								<td style="width: 5%" align="center"><?echo $array["amount"]?></td>
+								<td style="width: 5%" align="center"><?echo number_format($array["amount"])?></td>
 								
 							</tr>
 						<?php 
@@ -492,7 +557,10 @@
 		
 				<table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver">
 					<tr>
-						<th width="5%" style="text-align: center;">상점거래번호</th>				
+						<th width="5%" style="text-align: center;">상점거래번호</th>	
+						<th width="5%" style="text-align: center;">거래번호</th>	
+						<th width="5%" style="text-align: center;">이니셜</th>			
+						<th width="5%" style="text-align: center;">구분</th>			
 						<th width="5%" style="text-align: center;">모빌리언스 거래번호</th>
 						<th width="5%" style="text-align: center;">서비스아이디</th>
 						<th width="5%" style="text-align: center;">거래일자</th>
@@ -503,37 +571,95 @@
 					</tr>
 						<?php
 							for($i=1; $i<$countForAllatBo; $i++){
+
+
 								$allatBo = $arrayDataBo[$i];
 								$key = array_search( '<LIST>', $allatBo );
-								array_splice( $allatBo, $key, 1 );
-						
+								array_splice( $allatBo, $key, 0 );
+								$arrayBo["storeSumOrder"]= $allatBo[0]."_".$allatBo[1]."_".$allatBo[2];
 								$arrayBo["storeOrderNum"]= $allatBo[0];
-								$arrayBo["allatOrderNum"]= $allatBo[1];
-								$arrayBo["orderNum"]= $allatBo[2];
-								$arrayBo["serviceId"]= $allatBo[3];
-								$arrayBo["payDate"]= $allatBo[4];
-								$arrayBo["cardNum"]= $allatBo[5];
-								$arrayBo["authNum"]= $allatBo[6];
-								$arrayBo["amount"]= $allatBo[7];
+								$arrayBo["storeOrderNum1"]= $allatBo[1];
+								$arrayBo["storeOrderNum2"]= $allatBo[2];
+								$arrayBo["allatOrderNum"]= $allatBo[3];
+								$arrayBo["orderNum"]= $allatBo[4];
+								$arrayBo["serviceId"]= $allatBo[5];
+								$arrayBo["payDate"]= $allatBo[6];
+								$arrayBo["cardNum"]= $allatBo[7];
+								$arrayBo["authNum"]= $allatBo[8];
+								$arrayBo["amount"]= $allatBo[9];
 						
 								$rstBo = json_encode($arrayBo);	
-						
+
+								$newDate = date("Y-m-d", strtotime($arrayBo["payDate"]));
 							
+						
 						?>
 							<tr>
+								<td style="width: 5%" align="center"><?echo $arrayBo["storeSumOrder"]?></td>
 								<td style="width: 5%" align="center"><?echo $arrayBo["storeOrderNum"]?></td>
+								<td style="width: 5%" align="center"><?echo $arrayBo["storeOrderNum1"]?></td>
+								<td style="width: 5%" align="center"><?echo $arrayBo["storeOrderNum2"]?></td>
 								<td style="width: 5%" align="center"><?echo $arrayBo["allatOrderNum"]?></td>
 								<td style="width: 5%" align="center"><?echo $arrayBo["orderNum"]?></td>
 								<td style="width: 5%" align="center"><?echo $arrayBo["serviceId"]?></td>
 								<td style="width: 5%" align="center"><?echo $arrayBo["payDate"]?></td>
 								<td style="width: 5%" align="center"><?echo $arrayBo["cardNum"]?></td>
 								<td style="width: 5%" align="center"><?echo $arrayBo["authNum"]?></td>
-								<td style="width: 5%" align="center"><?echo $arrayBo["amount"]?></td>
+								<td style="width: 5%" align="center"><?echo number_format($arrayBo["amount"])?></td>
 								
 							</tr>
 						<?php 
 						}
 						?>
+				</table>
+			</body>
+		</div>
+      </li>
+	  <li>
+        <a href="#tab6" class="btn">infoTrax</a>
+        <div id="tab6" class="cont">
+			<body>
+			
+				<table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver">
+					<tr>
+						<th width="5%" style="text-align: center;">Release_date</th>				
+						<th width="5%" style="text-align: center;">Date</th>
+						<th width="5%" style="text-align: center;">Order_Type</th>
+						<th width="5%" style="text-align: center;">Entry_Init</th>
+						<th width="5%" style="text-align: center;">Auth</th>
+						<th width="5%" style="text-align: center;">Payment_Type</th>
+						<th width="5%" style="text-align: center;">Order_Number</th>
+						<th width="5%" style="text-align: center;">Amount</th>
+						<th width="5%" style="text-align: center;">Payments</th>
+					</tr>
+					<tr>
+						<?php for($i=0; $i<$infoCnt; $i++){ 
+							 $releaseDate = $json_resultInfo[$i]['Release Date'];
+							 $date = $json_resultInfo[$i]['Date'];
+							 $orderType = $json_resultInfo[$i]['Order Type'];
+							 $user = $json_resultInfo[$i]['User'];
+							 $auth = $json_resultInfo[$i]['Auth'];
+							 $paymentType = $json_resultInfo[$i]['Payment Type'];
+							 $orderNumber = $json_resultInfo[$i]['Order #'];
+							 $paymentAmonut = $json_resultInfo[$i]['Payment Amount'];
+							 $payments = $json_resultInfo[$i]['Payments'];
+							
+						?>
+						<tr>
+							<td style="width: 5%" align="center"><?echo $releaseDate ?></td>
+							<td style="width: 5%" align="center"><?echo $date?></td>
+							<td style="width: 5%" align="center"><?echo $orderType?></td>
+							<td style="width: 5%" align="center"><?echo $user?></td>
+							<td style="width: 5%" align="center"><?echo $auth ?></td>
+							<td style="width: 5%" align="center"><?echo $paymentType ?></td>
+							<td style="width: 5%" align="center"><?echo $orderNumber ?></td>
+							<td style="width: 5%" align="center"><?echo $paymentAmonut ?></td>
+							<td style="width: 5%" align="center"><?echo $payments ?></td>		
+						</tr>	
+						
+						<?php } ?>
+					</tr>	
+						
 				</table>
 			</body>
 		</div>
@@ -552,5 +678,7 @@
 				this.parentNode.classList.add('is_on');
 			});
 		}
+
+
 	</script>		  
 </html>	
