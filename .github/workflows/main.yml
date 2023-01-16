@@ -20,5 +20,5 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         local-dir: ./
         server-dir: ./
-        method: sftp
+        protocol: ftps
         port: ${{ secrets.PORT }}
