@@ -9,13 +9,16 @@ jobs:
     name: FTP-Deploy-Action
     runs-on: ubuntu-latest
     steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
       
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@2.0.0
-      env:
-        FTP_SERVER: ${{ secrets.HOST }}
-        FTP_USERNAME: ${{ secrets.USERNAME }}
-        FTP_PASSWORD: ${{ secrets.PASSWORD }}
-        LOCAL_DIR: /
-        METHOD: sftp
-        PORT: ${{ secrets.PORT }}
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        local-dir: ./
+        server-dir: ./
+        method: sftp
+        port: ${{ secrets.PORT }}
