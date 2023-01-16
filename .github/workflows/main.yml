@@ -3,22 +3,23 @@ on:
     branches:    
       - dev
       
-name: Build and Publish Averment
+name: Deploy
 jobs:
-  Upload-to-SFTP:
+  deploy_job:
+    name: deploy
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
       
     - name: 📂 Sync files
-      uses: wangyucode/sftp-upload-action@v1.4.8
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
-        host: ${{ secrets.HOST }}
+        server: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         forceUpload: true                          
-        localDir: '.'
+        local_path: './*'
         remoteDir: '/home/mingu'
         port: ${{ secrets.PORT }}
-        exclude: '.git*,.DS_Store'
+        sftp_only: true
