@@ -1,11 +1,14 @@
-language: node_js
-node_js:
-- '12'
-before_install:
-- openssl aes-256-cbc -K $encrypted_f217180e22ee_key -iv $encrypted_f217180e22ee_iv
-  -in id_rsa.enc -out id_rsa -d
-script:
-- node transfer.js
-after_success:
-- ssh-keyscan -H $FTP_HOST >> ~/.ssh/known_hosts
-- scp -i id_rsa -r dist/* $FTP_USER@$FTP_HOST:$FTP_DIR
+language: php
+php:
+  - 7.4
+before_deploy:
+  - composer install --no-dev --optimize-autoloader
+deploy:
+  provider: sftp
+  host: $FTP_HOST
+  user: $FTP_USER
+  password: $FTP_PASS
+  port: $FTP_PORT
+  path: /home/mingu
+  on:
+    branch: dev
