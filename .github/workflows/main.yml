@@ -5,20 +5,21 @@ on:
       
 name: Build and Publish Averment
 jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+  Upload-to-SFTP:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
       
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      uses: wangyucode/sftp-upload-action@v1.4.8
       with:
-        server: ${{ secrets.HOST }}
+        host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        local-dir: ./
-        server-dir: ./
+        forceUpload: true                          
+        localDir: '.'
+        remoteDir: '/'
         protocol: ftps
         port: ${{ secrets.PORT }}
+        exclude: '.git*,.DS_Store'
