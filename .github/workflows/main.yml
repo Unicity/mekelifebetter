@@ -19,7 +19,6 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         forceUpload: true                          
         localDir: '.'
-        remoteDir: '/'
-        protocol: ftps
+        remoteDir: '/home/mingu'
         port: ${{ secrets.PORT }}
         exclude: '.git*,.DS_Store'
