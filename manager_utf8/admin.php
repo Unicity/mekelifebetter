@@ -1,28 +1,18 @@
-<?
-if(!isset($_SERVER["HTTPS"])) {
-	header('Location: https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']);
-	exit;
-}
-	header("X-Frame-Options: DENY");
-	//////////////////////////////////////////////////////////////
-	//
-	// 	Date 		: 2004/03/02
-	// 	Last Update : 2004/03/02
-	// 	Author 		: Park, ChanHo
-	// 	History 	: 2004.03.02 by Park ChanHo 
-	// 	File Name 	: admin.php
-	// 	Description : 관리자 로그인 화면
-	// 	Version 	: 1.0
-	//
-	//////////////////////////////////////////////////////////////
+<?php
+ini_set("display_errors", 1);
+session_start();
+
+//if(!isset($_SERVER["HTTPS"])) {
+//	header('Location: https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']);
+//	exit;
+//}
+//	header("X-Frame-Options: DENY");
 
 	include "./inc/global_init.inc";
+	include "./inc/common_function.php";
 
-	include "../AES.php";
+	$_SESSION['test_mode'] = 'Y';
 
-	$en_pass = encrypt($key, $iv, '%ujeqe$e');
-
-	//echo $en_pass;
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -111,8 +101,7 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 			frm.adminid.focus();
 			return;
 		}
-		
-		frm.action = "https://www.makelifebetter.co.kr/manager_utf8/admin_ok.php";
+		frm.action = "/manager_utf8/admin_ok.php";
 		frm.target = "";
 		frm.submit();
 	
@@ -136,11 +125,14 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 		<!-- 로그인 영역 { -->
 		<div id="login_box" class="lg_box">
 			<h2><img src="images/login.png" alt="LOGIN"></h2>
-			<form method='post' name='form' action='https://www.makelifebetter.co.kr/manager_utf8/admin_ok.php' onSubmit='return check_form(this);'>
+			<form method='post' name='form' action='/manager_utf8/admin_ok.php' onSubmit='return check_form(this);'>
 				<ul>
 					<li><h3>ID</h3><input type="text" name='adminid' id='adminid' size='20' maxlength='20' autocomplete='off' placeholder="관리자ID"></li>
 					<li><h3>PW</h3><input type="password" name='adminpasswd' id='adminpasswd' size='20' maxlength='20' autocomplete='off' placeholder="비밀번호"></li>
-					<li class="pwa"><a href="#pwsearch" onclick="openPopup();"><img src="images/icon.png" alt="">비밀번호 찾기</a></li>
+					<li class="pwa" style="text-align:center">
+						<a href="#pwsearch" onclick="openPopup();"><img src="images/icon.png" alt="">비밀번호 찾기</a> &nbsp;&nbsp;&nbsp;
+						<a href="https://korea.unicity.com/privacy_policy/" target="_blank" style="background:#f6f6f6; border:1px solid #ccc; padding:7px 15px; border-radius:10px;">개인정보처리방침</a>
+					</li>					
 					<li><input type="button" value="로그인" onClick="js_login();"></li>
 				</ul>
 			</form>
@@ -156,8 +148,12 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 			<form>
 				<ul>
 					<li><h3>ID</h3><input type="text" name="search_id" id="search_id" placeholder="관리자ID"></li>
+			
+				<!--20230119 이메일 입력값 제거-->	
+				<!--
 					<li><h3>EMAIL</h3><input type="text" name="search_email" id="search_email" placeholder="이메일"></li>
 					<li class="pwa"><p>등록된 이메일로 새 비밀번호가 발송됩니다.</p></li>
+				-->
 					<li><input type="button" value="확인" onclick="js_search_pwd();"></li>
 				</ul>
 			</form>
@@ -177,6 +173,7 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 	var lypopBg = document.getElementById('pw_box_bg');
 	console.log(lypop);
 	openPopup = function(){	//팝업 열기
+
 		lypop.style.display = "block";
 		lypopBg.style.display = "block";
 	}
@@ -187,8 +184,9 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 
 	function js_search_pwd() {
 		
-		var search_id			= $("#search_id").val();
-		var search_email	= $("#search_email").val();
+		var search_id		= $("#search_id").val();
+		var search_email	= "";
+		//var search_email	= $("#search_email").val();
 
 		if (search_id == "") {
 			alert("ID를 입력해 주세요.");
@@ -196,11 +194,13 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 			return;
 		}
 
+		/*
 		if (search_email == "") {
 			alert("이메일을 입력해 주세요.");
 			$("#search_email").focus();
 			return;
 		}
+		*/
 		
 		var request = $.ajax({
 			url:"send_new_pwd.php",
@@ -210,10 +210,11 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 		});
 
 		request.done(function(msg) {
+	
 			if (msg == "T") {
 				alert("이메일로 임시 비밀번호를 보내 드렸습니다. ");
 			} else {
-				alert("해당 이메일로 등록된 관리자가 없습니다. ");
+				alert("해당 이메일로 등록된 관리자가 없습니다.. ");
 			}
 
 			closePopup();

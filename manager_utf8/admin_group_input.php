@@ -49,6 +49,9 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <form name='frm' method='post' action='admin_group_db.php'>
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

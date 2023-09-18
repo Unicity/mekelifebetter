@@ -129,6 +129,9 @@ function getIds(){
 </script>
 </head>
 <BODY bgcolor="#FFFFFF"">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="admin_group_list.php">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

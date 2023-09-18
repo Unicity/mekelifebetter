@@ -2,7 +2,7 @@
 
 	include "./inc/global_init.inc";
 
-	if(!session_is_registered("s_adm_id")){
+	if(!isset($_SESSION["s_adm_id"])){
 ?>
 <HTML>
 <HEAD>
@@ -44,3 +44,4 @@
 	</NOFRAMES>
 </FRAMESET>
 </HTML>
+TML>

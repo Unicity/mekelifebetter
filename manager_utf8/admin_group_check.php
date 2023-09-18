@@ -143,6 +143,9 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
 	<TD align="left"><B>메뉴 권한 설정</B></TD>
