@@ -1,5 +1,6 @@
 <?session_start();
 	ini_set("display_errors", 0);
+	include "../dbconn_utf8.inc";
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/str_check.php"); 
 
@@ -35,7 +36,7 @@
 	echo "VolumePeriod".$VolumePeriod;
 	$id = str_quote_smart_session($id);
 
-	if(session_is_registered("s_adm_id")){
+	if(isset($_SESSION["s_adm_id"])){
 		$report_flag="Y";
 	}else{
 		if ($s_number) {
@@ -101,6 +102,8 @@ body { font-size:12px; color:#3e6682; font-family: verdana, 돋움; }
  
 <body onload="">
  
+<?php include "common_load.php" ?>
+
  <?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>
 
 </body>

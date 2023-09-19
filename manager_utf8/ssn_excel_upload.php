@@ -12,6 +12,9 @@
 <meta charset="UTF-8">
 </head>
 <body>
+
+<?php include "common_load.php" ?>
+
 <form action="./ssn_excel_upload_process.php" method="post" enctype="multipart/form-data">
  
   <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />

@@ -34,6 +34,9 @@
 </script>
 </head>
 <body>
+
+<?php include "common_load.php" ?>
+
 <form name="myForm" method="post">
   <p>승인? 반려? </p>
   <input type="button" value="승인하기" onClick="approveOrReject('a');">

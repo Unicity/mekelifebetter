@@ -69,6 +69,9 @@
 </SCRIPT>
 </HEAD>
 <BODY class="LFRAME">
+
+<?php include "common_load.php" ?>
+
 <BASE target="frmain">
 <!--
 <table width=150 border=0>
@@ -106,9 +109,12 @@
 	<?				
 					$isExist = 1;
 				}
+
+				//if($menu_url[$i] != "mainSubChgList.php"){ //공동등록 및 부부사업자 메뉴 삭제 
 	?>				
 		<input type=button value="<?echo $small_menu[$i]?>" width=150 height=30 onclick="goPage('<?echo $menu_url[$i]?>')" style="cursor:pointer"></br>
-	<?
+	<? 
+				//}
 			}
 		}
 		if ($isExist == 1) {
@@ -287,7 +293,9 @@
 		<tr><td> 
 	<?
 					$isExist = 1;
-				}		
+				}
+				
+				$menu_url[$i] = str_replace('https://unicore.makelifebetter.co.kr', '', $menu_url[$i]);
 	?>				
 		<input type=button value="<?echo $small_menu[$i]?>" width=150 height=30 onclick="goPage('<?echo $menu_url[$i]?>')" style="cursor:pointer"></br>
 	<?
@@ -325,9 +333,13 @@
 			<select onChange="if(this.selectedIndex) { this.blur(); window.open(options[selectedIndex].value); }"  style="width:80%; height:10%; overflow:auto;text-align: center;">
 				<option value="">선택</option>
 				<option value="https://unicitykorea.co.kr/totalAdmin/">오토쉽 관리자</option>
-				<option value="https://ushop-admin-dev-kr.unicity.com/#/login">마이비즈 관리자</option>
-				<option value="https://www.makelifebetter.co.kr/account_chk_new/index.php">은행계좌 확인</option>
-				<option value="https://www.makelifebetter.co.kr/kms/">KMS</option>
+				<option value="https://www.e-hrok.co.kr/newpage/sys_main/main.asp">에이치알 아웃소싱</option>
+				<option value="https://unicore.makelifebetter.co.kr/account_chk_new/index.php">은행계좌 확인</option>
+				<option value="https://unicore.makelifebetter.co.kr/kms/">KMS</option>
+				<option value="https://pgims.ksnet.co.kr/pg_inc/login/login.jsp">Ksnet(케이에스넷)</option>
+				<option value="https://www.allatpay.com/servlet/AllatBizV2/login/LoginCL">Allat(올앳)</option>
+				<option value="https://www.juso.go.kr">도로명 주소</option>
+				<option value="https://www.ppurio.com">뿌리오</option>	
 				<option value="https://www.makelifebetter.co.kr/etc/hy.html">효성 자동출금 확인</option>
 				<option value="https://www.makelifebetter.co.kr/etc/receipt.html">효성 현금 영수증 신청</option>										
 			</select>
@@ -335,7 +347,6 @@
 		</td>
 	</tr>
 	<tr><td height="10px;"></td></tr>
-	<!--
 	<tr>
 		<td align="center">
 			<p align="center" style="margin-bottom: 0px;"><b><font color="#000000">회원 이용 사이트</font></b></p>
@@ -353,7 +364,6 @@
 
 		</td>
 	</tr>
-	-->
 </TABLE>
 <!--<a href="#d" onclick="goPage('r_n_d_news_list.php?BoardId=R1');">.</a><br>
 <a href="#d" onclick="goPage('edu_cal_list.php');">.</a>

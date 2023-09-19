@@ -14,6 +14,9 @@
 <link rel="stylesheet" type="text/css" href="./css/joo.css" />
 </head>
 <body>
+
+<?php include "common_load.php" ?>
+
 	<div class="wrapper" >
 		<!-- container start {-->
 		<div class="main_wrapper">

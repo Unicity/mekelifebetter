@@ -46,6 +46,9 @@
 		</style>
 	</head>
 	<body onload="init();">
+	
+<?php include "common_load.php" ?>
+
 		<?	while($row = mysql_fetch_array($result)) { ?>
 			<div class="a4">
 				<!--[if gte ie 7]><br style='height:0; line-height:0'><![endif]-->

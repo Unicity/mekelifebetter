@@ -1,0 +1,1 @@
+common_load_euc_kr.php

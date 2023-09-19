@@ -34,6 +34,8 @@ $address = $list[address];
 $phoneNum = $list[phoneNum]; 
 $sendDate = $list[send_date]; 
 $smsYn = $list[sms_yn]; 
+$fiveDaySms = $list[fiveday_sms]; 
+
 
 
 
@@ -62,6 +64,9 @@ $data3 = $list1[data3];
 		
 	</head>
 	<body>
+	
+<?php include "common_load.php" ?>
+
 		<form name="frm_m" method="post">
 			<table cellspacing="0" cellpadding="10" class="title">
     			<tr>
@@ -109,7 +114,7 @@ $data3 = $list1[data3];
 								<td><input type="text" name="address" maxlength="15" value="<?php echo $address?>" readonly="readonly"></td>
 							</tr>
 							<tr>
-								<th colspan="1">번호</th>
+								<th colspan="1">신청인 연락처</th>
 								<td><input type="text" name="phoneNum" maxlength="15" value="<?php echo $phoneNum ?>" readonly="readonly"></td>
 							</tr>
 						</table>
@@ -148,6 +153,10 @@ $data3 = $list1[data3];
 							<?php }?>
 						</tr>
 						<?php }?>
+
+						<tr>
+							<td><b>5일전 문자</b> : <?echo $fiveDaySms?> </td>
+						</tr>
 					</table>
 				</td>
 			</tr>
@@ -164,7 +173,7 @@ $data3 = $list1[data3];
 						<option value = "3" <?if ($reg_status == "3") echo "selected";?>>완료</option>
 						<option value = "9" <?if ($reg_status == "9") echo "selected";?>>익월처리</option>
 						<option value = "8" <?if ($reg_status == "8") echo "selected";?>>보류</option>
-						
+						<option value = "5" <?if ($reg_status == "5") echo "selected";?>>후원자 미동의</option>
 						<option value = "4" <?if ($reg_status == "4") echo "selected";?>>신청 거부</option>
 					</select>&nbsp; <!--최고 관리자로 접속하셨을 경우만 변경 가능 합니다.-->
 				</td>
@@ -268,13 +277,18 @@ $data3 = $list1[data3];
 
 	function sendText(){
 		//alert(document.frm_m.smsSend.value);
-
+		var phone = '<?php echo $phoneNum?>';
 		if(document.frm_m.smsSend.value == ''){
 			alert('문자발송 지역을 선택 하세요');
 			return false;
 		}
+
+		if(phone==''){
+			alert("휴대폰 번호가 없습니다.");
+			return false;
+		}
 		if(confirm("문자를 발송 하시겠습니까?")){   
-			var phone = '<?php echo $phoneNum?>';
+			
 			var noVal ='<?php echo $no ?>';
 			var memberNo ='<?php echo $memberNo?>';
 

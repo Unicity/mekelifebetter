@@ -123,6 +123,9 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 	$jumin = decrypt($key, $iv, $JU_NO);
 ?>
 <body onload="print();">
+
+<?php include "common_load.php" ?>
+
 <div id="wrap">
 <table width="640" border="0" cellspacing="0" cellpadding="0">
 	<tr>

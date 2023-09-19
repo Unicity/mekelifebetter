@@ -50,6 +50,9 @@
 </style>
 </HEAD>
 <BODY onload="init();">
+
+<?php include "common_load.php" ?>
+
 <?	while($row = mysql_fetch_array($result)) { ?>
 <div class="a4">
 <!--[if gte IE 7]><br style='height:0; line-height:0'><![endif]-->
@@ -161,6 +164,33 @@
 <tr>
 	<th>후원자 :</th>
 	<td><?echo $row[co_name]?></td>
+</tr>
+<tr>
+	<th>본인외주문 동의 :</th>
+	<td><?echo $row[sel_agree05]?></td>
+</tr>
+
+
+
+<tr>
+	<th>회원수첩 이메일발송 동의 :</th>
+	<td><?=$row[sel_agree06]?></td>
+</tr>
+<tr>
+	<th>후원수당등 변경통지 :</th>
+	<td>
+		<?if ($row[agree_01] == "Y"){?>☑️<?}else{?>⬜<?}?> 이메일 &nbsp;
+		<?if ($row[agree_02] == "Y"){?>☑️<?}else{?>⬜<?}?> SMS &nbsp; 
+		<?if ($row[agree_03] == "Y"){?>☑️<?}else{?>⬜<?}?> 우편
+	</td>
+</tr>
+<tr>
+	<th>마케팅 동의 :</th>
+	<td>
+		<?if ($row[sel_agree02] == "Y"){?>☑️<?}else{?>⬜<?}?> 이메일 수신 &nbsp;
+		<?if ($row[sel_agree03] == "Y"){?>☑️<?}else{?>⬜<?}?> SMS 수신 &nbsp; 
+		<?if ($row[sel_agree04] == "Y"){?>☑️<?}else{?>⬜<?}?> 우편물 수신
+	</td>
 </tr>
 </TABLE>
 	</td>

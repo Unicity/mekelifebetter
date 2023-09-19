@@ -226,6 +226,9 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <form name='frm' method='post' action='admin_db.php'>
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
@@ -270,6 +273,25 @@
 	</th>
 	<td>
 		<?echo $id?>
+	</td>
+</tr>
+<tr>
+	<th>
+		상태 :
+	</th>
+	<td>
+		<select name="status">
+			<option value="Y" <?=($list[status] == "Y") ? "selected" : "";?>>정상</option>	
+			<option value="N" <?=($list[status] == "N") ? "selected" : "";?>>제한</option>	
+		</select>
+	</td>
+</tr>
+<tr>
+	<th>
+		마지막로그인 :
+	</th>
+	<td>
+		<?echo date("Y-m-d H:i:s", $list['last_login'])?>
 	</td>
 </tr>
 <tr>

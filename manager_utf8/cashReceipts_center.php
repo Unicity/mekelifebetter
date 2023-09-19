@@ -96,7 +96,7 @@
     if ($nPageSize <> "") {
         $nPageSize = (int)($nPageSize);
     } else {
-        $nPageSize = 50;
+        $nPageSize = 20;
     }
     
     $nPageBlock	= 10;

@@ -1,12 +1,14 @@
 <?session_start();
 	ini_set("display_errors", 0);
+		include "../dbconn_utf8.inc";
+	include "../AES.php";
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/str_check.php"); 
 
 	$s_adm_id = str_quote_smart_session($s_adm_id);
 	$s_number = str_quote_smart_session($s_number);
 
-	if($s_adm_id){
+	if(isset($_SESSION["s_adm_id"])){
 		$report_flag="Y";
 	}else{
 		if ($s_number) {
@@ -60,8 +62,7 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 </style>
 </head>
 <?
-	include "../dbconn_utf8.inc";
-	include "../AES.php";
+
 
 	$y=date("y"); 
 	$m=date("m"); 
@@ -124,6 +125,9 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 
 ?>
 <body onload="print();">
+
+<?php include "common_load.php" ?>
+
 <div id="wrap">
 <table width="640" border="0" cellspacing="0" cellpadding="0">
 	<tr>

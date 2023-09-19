@@ -9,12 +9,11 @@
     $idxfield = str_quote_smart(trim($idxfield));
     $qry_str = str_quote_smart(trim($qry_str));
 
-
-      /**autoship DB연결 */
-      $db_host = 'unicity-database.cluster-c4ao3svuphls.ap-northeast-2.rds.amazonaws.com';
-      $db_user = 'autoship';
-      $db_passwd = 'Bioslife1!';
-      $db_name = 'autoship';
+    /**autoship DB연결 */
+    $db_host = '54.180.152.178';
+    $db_user = 'autoship';
+    $db_passwd = 'inxide1!!';
+    $db_name = 'autoship';
   
     $conn = mysql_connect($db_host,$db_user,$db_passwd) or die ("데이터베이스 연결에 실패!"); 
     mysql_select_db($db_name, $conn); // DB 선택 
@@ -26,7 +25,6 @@
 
     $query2 = "select * from autoship_update where 1 = 1 ";
     $result2 = mysql_query($query2);
-    //echo $result2;
 
 ?>
 <html>
@@ -117,6 +115,9 @@
         
 	</head>
     <body>
+	
+<?php include "common_load.php" ?>
+
         <form name="frmSearch" method="post">
             <table cellspacing="0" cellpadding="0 " class="title" border="0" width="100%">
 				<tr>

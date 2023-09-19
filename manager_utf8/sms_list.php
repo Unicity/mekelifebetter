@@ -277,6 +277,9 @@ function js_send_sms(seq_no) {
 </script>
 </head>
 <BODY bgcolor="#FFFFFF" onLoad="init();">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="sms_list.php">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

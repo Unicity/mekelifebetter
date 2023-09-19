@@ -1,22 +1,17 @@
-<?session_start();?>
 <?php 
+session_start();
 
-
-
-	//////////////////////////////////////////////////////////////
-	//
-	// 	Date 		: 2004/03/02
-	// 	Last Update : 2004/03/02
-	// 	Author 		: Park, ChanHo
-	// 	History 	: 2004.03.02 by Park ChanHo 
-	// 	File Name 	: admin_ok.php
-	// 	Description : 인증 페이지
-	// 	Version 	: 1.0
-	//
-	//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+// 	File Name 	: admin_ok.php
+// 	Description : 인증 페이지
+//////////////////////////////////////////////////////////////
 
 	include "../dbconn_utf8.inc";
 	include "./inc/common_function.php";
+	
+	//6개월 미로그인자 상태 일괄 업데이트
+	$six_month =  time() - (86400 * 180);
+	$result = mysql_query("update tb_admin set status = 'N' where status = 'Y' and last_login < '".$six_month."'") or die(mysql_error());	
 
 	function alertMsg ($strMsg) {
 
@@ -79,77 +74,71 @@
 
 	no_cache();
 
-	$adminid			= str_quote_smart(trim($adminid));
+	$adminid		= str_quote_smart(trim($adminid));
 	$adminpasswd	= str_quote_smart(trim($adminpasswd));
 
+
 	if (checkPasswordFailCounter($adminid) == TRUE){
-		alertMsg("비밀번호 오류 횟수 초과로 10분간 계정인 잠긴 상태입니다.\\n\\n");
+		alertMsg("비밀번호 오류 횟수 초과로 10분간 계정인 잠긴 상태입니다.   \\n\\n");
 		mysql_close($connect);
 		exit;
 	}
 
-	include "../AES.php";
-
-	$en_adminpasswd = encrypt($key, $iv, $adminpasswd);
-
-
-	//$query = "select id, Email, UserName, temp1, datediff(NOW(), pw_update_date) AS BB_DATEDIFF from tb_admin where id = '$adminid' ";
-	$query = "select id, Email, UserName, temp1, temp2, datediff(NOW(), pw_update_date) AS BB_DATEDIFF from tb_admin where id = '$adminid' and EN_PASS = '$en_adminpasswd' ";
-	//echo $query;
+	$query = "select id, passwd, Email, UserName, temp1, temp2, optpass, datediff(NOW(), pw_update_date) AS BB_DATEDIFF from tb_admin where id = '".$adminid."' and status = 'Y'";
 	$result = mysql_query($query);
 
-	if ($row = mysql_fetch_row($result)){
+	//비밀번호 sha256 암호화로 변경
+	$hashedpwd = base64_encode(hash('sha256', $adminpasswd, true));
 
-		session_register("s_adm_id"); 
-		session_register("s_adm_email"); 
-		session_register("s_adm_name"); 
-		session_register("s_adm_dept"); 
-		session_register("s_flag"); 
 
-		$s_adm_id = str_quote_smart(trim($row[0]));
-		$s_adm_email = str_quote_smart(trim($row[1]));
-		$s_adm_name = str_quote_smart(trim($row[2]));
-		$s_flag = str_quote_smart(trim($row[3]));
-		$s_adm_dept = str_quote_smart(trim($row[4]));
-		$update_date = (int)trim($row[5]);
+	if ($row = mysql_fetch_array($result)){
 
-		logging($s_adm_id, "logged in");
+		if(substr($row['passwd'], 0, 4) == "$2y$") {
+			//비밀번호 검증
+			if(!password_verify($adminpasswd, $row['passwd'])){
+				updateLoginFail($adminid);
+				logging($adminid, "login fail");
+				alertMsg("비밀번호가 일치하지 않습니다! \\n\\n");
+			
+				mysql_close($connect);
+				exit;
+			}else{
+				//비밀번호 업데이트
+				mysql_query("update tb_admin set passwd = '".$hashedpwd."' where id = '".$adminid."'");
+			}
+		}else{
+			if($row['passwd'] != $hashedpwd){
+				updateLoginFail($adminid);
+				logging($adminid, "login fail");
+				alertMsg("비밀번호가 일치하지 않습니다! \\n\\n");
+			
+				mysql_close($connect);
+				exit;
+			}
+		}
+
+		$_SESSION["tmp_s_adm_id"] = $adminid; 
+
+		deleteFailCounter($adminid);
 		
-		deleteFailCounter($s_adm_id);
-		
-		mysql_close($connect);
+		//otp 로그인 페이지 이동
+		?>
+		<html>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<script>
+		document.location = "/manager_utf8/admin_otp.php";
+		</script>
+		</html>
 
+		<?php 
+	
 	} else {
-		
-		updateLoginFail($adminid);
-
-		logging($adminid, "login fail");
-
-		alertMsg("아이디 또는 비밀번호가 일치하지 않습니다!                                  \\n\\n");
+		alertMsg("아이디 또는 비밀번호가 일치하지 않습니다! \\n\\n");
 		
 		mysql_close($connect);
 		exit;
+
 	}
-	$_SESSION[reg]=$s_adm_name;
-	if ($update_date > 90 && $s_adm_id != 'admin') {
-?>
-<html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script>
-	alert("비밀번호를 6개월 이상 이용 하셨습니다. \n\n새로운 비밀번호로 수정 해 주세요.");
-	document.location = "https://www.makelifebetter.co.kr/manager_utf8/admin_password_reset.php";
-</script>
-</html>
-<?
-	} else {
-?>
-<html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-Frame-Options" content="deny" />
-<script language="javascript">
-	document.location = "https://www.makelifebetter.co.kr/manager_utf8/admin_main.php";
-</script>
-</html>
-<?
-	}
+
+	exit;
 ?>

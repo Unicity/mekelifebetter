@@ -169,6 +169,9 @@ function getIds(){
 </script>
 </head>
 <BODY bgcolor="#FFFFFF" onLoad="init();">
+
+<?php include "common_load.php" ?>
+
 <br>
 <br>
 <FORM name="frmSearch" method="post" action="code_list.php">

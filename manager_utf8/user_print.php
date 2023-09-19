@@ -58,37 +58,37 @@
 	<TD align="left"><B>온라인 회원 가입 (회원 정보 입력용) </B></TD>
 </TR>
 </TABLE>
-<table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
+<table height='35' width='590' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
 <tr>
 	<td align='center'>
 <TABLE border="0" cellspacing="1" cellpadding="2" class="IN2">
 <colgroup>
-	<col width="25%">
-	<col width="75%">
+	<col width="150">
+	<col width="440">
 </colgroup>
 <tr>
-	<th>회원종류 :</th>
-	<td><? if (trim($row[member_kind]) == "D" ) { echo " FO 회원"; } else {echo "소비자 회원";} ?></td>
+	<th width="30%" style="min-width:120px">회원종류</th>
+	<td width="70%"><? if (trim($row[member_kind]) == "D" ) { echo " FO 회원"; } else {echo "소비자 회원";} ?></td>
 </tr>
 <tr>
-	<th>성명 : </th>
+	<th>성명 </th>
 	<td><?echo $row[name]?></td>
 </tr>
 <tr>
-	<th>영문성명 : </th>
+	<th>영문성명 </th>
 	<td><?echo $row[ename]?></td>
 </tr>
 <tr>
-	<th>희망 비밀번호 :</th>
-	<td><?echo $row[password]?></td>
+	<th>희망 비밀번호</th>
+	<td><?echo decrypt($key, $iv, $row[password])?></td>
 </tr>
 <tr>
-	<th>주민등록번호 :</th>
+	<th>주민등록번호</th>
 	<td><?echo decrypt($key, $iv, $row[JU_NO01])?>-<?echo decrypt($key, $iv, $row[JU_NO02])?></td>
 </tr>
 <? if (trim($row[member_kind]) == "D") { ?>
 <tr>
-	<th>활동유형 :</th>
+	<th>활동유형</th>
 	<td>
 		<? if (trim($row[active_kind]) == "1") {?>
         	후원사업자 (자가소비)
@@ -101,81 +101,81 @@
 
 <? if (trim($row[couple]) == "Y") { ?>
 <tr>
-	<th>배우자 성명 :</th>
+	<th>배우자 성명</th>
 	<td><?echo $row[couple_name]?></td>
 </tr>
 <tr>
-	<th>배우자 영문성명 :</th>
+	<th>배우자 영문성명</th>
 	<td><?echo $row[couple_ename]?></td>
 </tr>
 <tr>
-	<th>주민등록번호 :</th>
+	<th>주민등록번호</th>
 	<td><?echo decrypt($key, $iv, $row[couple_reg_jumin1])?>-<?echo decrypt($key, $iv, $row[couple_reg_jumin2])?></td>
 </tr>
 <?	} ?>
 <tr>
-	<th>휴대전화번호 :</th>
+	<th>휴대전화번호</th>
 	<td><?echo $row[hpho1]?>-<?echo $row[hpho2]?>-<?echo $row[hpho3]?></td>
 </tr>
 <tr>
-	<th>전화번호 :</th>
+	<th>전화번호</th>
 	<td><?echo $row[pho1]?>-<?echo $row[pho2]?>-<?echo $row[pho3]?></td>
 </tr>
 <tr>
-	<th>우편번호 :</th>
+	<th>우편번호</th>
 	<td><?echo $row[zip]?></td>
 </tr>
 <tr>
-	<th>주소 :</th>
+	<th>주소</th>
 	<td><?echo $row[addr]?> <?echo $row[addr_detail]?></td>
 </tr>
 <tr>
-	<th>수령우편번호 :</th>
+	<th>수령우편번호</th>
 	<td><?echo $row[del_zip]?></td>
 </tr>
 <tr>
-	<th>수령주소 :</th>
+	<th>수령주소</th>
 	<td><?echo $row[del_addr]?> <?echo $row[del_addr_detail]?></td>
 </tr>
 <tr>
-	<th>E-Mail :</th>
+	<th>E-Mail</th>
 	<td><?echo $row[email]?></td>
 </tr>
 <tr>
-	<th>메일수신여부 :</th>
+	<th>메일수신여부</th>
 	<td><?echo $row[email_flag]?></td>
 </tr>
 <? if (trim($row[member_kind]) == "D") { ?>
 <tr>
-	<th>거래 은행 :</th>
+	<th>거래 은행</th>
 	<td><?echo $row[account_bank]?></td>
 </tr>
 <tr>
-	<th>계좌번호 :</th>
+	<th>계좌번호</th>
 	<td><?echo decrypt($key, $iv, $row[account])?></td>
 </tr>
 <? }?>
 <tr>
-	<th>후원자 FO :</th>
+	<th>후원자 FO</th>
 	<td><?echo $row[co_number]?></td>
 </tr>
 <tr>
-	<th>후원자 :</th>
+	<th>후원자</th>
 	<td><?echo $row[co_name]?></td>
 </tr>
 <tr>
-	<th>본인외주문 동의 :</th>
+	<th>본인외주문 동의</th>
 	<td><?echo $row[sel_agree05]?></td>
 </tr>
 
 
 
 <tr>
-	<th>회원수첩 이메일발송 동의 :</th>
+	<th>회원수첩 이메일발송</th>
 	<td><?=$row[sel_agree06]?></td>
 </tr>
 <tr>
-	<th>후원수당등 변경통지 :</th>
+	<th>후원수당등 변경통지</th>
 	<td>
 		<?if ($row[agree_01] == "Y"){?>☑️<?}else{?>⬜<?}?> 이메일 &nbsp;
 		<?if ($row[agree_02] == "Y"){?>☑️<?}else{?>⬜<?}?> SMS &nbsp; 
@@ -183,7 +183,7 @@
 	</td>
 </tr>
 <tr>
-	<th>마케팅 동의 :</th>
+	<th>마케팅 동의</th>
 	<td>
 		<?if ($row[sel_agree02] == "Y"){?>☑️<?}else{?>⬜<?}?> 이메일 수신 &nbsp;
 		<?if ($row[sel_agree03] == "Y"){?>☑️<?}else{?>⬜<?}?> SMS 수신 &nbsp; 

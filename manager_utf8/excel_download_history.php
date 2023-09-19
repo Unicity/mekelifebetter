@@ -150,6 +150,8 @@ function goPage(n){
 </head>
 <BODY bgcolor="#FFFFFF">
 
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" id="frmSearch"  method="post" action="javascript:check_data();">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

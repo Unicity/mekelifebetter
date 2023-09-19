@@ -33,6 +33,9 @@ if($row['uid'] == ""){
 <link rel="stylesheet" href="inc/admin.css" type="text/css">
 </head>
 <body bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <div style="width:100%;height:40px;line-height:40px;background:#333;color:#fff;">
 	<h2 style="margin-left:10px">LOG상세조회</h2>
 </div>
@@ -76,7 +79,8 @@ if($row['uid'] == ""){
 				if($row[check_kind] == "api"){ 
 					if($row[recieveData] != "") print_r(json_decode($row[recieveData]));			
 				}else{
-					echo $row[recieveData];
+					$p_r_data = explode(":DI64:", $row[recieveData]);
+					echo $p_r_data[0];
 				}
 				?>
 			</td>

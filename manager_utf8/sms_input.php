@@ -221,6 +221,9 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <form name='frm' method='post' action='admin_db.php'>
 <input type="hidden" name="seq_no" value="<?=$seq_no?>">
 

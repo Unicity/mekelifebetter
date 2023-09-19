@@ -50,6 +50,9 @@
 </style>
 </HEAD>
 <BODY onload="init();">
+
+<?php include "common_load.php" ?>
+
 <?	while($row = mysql_fetch_array($result)) { 
 	$phone_number=$row[phone_number];
 	$phonelength=strlen($phone_number);

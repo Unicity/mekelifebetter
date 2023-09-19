@@ -183,6 +183,9 @@ document.iform.msg.value = "";
 </script>
 </head>
 <body bgcolor="F5F5E6" text="#000000" leftmargin="0" topmargin="0" onload="javascript:showMessage()">
+
+<?php include "common_load.php" ?>
+
 <form name= "iform" method="post">
 <!-- 전체테이블시작-->
 <TABLE cellspacing='0' cellpadding='0' width=100%>

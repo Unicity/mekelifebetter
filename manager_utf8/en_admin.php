@@ -114,6 +114,9 @@ function check_form(form)
 </script>
 </head>
 <body>
+
+<?php include "common_load.php" ?>
+
 <br><br><br>
 <table border='0' width='600' align='center' cellpadding='9' cellspacing='0'>
 	<tr>

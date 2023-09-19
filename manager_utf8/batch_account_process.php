@@ -102,6 +102,9 @@ $(document).ready(function() {
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <div style="padding:20px;  position:relative;">
 
 	<img src="images/viewLoading.gif" id="loading" style="position:absolute; top:50%; left:45%" />

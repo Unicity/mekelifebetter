@@ -1,38 +1,40 @@
-<?session_start();
-	ini_set("display_errors", 0);
+<?php 
+session_start();
+ini_set("display_errors", 0);
+	include "../dbconn_utf8.inc";
+	include "../AES.php";
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/str_check.php"); 
+include_once($_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/str_check.php"); 
 
-	$s_adm_id = str_quote_smart_session($s_adm_id);
-	$s_number = str_quote_smart_session($s_number);
+$s_adm_id = str_quote_smart_session($s_adm_id);
+$s_number = str_quote_smart_session($s_number);
 
-	if($s_adm_id){
-		$report_flag="Y";
-	}else{
-		if ($s_number) {
-			if($id==$s_number){
-				$report_flag="Y";
-			}else{
-				$report_flag="N";
-			}
+if($s_adm_id){
+	$report_flag="Y";
+}else{
+	if ($s_number) {
+		if($id==$s_number){
+			$report_flag="Y";
 		}else{
 			$report_flag="N";
 		}
+	}else{
+		$report_flag="N";
 	}
+}
 
-	if($report_flag=="N"){
+if($report_flag=="N"){
+	?>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-Frame-Options" content="deny" />
+	<script language="javascript">
+		alert("세션이 종료 되었거나 보안검사에 실패하였습니다.\n\n 다시 로그인 후 시도해주세요. \n\n 같은 현상이 반복될 시 고객센타로 문의 주시기 바랍니다.");
+		self.close();
+	</script>
+	<?
+	die;
+}
 ?>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-equiv="X-Frame-Options" content="deny" />
-		<script language="javascript">
-			alert("세션이 종료 되었거나 보안검사에 실패하였습니다.\n\n 다시 로그인 후 시도해주세요. \n\n 같은 현상이 반복될 시 고객센타로 문의 주시기 바랍니다.");
-			self.close();
-		</script>
-<?
-		die;
-	}
-?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -60,8 +62,7 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 </style>
 </head>
 <?
-	include "../dbconn_utf8.inc";
-	include "../AES.php";
+
 
 	$id	= str_quote_smart(trim($id));
 	$sy	= str_quote_smart(trim($sy));
@@ -90,15 +91,25 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 		exit;
 	}
 
+	$add_sql = "";
+	if($dName != "") $add_sql = " and DistributorName = '".urldecode($dName)."' ";
+
+
+	$sql_dict = "SELECT * FROM tb_Activityreport where ID='".$id."'  ".$add_sql." and regdate between '".$sdate."-01' and '".$edate."-31' group by DistributorName order by regdate asc";
+	$result = mysql_query($sql_dict) or die(mysql_error());
+
+
+
+
 	if($JU_NO==""){
-		$sql_jumin="select JU_NO FROM tb_Activityreport  where ID='$id' order by regdate desc limit 0,1";
+		$sql_jumin="select JU_NO FROM tb_Activityreport  where ID='$id' ".$add_sql." order by regdate desc limit 0,1";
 
 		$result_jumin = mysql_query($sql_jumin,$connect);
 		$row_jumin = mysql_fetch_array($result_jumin);
 		$JU_NO = $row_jumin[0];
 	}
 	
-	$query2 = "SELECT DistributorName,JU_NO,companynum,address,companyaddr,sangho FROM tb_Activityreport  where ID='$id'  order by regdate desc limit 1";
+	$query2 = "SELECT DistributorName,JU_NO,companynum,address,companyaddr,sangho FROM tb_Activityreport  where ID='$id'  ".$add_sql." order by regdate desc limit 1";
 	
 		$result2 = mysql_query($query2,$connect);
 		$row2 = mysql_fetch_array($result2);
@@ -111,7 +122,7 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 	
 	if($DistributorName==""){
 		
-		$query = "SELECT DistributorName,JU_NO,companynum,address,companyaddr,sangho FROM tb_Activityreport  where ID='$id' order by regdate desc limit 0,1";
+		$query = "SELECT DistributorName,JU_NO,companynum,address,companyaddr,sangho FROM tb_Activityreport  where ID='$id' ".$add_sql." order by regdate desc limit 0,1";
 
 		//echo $query;
 		$result = mysql_query($query,$connect);
@@ -128,6 +139,9 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 	$jumin = decrypt($key, $iv, $JU_NO);
 ?>
 <body onload="print();">
+
+<?php include "common_load.php" ?>
+
 <div id="wrap">
 <table width="640" border="0" cellspacing="0" cellpadding="0">
 	<tr>
@@ -156,7 +170,7 @@ body { font-size:14px; color:#000000; font-family: 바탕; }
 					<col width="107" />
 				</colgroup>
 				<?php 
-					$query = "SELECT * FROM tb_Activityreport where ID='".$id."'  and regdate between '".$sdate."-01' and '".$edate."-31' order by regdate asc";
+					$query = "SELECT * FROM tb_Activityreport where ID='".$id."'  ".$add_sql." and regdate between '".$sdate."-01' and '".$edate."-31' order by regdate asc";
 					$result = mysql_query($query,$connect);
 					$i=1;
 					$tot=0;//지금총액 계

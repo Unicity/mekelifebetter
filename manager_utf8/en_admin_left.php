@@ -66,6 +66,9 @@
 </SCRIPT>
 </HEAD>
 <BODY class="LFRAME">
+
+<?php include "common_load.php" ?>
+
 <BASE target="frmain">
 <!--
 <table width=150 border=0>

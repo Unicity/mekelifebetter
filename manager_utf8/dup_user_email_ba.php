@@ -1,7 +1,8 @@
 <?
 	include "admin_session_check.inc";
-	include "./inc/global_init.inc";
 	include "../dbconn_utf8.inc";
+	include "./inc/global_init.inc";
+
 	include "./config/AES.php";
 
 	$member_no				= str_quote_smart(trim($member_no));
@@ -29,8 +30,8 @@
 	$k_id = $list[k_id];
 
 //암호화 키 재설정
-$enckey = hex2bin("12345678901234567890123456789077");
-$enciv = hex2bin("12345678901234567890123456789011");
+$enckey = hex2bin2("12345678901234567890123456789077");
+$enciv = hex2bin2("12345678901234567890123456789011");
 	$decPassword = decrypt($enckey, $enciv, $password);
 	
 ?>

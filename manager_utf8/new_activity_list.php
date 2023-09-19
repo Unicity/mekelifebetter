@@ -5,7 +5,7 @@
 	include "../AES.php";
 	include "./inc/common_function.php";
 	 
-	logging($s_adm_id,'open active report list (new_activity_list.php)');
+	//logging($s_adm_id,'open active report list (new_activity_list.php)');
 
 	$member_kind	= str_quote_smart(trim($member_kind));
 	$idxfield			= str_quote_smart(trim($idxfield));
@@ -19,10 +19,12 @@
 	if (empty($idxfield)) {
 		$idxfield = "0";
 	} 
-
-	if($sort_s_date_y == "") $sort_s_date_y = date("Y",strtotime("-2 year"));
+	
+	if($sort_s_date_y == "") $sort_s_date_y = date("Y",strtotime("-1 year"));
+	//if($sort_s_date_y == "") $sort_s_date_y = date("Y");
 	if($sort_s_date_m == "") $sort_s_date_m = '01';
 
+	
 	if ($sort_e_date_y == "") $sort_e_date_y = date("Y");
 	if ($sort_e_date_m == "") $sort_e_date_m = date("m");
 
@@ -70,6 +72,7 @@
 	
 	$offset = $nPageSize*($page-1);
 
+	/*
 	$query = "SELECT SUM( AA.CNT ) 
 							FROM (SELECT COUNT( ID ) AS CNT FROM tb_Activityreport where 1=1 ".$que2." ".$search_date." 
 										UNION all 
@@ -85,11 +88,13 @@
 											 FROM tb_Activityreport_MBL 
 											WHERE 1=1 ".$que2." ".$search_date." ) AA 
 							WHERE 1 = 1 order by AA.YYYYMM DESC, AA.DistributorName ASC limit ". $offset.", ".$nPageSize; 
+	*/
 
-	
+	$query = "SELECT count(*) FROM tb_Activityreport where 1=1 ".$que2." ".$search_date;
+	$query2 = "SELECT JU_NO, ID, DistributorName, VolumePeriod, YYYYMM  FROM tb_Activityreport WHERE 1=1 ".$que2." ".$search_date." order by YYYYMM DESC, DistributorName ASC  limit ". $offset.", ".$nPageSize; 
 	//echo $query."<br>";
 	//echo $query2."<br>";
-
+	
 	$result = mysql_query($query,$connect);
 	$row = mysql_fetch_array($result);
 	$TotalArticle = $row[0];
@@ -133,6 +138,7 @@
 <meta http-equiv="X-Frame-Options" content="deny" />
 <title><?echo $g_site_title?></title>
 <link rel="stylesheet" href="./inc/admin.css" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script language="javascript">
 
 function check_data(){
@@ -168,7 +174,13 @@ function report_form(n, VolumePeriod){
 }
 
 function report_form2(n,m){
-	window.open('report_form2.php?id='+n+'&VolumePeriod='+m,'form2','width=657,height=800,scrollbars=yes');
+
+	$('#e_id').val(n);
+	$('#e_month').val(m);
+
+	goExcelHistory('회원수당조회','소득증빙자료 관리',n + ', ' + m, 'BonusSummary');
+
+	//window.open('report_form2.php?id='+n+'&VolumePeriod='+m,'form2','width=657,height=800,scrollbars=yes');
 }
 
 function report_form1(n,jumin,VolumePeriod){
@@ -178,6 +190,24 @@ function report_form1(n,jumin,VolumePeriod){
 
 	window.open('report_form1.php?id='+n+'&s_date='+s_date+'&e_date='+e_date+"&VolumePeriod="+VolumePeriod,'form1','');
 }
+
+function report_form3(n,dName,jumin,VolumePeriod){
+
+	$('#e_id').val(n);
+	$('#e_name').val(dName);
+	$('#e_license').val(jumin);
+	$('#e_month').val(VolumePeriod);
+
+	goExcelHistory('회원수당조회','소득증빙자료 관리', n + ', ' + dName+ ', ' + VolumePeriod, '원천징수영수증');
+
+	//ff=document.frmSearch;
+	//s_date=ff.s_date.value;
+	//e_date=ff.e_date.value;
+	//window.open('report_form3.php?id='+n+'&dName='+dName+'&s_date='+s_date+'&e_date='+e_date+'&JU_NO='+jumin+"&VolumePeriod="+VolumePeriod,'form3','');
+	
+	//window.open('report_form3.php?id='+n+'&dName='+dName+'&JU_NO='+jumin+"&VolumePeriod="+VolumePeriod,'form3','');
+}
+
 
 function report_form4(){
 	var ff = document.frmSearch;
@@ -199,18 +229,32 @@ function report_form4(){
 		return;
 	}
 
-	var qrystring = '?id=' + id + '&sy=' + sy + '&sm=' + sm + '&ey=' + ey + '&em=' + em;
-	window.open('report_form3_period.php'+qrystring,'form3period','');
+	var qrystring = id + ', ' + sy + '' + sm + '~ ' + ey + '' + em;
+
+	goExcelHistory('회원수당조회','소득증빙자료 관리', qrystring, '기간출력');
+
+	//var qrystring = '?id=' + id + '&sy=' + sy + '&sm=' + sm + '&ey=' + ey + '&em=' + em;
+	//window.open('report_form3_period_gate.php'+qrystring,'form3period','');
 }
 
-function report_form3(n,dName,jumin,VolumePeriod){
 
-	ff=document.frmSearch;
-	//s_date=ff.s_date.value;
-	//e_date=ff.e_date.value;
-	//window.open('report_form3.php?id='+n+'&dName='+dName+'&s_date='+s_date+'&e_date='+e_date+'&JU_NO='+jumin+"&VolumePeriod="+VolumePeriod,'form3','');
-	window.open('report_form3.php?id='+n+'&dName='+dName+'&JU_NO='+jumin+"&VolumePeriod="+VolumePeriod,'form3','');
-}
+function excelDown(kind){
+	if(kind == 'BonusSummary'){
+		window.open('report_form2.php?id='+$('#e_id').val()+'&VolumePeriod='+$('#e_month').val(),'form2','width=657,height=800,scrollbars=yes');
+	}else if(kind == '원천징수영수증'){
+		window.open('report_form3.php?id='+$('#e_id').val()+'&dName='+$('#e_name').val()+'&JU_NO='+$('#e_license').val()+"&VolumePeriod="+$('#e_month').val(),'form3','');
+	}else if(kind == '기간출력'){
+		var ff = document.frmSearch;
+		var sy = ff.s_date_y.value;
+		var sm = ff.s_date_m.value;
+		var ey = ff.e_date_y.value;
+		var em = ff.e_date_m.value;
+		var id = ff.qry_str.value;
+		var qrystring = '?id=' + id + '&sy=' + sy + '&sm=' + sm + '&ey=' + ey + '&em=' + em;
+		window.open('report_form3_period_gate.php'+qrystring,'form3period','');
+	}
+}	
+
 
 function goIn(type) {
 	document.frmSearch.action= "new_member_activity_file.php";
@@ -244,6 +288,15 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
+<form name='frmHidden'>
+	<input type="hidden" name="e_id" id="e_id">
+	<input type="hidden" name="e_name" id="e_name">
+	<input type="hidden" name="e_license" id="e_license">
+	<input type="hidden" name="e_month" id="e_month">
+</form>
 <FORM name="frmSearch" method="post" action="javascript:check_data();">
 <input type="hidden" name="s_date" value="<?=$ss_date?>">
 <input type="hidden" name="e_date" value="<?=$ee_date?>">
@@ -484,6 +537,8 @@ else
 <input type="hidden" name="sort" value="<?echo $sort?>">
 <input type="hidden" name="order" value="<?echo $order?>">
 </form>
+
+<?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/excel_modal.php"; ?>
 
 <?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>
 

@@ -60,15 +60,18 @@
 
 	$que .= " and ifnull(del_tf,'N') = 'N' ";
 
-	$query = "select count(*) from tb_useroff where 1 = 1 ".$que;
-	$result = mysql_query($query,$connect);
-	$row = mysql_fetch_array($result);
-	$TotalArticle = $row[0];
-	
-	//logging($s_adm_id,'search user count '.$TotalArticle);
-	
-	$query2 = "select * from tb_useroff where 1 = 1 ".$que." order by mno desc limit ". $offset.", ".$nPageSize;
-	$result2 = mysql_query($query2);
+	if($qry_str != ""){
+
+		$query = "select count(*) from tb_useroff where 1 = 1 ".$que;
+		$result = mysql_query($query,$connect);
+		$row = mysql_fetch_array($result);
+		$TotalArticle = $row[0];
+		
+		//logging($s_adm_id,'search user count '.$TotalArticle);
+		
+		$query2 = "select * from tb_useroff where 1 = 1 ".$que." order by mno desc limit ". $offset.", ".$nPageSize;
+		$result2 = mysql_query($query2);
+	}
 
 	$ListArticle = $nPageSize;
 	$PageScale = $nPageSize;
@@ -194,6 +197,9 @@ function goPage(n){
 </head>
 <BODY bgcolor="#FFFFFF">
 
+<?php include "common_load.php" ?>
+
+
 <FORM name="frmSearch" id="frmSearch"  method="post" action="javascript:check_data();">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
@@ -289,13 +295,13 @@ if ($TotalArticle) {
 		?>
 		<TR align="center">
 			<TD><input type="checkbox" name="chk[]" id="chk" class="check" value="<?=$obj->mno?>" /></TD>
-			<TD height="25"><A HREF="javascript:openWin('<?=$obj->mno?>')"><?=$obj->name?></A></TD>
-			<TD><?=$birth?></TD>
+			<TD height="25"><A HREF="javascript:openWin('<?=$obj->mno?>')"><?=masking_name($obj->name)?></A></TD>
+			<TD><?=masking_birth($birth)?></TD>
 			<TD><?=$obj->reg_num?></TD>
 			<TD><?=$reg_date?></TD>
-			<TD align="left"><?=$obj->addr?></TD>
-			<TD align="left"><?=$obj->addr2?></TD>
-			<TD><?=$obj->email?></TD>
+			<TD align="left"><?=masking_addr($obj->addr)?></TD>
+			<TD align="left"><?=masking_addr($obj->addr2)?></TD>
+			<TD><?=masking_email($obj->email)?></TD>
 			<TD><?=$obj->email_yn?></TD>
 			<TD><?=$obj->birth_chk?></TD>
 			<TD>

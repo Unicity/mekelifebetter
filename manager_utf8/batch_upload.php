@@ -30,6 +30,9 @@ function js_send(n) {
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <div style="padding:20px">
 <?php 
 //그룹 count

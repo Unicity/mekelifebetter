@@ -137,6 +137,9 @@ td {FONT-SIZE: 9pt}
 </script>
 </head>
 <body>
+
+<?php include "common_load.php" ?>
+
 	<form name='frm' method='post'  enctype='multipart/form-data'>
 		<table cellspacing="0" cellpadding="10" class="title">
 			<tr>

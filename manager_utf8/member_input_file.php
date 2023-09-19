@@ -52,6 +52,9 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" enctype='multipart/form-data'>
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

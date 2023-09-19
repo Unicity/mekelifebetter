@@ -1,11 +1,13 @@
 <?session_start();
 	ini_set("display_errors", 0);
+	include "../dbconn_utf8.inc";
+	include "../AES.php";
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/str_check.php"); 
 	$s_adm_id = str_quote_smart_session($s_adm_id);
 	$s_number = str_quote_smart_session($s_number);
 
-	if(session_is_registered("s_adm_id")){
+	if(isset($_SESSION["s_adm_id"])){
 		$report_flag="Y";
 	}else{
 		if ($s_number) {
@@ -55,8 +57,7 @@ body { font-size:11px; color:#000000; font-family: 바탕; }
 </style>
 </head>
 <?
-	include "../dbconn_utf8.inc";
-	include "../AES.php";
+
 
 	$id						= str_quote_smart(trim($id));
 	$VolumePeriod = str_quote_smart(trim($VolumePeriod));
@@ -93,6 +94,9 @@ body { font-size:11px; color:#000000; font-family: 바탕; }
 	$yy=$e_year[0];
 ?>
 <body onload="print();">
+
+<?php include "common_load.php" ?>
+
 <div id="wrap">
 <table width="640" border="0" cellspacing="0" cellpadding="0">
 	<tr>
@@ -219,4 +223,5 @@ if($print_vel=="Y"){
 
 <?
 mysql_close($connect);
+?>;
 ?>

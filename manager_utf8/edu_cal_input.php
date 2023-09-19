@@ -216,6 +216,9 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <form name='frm' method='post' action='pds_db.php' enctype='multipart/form-data'>
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

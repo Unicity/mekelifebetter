@@ -757,6 +757,8 @@
 </HEAD>
 <BODY  onLoad="init();">
 
+<?php include "common_load.php" ?>
+
 <? if($_SERVER['HTTPS'] == "on"){ ?>
     <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <? }else{ ?>
@@ -894,8 +896,17 @@ function execDaumPostcode(zip, addr1, addr2) {
 		<input type="hidden" name="sex" value="<?php echo $sex;?>">
 	</td>
 </tr>
-<? if ($member_kind == "D") {?>
 <tr>
+	<th>
+		신청 종류 :
+	</th>
+	<td>
+		<input type="radio" name="member_kind" value="D" <?if ($member_kind == "D") echo "checked";?>>회원 &nbsp;
+		<input type="radio" name="member_kind" value="C" <?if ($member_kind == "C") echo "checked";?>>소비회원
+	</td>
+</tr>
+<? //if ($member_kind == "D") {?>
+<!-- <tr>
 	<th>
 		활동 유형 :
 	</th>
@@ -903,14 +914,14 @@ function execDaumPostcode(zip, addr1, addr2) {
         <input type="radio" name="active_kind" value="0" <?if ($active_kind == "0") echo "checked"; ?>>소매이익사업자(부가가치 신고대상자) 
         <input type="radio" name="active_kind" value="1" <?if ($active_kind == "1") echo "checked"; ?>>후원사업자 (자가소비)
 	</td>
-</tr>
-<?	}?>
+</tr> -->
+<?	//}?>
 <tr>
 	<th>
 		배우자 등록 :
 	</th>
 	<td>
-    	<input type="radio" name="couple" value="Y" <?if ($couple == "Y") echo "checked"; ?>>등록
+    	<input type="radio" name="couple" value="Y" <?if ($couple == "Y") echo "checked"; ?>>등록 &nbsp;
         <input type="radio" name="couple" value="N" <?if ($couple == "N") echo "checked"; ?>>등록 안함
 	</td>
 </tr>
@@ -1095,17 +1106,6 @@ function execDaumPostcode(zip, addr1, addr2) {
 		<input type="text" name="co_name" size="15" value="<?echo $co_name?>">
 	</td>
 </tr>
-<!--
-<tr>
-	<th>
-		회원종류 :
-	</th>
-	<td>
-		<input type="radio" name="member_kind" value="D" <?if ($member_kind == "D") echo "checked";?>> FO 회원 
-		<input type="radio" name="member_kind" value="C" <?if ($member_kind == "C") echo "checked";?>> 소비자 회원
-	</td>
-</tr>
--->
 <!--
 <tr>
 	<th>
@@ -1415,7 +1415,6 @@ function execDaumPostcode(zip, addr1, addr2) {
 <input type="hidden" name="email" value="">
 <input type="hidden" name="interest" value="">
 <INPUT type="hidden" name="member_no" value="<?echo $member_no?>">
-<INPUT type="hidden" name="member_kind" value="<?echo $member_kind?>">
 <INPUT type="hidden" name="idxfield" value="<?echo $idxfield?>">
 <INPUT type="hidden" name="idx" value="<?echo $idx?>">
 <INPUT type="hidden" name="qry_str" value="<?echo $qry_str?>">

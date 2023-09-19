@@ -38,6 +38,9 @@
 </script>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <table border=0 width=100%>
 	<tr>
 		<td align="center">

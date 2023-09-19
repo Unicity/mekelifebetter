@@ -151,6 +151,9 @@
 		
 	</head>
 	<body  onLoad="init();">
+	
+<?php include "common_load.php" ?>
+
 		<form name="frm_m" method="post">
 			<table cellspacing="0" cellpadding="10" class="title">
 				<tr>

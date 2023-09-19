@@ -214,6 +214,8 @@ td {FONT-SIZE: 9pt}
 </head>
 <body bgcolor="#FFFFFF">
 
+<?php include "common_load.php" ?>
+
 <?
 if($qry_str != ""){
 	if($idxfield == "0") $criteria = "회원번호 :".$qry_str;

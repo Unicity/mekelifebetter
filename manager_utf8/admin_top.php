@@ -1,4 +1,4 @@
-<?
+<?php 
 	//////////////////////////////////////////////////////////////
 	//
 	// 	Date 		: 2004/03/02
@@ -30,10 +30,13 @@
 </script>
 </HEAD>
 <BODY class="TFRAME">
+
+<?php include "common_load.php" ?>
+
 <BASE target="frmain">
 <TABLE border=0 width="100%" cellpadding="0" cellspacing="0" background="../img/bg5.gif">
 <TR height="30">
-	<TD valign="top"><a href="http://www.makelifebetter.co.kr" target="new"><IMG src="../img/logo.gif" border=0></a></TD>
+	<TD valign="top"><a href="http://unicore.makelifebetter.co.kr"><IMG src="../img/logo.gif" border=0></a></TD>
 	<TD align="right">
 	<a href="admin_read.php"><font color="navy">자기정보수정</font></a><font color="navy"> | </font><a href="logout.php"><font color="navy">로그아웃</font></a>&nbsp;&nbsp;
 	</TD>

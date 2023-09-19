@@ -1,6 +1,8 @@
-<?session_start();
+<?php 
+session_start();
+include "../dbconn_utf8.inc";
 
-if(session_is_registered("s_adm_id")){
+if(isset($_SESSION["s_adm_id"])){
 	$report_flag="Y";
 }else{
 	if ($s_number) {
@@ -51,7 +53,7 @@ body { font-size:12px; color:#3e6682; font-family: verdana, 돋움; }
 </style>
 </head>
 <?
-	include "../dbconn_utf8.inc";
+
 	
 	$query = "SELECT * FROM tb_Activityreport where substring(regdate,1,7)='$regdate' and id='$id'";
 
@@ -85,6 +87,9 @@ body { font-size:12px; color:#3e6682; font-family: verdana, 돋움; }
 	$MLB =$row2[0];
 ?>
 <body onload="print();">
+
+<?php include "common_load.php" ?>
+
 <div id="wrap">
 	<div class="table">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">

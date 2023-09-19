@@ -32,6 +32,8 @@ function js_excel() {
 </head>
 <BODY bgcolor="#FFFFFF">
 
+<?php include "common_load.php" ?>
+
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
 	<TD align="left"><B>계좌정보 일괄 전송</B></TD>

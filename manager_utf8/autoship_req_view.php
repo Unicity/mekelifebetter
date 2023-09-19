@@ -177,6 +177,9 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <form name='frm' method='post'>
 <input type="hidden" name="sel_req_state" value="<?=$sel_req_state?>">
 <input type="hidden" name="sel_pay_type" value="<?=$sel_pay_type?>">

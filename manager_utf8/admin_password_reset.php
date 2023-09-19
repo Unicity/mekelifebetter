@@ -1,17 +1,10 @@
-<?
+<?php
+session_start();
+error_reporting(1);
+ini_set('display_errors', 1);
 	header("X-Frame-Options: DENY");
-	//////////////////////////////////////////////////////////////
-	//
-	// 	Date 		: 2004/03/02
-	// 	Last Update : 2004/03/02
-	// 	Author 		: Park, ChanHo
-	// 	History 	: 2004.03.02 by Park ChanHo 
-	// 	File Name 	: admin.php
-	// 	Description : 관리자 로그인 화면
-	// 	Version 	: 1.0
-	//
-	//////////////////////////////////////////////////////////////
 
+	include "../dbconn_utf8.inc";
 	include "./inc/global_init.inc";
 
 	include "../AES.php";
@@ -141,7 +134,7 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 			return;
 		}
 
-		frm.action = "https://www.makelifebetter.co.kr/manager_utf8/admin_db.php";
+		frm.action = "admin_db.php";
 		frm.target = "";
 		frm.submit();
 	
@@ -235,6 +228,9 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 
 </head>
 <body>
+
+<?php include "common_load.php" ?>
+
 <div id="wrappter">
 	<!-- ie8 사용가능 하도록 div사용 -->
 	<div id="head">
@@ -249,15 +245,16 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 		<!-- 로그인 영역 { -->
 		<div id="login_box" class="lg_box">
 			<h2>비밀번호 재설정</h2>
-			<form method='post' name='form' action='https://www.makelifebetter.co.kr/manager_utf8/admin_db.php' onSubmit='return check_form(this);'>
+			<form method='post' name='form' action='/manager_utf8/admin_db.php' onSubmit='return check_form(this);'>
+				<input type="hidden" name="mode" value="reset">
 				<ul>
-					<li><h3>ID</h3><input type="text" name='adminid' id='adminid' size='20' maxlength='20' autocomplete='off' placeholder="관리자ID"></li>
+					<li><h3>ID</h3><input type="text" name='adminid' id='adminid' size='20' maxlength='20' autocomplete='off' placeholder="관리자ID" value="<?=$_SESSION["s_adm_id"]?>" 
+					<?php if($_SESSION["s_adm_id"] != ''){ echo 'readonly'; } ?>></li>
 					<li><h3>구비밀번호</h3><input type="password" name='oldadminpasswd' id='oldadminpasswd' size='20' maxlength='20' autocomplete='off' placeholder="구비밀번호"></li>
 					<li><h3>새비밀번호</h3><input type="password" name='newadminpasswd' id='newadminpasswd' size='20' maxlength='20' autocomplete='off' placeholder="새비밀번호"></li>
 					<li><h3>비밀번호 확인</h3><input type="password" name='adminpasswdcheck' id='adminpasswdcheck' size='20' maxlength='20' autocomplete='off' placeholder="비밀번호확인"></li>
 					<li><input type="button" value="변경하기" onClick="js_login();"></li>
 				</ul>
-				<input type="hidden" name="mode" value="reset">
 			</form>
 		</div>
 		<!-- } 로그인 영역 -->
@@ -272,6 +269,9 @@ body {font-family:sans-serif,"NanumGothic","나눔고딕","맑은 고딕",Helvet
 </div>
 
 <?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>
+
+</body>
+</html>
 
 </body>
 </html>

@@ -1,4 +1,6 @@
-<?
+<?php 
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 	ini_set('memory_limit',-1);
 	ini_set('max_execution_time', 60);
 
@@ -23,6 +25,9 @@
 	include "../dbconn_utf8.inc";
 	include "../AES.php";
 
+	$cfile_name = $_FILES['cfile']['name'];
+	$efile_name = $_FILES['efile']['name'];
+
 	function isDash($value){
 		$value = trim($value);
 		$value = str_replace(",","",$value);
@@ -36,12 +41,12 @@
 	$number_id = 0;
 	$path = "activity_file/";
 
-	$cfile					= str_quote_smart(trim($cfile));
-	$dfile					= str_quote_smart(trim($dfile));
-	$efile					= str_quote_smart(trim($efile));
+	$cfile_name					= str_quote_smart(trim($cfile_name));
+	$dfile_name					= str_quote_smart(trim($dfile_name));
+	$efile_name					= str_quote_smart(trim($efile_name));
 
 
-	if ($cfile != "") {
+	if ($cfile_name != "") {
 		$cfile_ext = substr(strrchr($cfile_name, "."), 1);
 //		$img_name = iconv("utf-8","euc-kr",$img_name);
 		if (strtoupper($cfile_ext) != "TXT"){
@@ -54,8 +59,8 @@
 			exit;
 		}
 
-		$cfile_strtmp = $path."/c_activity002.".$cfile_ext;
-		$new_cfile = "c_activity002.".$cfile_ext;
+		$cfile_strtmp = $path."/c_activity002_1.".$cfile_ext;
+		$new_cfile = "c_activity002_1.".$cfile_ext;
 
 
 //		if (file_exists($image_zoom_strtmp)) {
@@ -66,7 +71,8 @@
 //			exit;
 //		}
 
-		if (!copy($cfile, $cfile_strtmp))
+		//if (!copy($cfile, $cfile_strtmp))
+		if(!move_uploaded_file($_FILES['cfile']['tmp_name'], $cfile_strtmp))
 		{
 			echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">";
 			echo "<script>
@@ -78,9 +84,9 @@
 		}
 	}
 
-	if ($efile != "") {
-		$efile_ext = substr(strrchr($efile_name, "."), 1);
+	if ($efile_name != "") {
 
+		$efile_ext = substr(strrchr($efile_name, "."), 1);
 		if (strtoupper($efile_ext) != "TXT"){
 			echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">";
 			echo "<script>
@@ -102,11 +108,12 @@
 //			exit;
 //		}
 
-		$efile_strtmp = $path."/d_activity002.".$efile_ext;	
-		$new_efile = "d_activity002.".$efile_ext;	
+		$efile_strtmp = $path."/d_activity002_1.".$efile_ext;	
+		$new_efile = "d_activity002_1.".$efile_ext;	
 
  
-		if (!copy($efile, $efile_strtmp))
+		//if (!copy($efile, $efile_strtmp))
+		if(!move_uploaded_file($_FILES['efile']['tmp_name'], $efile_strtmp))
 		{
 			echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">";
 			echo "<script>
@@ -117,7 +124,6 @@
 			exit;
 		}
 	} 
-
 
 //	$query = "delete from tb_member where member_kind = 'C' ";
 	//echo $query;

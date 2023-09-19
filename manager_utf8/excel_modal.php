@@ -129,13 +129,21 @@ function inExcelLog(){
 
 
 function goExcelHistory(cate1, cate2, txt,  kind=''){	
+	console.log(cate1 +', '+ cate2 +', '+ txt +', '+ kind);
 	$("#ex_cate").val(cate1);
 	$("#ex_page").val(cate2);
 	$("#ex_detail").val(txt);
 	$("#ex_kind").val(kind);
-	var retVal = confirm("EXCEL 다운로드 받으시겠습니까?\n데이터가 많은 경우 다소 시간이 소요될 수 있습니다.");
-	if (retVal){
+
+	if(cate1 == '회원수당조회'){
+
 		openExPopup(); 
+
+	}else{
+		var retVal = confirm("EXCEL 다운로드 받으시겠습니까?\n데이터가 많은 경우 다소 시간이 소요될 수 있습니다.");
+		if (retVal){
+			openExPopup(); 
+		}
 	}
 }
 </script>

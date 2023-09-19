@@ -18,7 +18,7 @@ function convertData($str){
 	$str = iconv("euc-kr","utf-8",$str);
 	$str = str_replace('"',"",$str);
 	$str = str_replace("'","",$str);
-	$str = str_replace("-","",$str);
+	//$str = str_replace("-","",$str);
 	return $str;
 }
 
@@ -79,6 +79,10 @@ TD {FONT-SIZE: 9pt}
 <script type="text/javascript" src="/manager_utf8/inc/jquery.js"></script>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+
+<?php include "common_load.php" ?>
+
 
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
@@ -157,7 +161,7 @@ if($mode == "confirm" || $mode == "insert"){
 		
 		if($mode == "insert"){  //데이터등록		
 			$num = count($data);
-			$val = "";
+			$val = array();
 			if($tot  > 0){ //제목행제외
 				for ($c=0; $c < $num; $c++) { 
 					$val[$c] = convertData($data[$c]);
@@ -169,7 +173,7 @@ if($mode == "confirm" || $mode == "insert"){
 				} 
 
 				//이메일유효성검사
-				$check_email=preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $val[7]); 
+				$check_email=preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $val[7]);  
 
 				//등록양식 변경 - 210310 이성수 부장님 요청
 				//등록일자0,성명1,회원번호2,생년월일3,기본주소4,상세주소5,우편번호6,메일주소7, Flag19,Consents,BIRTH CHECK, Entry_init

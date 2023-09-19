@@ -1,19 +1,28 @@
-<?
+<?php 
+session_start();
+ini_set('memory_limit',-1);
+ini_set('max_execution_time', 60);
+
 	//include "admin_session_check.inc";
 	//include "./inc/global_init.inc";
 	include "../dbconn_utf8.inc";
 	include "../AES.php";
+	include "./inc/common_function.php";
 
 	$qry_str = $_POST['qry_str'];
 	$qry_str1 = $_POST['qry_str1'];
 
-	
+
+	//ob_start();
+
+	/*	
 	$str_title = iconv("UTF-8","EUC-KR"," 효성 결과 확인");
 	
 	$file_name=$str_title."-".$qry_str."~".$qry_str1.".xls";
 	header( "Content-type: application/vnd.ms-excel" ); // 헤더를 출력하는 부분 (이 프로그램의 핵심)
 	header( "Content-Disposition: attachment; filename=$file_name" );
 	header( "Content-Description: orion70kr@gmail.com" );
+	*/
 
 
 	//$sendUrl = 'https://api.hyosungcms.co.kr/v1/custs/unicity0/cash-receipts?fromReceiptDate='.$qry_str.'&toReceiptDate='.$qry_str1;
@@ -29,7 +38,7 @@
 
 	$cnt = $json_result['payments'];
 
-
+ob_start();
 ?>	
 
 
@@ -107,11 +116,8 @@
 					$paymentDate=$cnt[$i]['paymentDate'];
 					$actualAmount=$cnt[$i]['actualAmount'];
 					$transactionId=$cnt[$i]['transactionId'];
-
 					
-					list($memberNo,$orderNo)=split("[_:]",	$transactionId);
-					
-					
+					list($memberNo,$orderNo) = explode("[_:]",	$transactionId);
 
 			?>
 			<tr>
@@ -128,3 +134,47 @@
 		
 	</body>
 </html>
+<?php
+$xls_contents = ob_get_contents();
+ob_end_clean();
+
+$xls_contents = iconv("UTF-8","EUC-KR",$xls_contents);
+
+$str_title = iconv("UTF-8","EUC-KR"," 효성 결과 확인");
+$file_name=$str_title."-".$qry_str."~".$qry_str1.".zip";
+
+
+$save_file_name = time()."_".rand(11111, 99999);
+$save_xls_name = $save_file_name.".xls";
+$save_zip_name = $save_file_name.".zip";
+
+// 압축할 디렉토리 
+$upload_dir = $_SERVER['DOCUMENT_ROOT']."/manager_utf8/upload_data";
+
+$password = $_SESSION['s_adm_id'];
+if($password == "") $password = "unicity";
+
+$txtfile = @fopen($upload_dir."/".$save_xls_name, "w");
+@fwrite($txtfile, $xls_contents);
+@fclose($txtfile);
+@chmod($upload_dir."/".$save_xls_name, 0777);
+
+$zip = new ZipArchive; 
+if( $zip->open($upload_dir."/".$save_zip_name, ZipArchive::CREATE)) {
+	$zip->setPassword($password);
+	$zip->addFile($upload_dir."/".$save_xls_name, $save_xls_name);	
+	$zip->setEncryptionName($save_xls_name, ZipArchive::EM_AES_256);
+	$zip->close();
+	@chmod($upload_dir."/".$save_zip_name, 0777);
+}
+
+
+//파일다운로드
+if(file_exists($upload_dir."/".$save_zip_name)){
+	header("Content-type: application/octet-stream");
+	header("Content-Disposition: attachment; filename=".$file_name); 
+	readfile($upload_dir."/".$save_zip_name);
+	@unlink($upload_dir."/".$save_xls_name);
+	@unlink($upload_dir."/".$save_zip_name);
+}
+?>

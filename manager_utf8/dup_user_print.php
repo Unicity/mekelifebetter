@@ -50,6 +50,9 @@
 </style>
 </HEAD>
 <BODY onload="init();">
+
+<?php include "common_load.php" ?>
+
 <?	while($row = mysql_fetch_array($result)) { ?>
 <div class="a4">
 <!--[if gte IE 7]><br style='height:0; line-height:0'><![endif]-->
@@ -61,16 +64,16 @@
 	<TD align="left"><B>온라인 회원 가입 (회원 정보 입력용) </B></TD>
 </TR>
 </TABLE>
-<table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
-<colgroup>
-	<col width="20%">
-	<col width="80%">
-</colgroup>
+<table height='35' width='590' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
 <tr>
 	<td align='center'>
 <TABLE border="0" cellspacing="1" cellpadding="2" class="IN2">
+<colgroup>
+	<col width="150">
+	<col width="440">
+</colgroup>
 <tr>
-	<th style="width:250px !important">회원종류 :</th>
+	<th>회원종류 :</th>
 	<td><? if (trim($row[member_kind]) == "D" ) { echo " FO 회원"; } else {echo "소비자 회원";} ?></td>
 </tr>
 <tr>
@@ -86,12 +89,8 @@
 	<td><?echo $row[password]?></td>
 </tr>
 <tr>
-	<th>생년월일 :</th>
-	<td><?echo decrypt($key, $iv, $row[JU_NO01])?></td>
-</tr>
-<tr>
-	<th>성별 :</th>
-	<td><? if (trim($row[sex]) == "1" ) { echo "남성성"; } else {echo "여성";} ?></td>
+	<th>주민등록번호 :</th>
+	<td><?echo decrypt($key, $iv, $row[JU_NO01])?>-<?echo decrypt($key, $iv, $row[JU_NO02])?></td>
 </tr>
 <? if (trim($row[member_kind]) == "D") { ?>
 <tr>
@@ -116,8 +115,8 @@
 	<td><?echo $row[couple_ename]?></td>
 </tr>
 <tr>
-	<th>생년월일 :</th>
-	<td><?echo decrypt($key, $iv, $row[couple_reg_jumin1])?></td>
+	<th>주민등록번호 :</th>
+	<td><?echo decrypt($key, $iv, $row[couple_reg_jumin1])?>-<?echo decrypt($key, $iv, $row[couple_reg_jumin2])?></td>
 </tr>
 <?	} ?>
 <tr>
@@ -174,12 +173,15 @@
 	<th>본인외주문 동의 :</th>
 	<td><?echo $row[sel_agree05]?></td>
 </tr>
+
+
+
 <tr>
 	<th>회원수첩 이메일발송 동의 :</th>
-	<td><?echo $row[sel_agree06]?></td>
+	<td><?=$row[sel_agree06]?></td>
 </tr>
 <tr>
-	<th>후원수당 등 변경통지 :</th>
+	<th>후원수당등 변경통지 :</th>
 	<td>
 		<?if ($row[agree_01] == "Y"){?>☑️<?}else{?>⬜<?}?> 이메일 &nbsp;
 		<?if ($row[agree_02] == "Y"){?>☑️<?}else{?>⬜<?}?> SMS &nbsp; 
@@ -217,9 +219,6 @@
 <?
 	}
 ?>
-
-<?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>
-
 </body>
 </html>
 

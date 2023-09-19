@@ -26,7 +26,6 @@
     $result = mysql_query($query);
     $row = mysql_fetch_array($result);
     $TotalArticle = $row[0];
-	
 	//$query2 = "select * from smart_fms_log where reg_date between 20220510 and 20220530 and send_url in ('https://api.hyosungcms.co.kr/v1/payments/cms','https://api.hyosungcms.co.kr/v1/custs/unicity0/cash-receipts')";
 	$query2 = "select * from smart_fms_log where reg_date between ".$qry_str." and ".$qry_str1." and send_url in ('https://api.hyosungcms.co.kr/v1/payments/cms','https://api.hyosungcms.co.kr/v1/custs/unicity0/cash-receipts')";
 

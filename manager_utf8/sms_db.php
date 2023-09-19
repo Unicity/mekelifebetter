@@ -25,7 +25,7 @@
 		$send_state = "0";
 
 		$query = "insert into tb_sms_master (title, contents, callback, sms_type, send_state, reg_adm, reg_date) values 
-					  ('$title', '$contents', '$callback', '$sms_type', '$send_state', '".session_is_registered("s_adm_id")."', now())";
+					  ('$title', '$contents', '$callback', '$sms_type', '$send_state', '".$s_adm_id."', now())";
 
 		mysql_query($query) or die("Query Error");
 
@@ -54,7 +54,7 @@
 					contents = '$contents',
 					callback = '$callback',
 					sms_type = '$sms_type',
-					up_adm = '".session_is_registered("s_adm_id")."',
+					up_adm = '$s_adm_id',
 					up_date = now() 
 				where seq_no = '$seq_no'";
 		
@@ -89,7 +89,7 @@
 		}
 
 		//$query = "delete from tb_sms_master where seq_no in $seq_no";
-		$query = "update tb_sms_master set del_tf = 'Y', del_adm = '".session_is_registered("s_adm_id")."', del_date = now()  where seq_no in (".$seq_no.")";
+		$query = "update tb_sms_master set del_tf = 'Y', del_adm = '".$s_adm_id."', del_date = now()  where seq_no in (".$seq_no.")";
 
 		mysql_query($query) or die("Query Error");
 
@@ -101,6 +101,11 @@
 		echo "<script language=\"javascript\">\n
 			alert('삭제 되었습니다.');
 			parent.frames[3].location = 'sms_list.php';
+			</script>";
+		exit;
+
+	}
+?>			parent.frames[3].location = 'sms_list.php';
 			</script>";
 		exit;
 

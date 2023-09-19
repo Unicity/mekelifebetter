@@ -5,7 +5,11 @@
     include "../dbconn_utf8.inc";
     include "../AES.php";
     include "excel_modal.php";
-    $r_status = str_quote_smart(trim($r_status));
+	include "./inc/common_function.php";
+
+    $from_date	= str_quote_smart(trim($from_date));
+	$to_date	= str_quote_smart(trim($to_date));
+	$r_status = str_quote_smart(trim($r_status));
     $idxfield = str_quote_smart(trim($idxfield));
     $qry_str = str_quote_smart(trim($qry_str));
     
@@ -22,7 +26,16 @@
     
     if (empty($idxfield)) {
         $idxfield = "0";
-    } 
+    }
+	
+	if (!empty($from_date)) {
+		$que = " and apply_date >= '$from_date' ";		
+	}
+
+	if (!empty($to_date)) {
+		$que = $que." and date_sub(apply_date, interval 1 day) <= '$to_date' ";	
+		//$que = $que." and regdate <= '$to_date' ";		
+	}
     
     if (!empty($qry_str)) {
         
@@ -39,6 +52,22 @@
         $que = $que." and reg_status = '$r_status' ";
     }
     
+
+	//엑셀다운로드용
+	$excel_str = "";
+	if($r_status == "A")  $excel_str .= "검색 : 전체";
+	else if($r_status == "2")  $excel_str .= "검색 : 신청";
+	else if($r_status == "9")  $excel_str .= "검색 : 익월처리";
+	else if($r_status == "3")  $excel_str .= "검색 : 완료";
+	else if($r_status == "8")  $excel_str .= "검색 : 보류";
+	else if($r_status == "4")  $excel_str .= "검색 : 신청거부";
+
+	if($qry_str != ""){
+		if($idxfield == '1') $excel_str .= ', 회원이름:'.$qry_str;
+		else $excel_str .= ', 회원번호:'.$qry_str;
+	}
+
+
     if ($page <> "") {
         $page = (int)($page);
     } else {
@@ -54,14 +83,16 @@
     $nPageBlock	= 10;
     
     $offset = $nPageSize*($page-1);
+
+	if($to_date != ""){
     
-    $query = "select count(*) from tb_change_sponsor where 1 = 1 ".$que;
-    $result = mysql_query($query,$connect);
-    $row = mysql_fetch_array($result);
-    $TotalArticle = $row[0];
-    $query2 = "select * from tb_change_sponsor where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize;
-    $result2 = mysql_query($query2);
-    
+		$query = "select count(*) from tb_change_sponsor where 1 = 1 ".$que;
+		$result = mysql_query($query,$connect);
+		$row = mysql_fetch_array($result);
+		$TotalArticle = $row[0];
+		$query2 = "select * from tb_change_sponsor where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize;
+		$result2 = mysql_query($query2);
+	}	
   
     //페이지 처리
     $ListArticle = $nPageSize;
@@ -104,46 +135,70 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	</head>
 	<body bgcolor="#FFFFFF">
+	
+<?php include "common_load.php" ?>
+
 		<form name="frmSearch" method="post" action="javascript:check_data();">
-			
+
 			<table cellspacing="0" cellpadding="10" class="title">
 				<tr>
 					<td align="left"><b>후원자 변경 신청</b></td>
 					<td align="right" width="600" align="center" bgcolor=silver>
-						<select name="idxfield">
-							<option value="0" <?if($idxfield == "0") echo "selected";?>>회원번호</option>
-							<option value="1" <?if($idxfield == "1") echo "selected";?>>회원이름</option>
-						</select>
-						<input type="text" name="qry_str" value="<?echo $qry_str?>">&nbsp;
-						<input type="button" value="검색" onClick="onSearch();">
 						<input type="button" value="완료" onclick="getCheckedValues();" >
-						<input type="button" value="엑셀다운로드" onclick="excelDown();" >
+						<input type="button" value="엑셀다운로드" onclick="goExcelBefore()" >
 					</td>
 				</tr>
 			</table>
 			<b>* 처리 하실 단계를 선택하세요.</b>
+
 			<table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
 				<tr>
 					<td align='center'>
-						<table width='99%' bgcolor="#EEEEEE">
-							<tr align="center">
-								<td align="left">
-									<input type="radio" name="r_status" value="A" <? if ($r_status == "A") echo "checked" ?>  onClick="check_data();"> 전체 &nbsp;&nbsp;
-									<!--input type="radio" name="r_status" value="1" <? if ($r_status == "1") echo "checked" ?>  onClick="check_data();"> 신청 (본인여부확인) &nbsp;&nbsp;-->
-									<input type="radio" name="r_status" value="2" <? if ($r_status == "2") echo "checked" ?>  onClick="check_data();"> 신청 &nbsp;&nbsp;
-									<input type="radio" name="r_status" value="9" <? if ($r_status == "9") echo "checked" ?>  onClick="check_data();"> 익월처리 &nbsp;&nbsp; 
-									<input type="radio" name="r_status" value="3" <? if ($r_status == "3") echo "checked" ?>  onClick="check_data();"> 완료 &nbsp;&nbsp;
-									<input type="radio" name="r_status" value="8" <? if ($r_status == "8") echo "checked" ?>  onClick="check_data();"> 보류&nbsp;&nbsp; 
-									<input type="radio" name="r_status" value="4" <? if ($r_status == "4") echo "checked" ?>  onClick="check_data();"> 신청 거부&nbsp;&nbsp;
+						<table bgcolor="#EEEEEE" width="100%" cellpadding='0' cellspacing='0' border='1' bordercolorlight='#FFFFFF' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
+							<tr>
+								<td align="right" width="100">
+									<b>구분 : &nbsp;</b>
 								</td>
-								
+								<td>
+									<input type="radio" name="r_status" value="A" <? if ($r_status == "A") echo "checked" ?> > 전체 &nbsp;&nbsp;
+									<!--input type="radio" name="r_status" value="1" <? if ($r_status == "1") echo "checked" ?> > 신청 (본인여부확인) &nbsp;&nbsp;-->
+									<input type="radio" name="r_status" value="2" <? if ($r_status == "2") echo "checked" ?> > 신청 &nbsp;&nbsp;
+									<input type="radio" name="r_status" value="9" <? if ($r_status == "9") echo "checked" ?> > 익월처리 &nbsp;&nbsp; 
+									<input type="radio" name="r_status" value="3" <? if ($r_status == "3") echo "checked" ?> > 완료 &nbsp;&nbsp;
+									<input type="radio" name="r_status" value="8" <? if ($r_status == "8") echo "checked" ?> > 보류&nbsp;&nbsp; 
+									<input type="radio" name="r_status" value="5" <? if ($r_status == "5") echo "checked" ?> > 후원자미동의&nbsp;&nbsp; 
+									<input type="radio" name="r_status" value="4" <? if ($r_status == "4") echo "checked" ?> > 신청 거부&nbsp;&nbsp;
+								</td>
 							</tr>
+							<tr>
+								<td align="right" width="100">
+									<b>신청일자 : &nbsp;</b>
+								</td>
+								<td> &nbsp;
+									<input type="text" name="from_date" value="<?echo $from_date?>" size="11" maxlength="10">~
+									<input type="text" name="to_date" value="<?=($to_date != "") ? $to_date : date("Y-m-d");?>" size="11" maxlength="10" placeholder="YYYY-MM-DD"> [2004-12-01의 형태로 입력, <font color="red">미입력시 리스트가 출력되지 않습니다.</font>]
+								</td>
+							</tr>
+							<tr>
+								<td align="right" width="100">
+									<b>검색 : &nbsp;</b>
+								</td>
+								<td>
+									&nbsp;
+									<select name="idxfield">
+										<option value="0" <?if($idxfield == "0") echo "selected";?>>회원번호</option>
+										<option value="1" <?if($idxfield == "1") echo "selected";?>>회원이름</option>
+									</select>
+									<input type="text" name="qry_str" value="<?echo $qry_str?>">&nbsp;
+									<input type="button" value="검색" onClick="onSearch();">
+								</td>
+							</tr>							
 						</table>
 					</td>
 				</tr>
 			</table>
-		
-			<table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver">
+
+			<table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver" style="margin-top:10px">
 				<tr>
 					<th width="2%" style="text-align: center;"><input type="checkbox" id="chckHead" onchange="toggleCheckbox(this);" /></th>
 					<th width="5%" style="text-align: center;">신청일자</th>
@@ -152,11 +207,12 @@
 					<th width="5%" style="text-align: center;">신청인 주소</th>
 					<th width="5%" style="text-align: center;">가입일자</th>
 					<th width="5%" style="text-align: center;">현재 후원자 번호</th>
-					<th width="5%" style="text-align: center;">현재 후원인</th>
+					<th width="5%" style="text-align: center;">현재 후원자</th>
 					<th width="5%" style="text-align: center;">변경 후원자 번호</th>
-					<th width="5%" style="text-align: center;">변경 후원인</th>
-					<th width="5%" style="text-align: center;">동의 여부</th>
+					<th width="5%" style="text-align: center;">변경 후원자</th>
+					<th width="5%" style="text-align: center;">현재 후원자 <br/>동의 여부</th>
 					<th width="5%" style="text-align: center;">동의 날짜</th>
+					<th width="5%" style="text-align: center;">5일전 문자</th>
 					<th width="5%" style="text-align: center;">처리상태</th>
 				</tr>
 				<?php
@@ -172,6 +228,8 @@
 						        $stausVal = '익월처리';
 						    }else if($obj->reg_status == '8'){
 						        $stausVal = '보류';
+							}else if($obj->reg_status == '5'){
+								$stausVal = '후원자 미동의';	
 						    }else if($obj->reg_status == '4'){
 						        $stausVal = '신청거부';
 						    }else{
@@ -188,15 +246,16 @@
 					<td align="center"><input type="checkbox" name="CheckItem" value="<?echo $obj->no?>"></td>
 					<td style="width: 5%" align="center"><?echo $obj->apply_date?></td>
 					<td style="width: 5%" align="center"><a href="javascript:onViewDetail('<?echo $obj->no?>')"><?echo $obj->member_no?></a></td>
-					<td style="width: 5%" align="center"><?echo $obj->member_name?></td>
+					<td style="width: 5%" align="center"><?echo masking_name($obj->member_name)?></td>
 					<td style="width: 5%" align="center"><?echo $obj->address?></td>
 					<td style="width: 5%" align="center"><?echo $obj->entry_date?></td>
 					<td style="width: 5%" align="center"><?echo $obj->sponsor_no?></td>
-					<td style="width: 5%" align="center"><?echo $obj->sponsor_name?></td>
+					<td style="width: 5%" align="center"><?echo masking_name($obj->sponsor_name)?></td>
 					<td style="width: 5%" align="center"><?echo $obj->ch_sponsor_no?></td>
-					<td style="width: 5%" align="center"><?echo $obj->ch_sponsor_name?></td>
+					<td style="width: 5%" align="center"><?echo masking_name($obj->ch_sponsor_name)?></td>
 					<td style="width: 5%" align="center"><?echo $obj->sponsor_agree_yn?></td>
 					<td style="width: 5%" align="center"><?echo $obj->agree_date?></td>
+					<td style="width: 5%" align="center"></td>
 					<td style="width: 5%" align="center"><?echo $stausVal?></td>
 					
 				</tr>
@@ -266,6 +325,10 @@
         	<input type="hidden" name="type" value="">
         	<input type="hidden" name="idVal" value="">
         	<input type="hidden" name="RefundNo" value="">
+			<input type="hidden" name="fromDate" value="">
+			<input type="hidden" name="toDate" value="">
+
+			<? include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/excel_modal.php"; ?>
        
 		</form>
 	</body>
@@ -345,10 +408,15 @@
 		        	vals += checkboxes[i].value+',';
 		    		}
 				}
-				vals = vals.slice(0, -1); 
-				alert(vals);	
-				url = 'changeSponsor_task.php?data='+btoa(vals);
-			 	NewWindow(url, '일괄처리', 350, 250, 'no');
+				vals = vals.slice(0, -1);
+				
+				if(vals == ''){
+					alert('선택된 내역이 없습니다');
+				}else{
+					//alert(vals);	
+					url = 'changeSponsor_task.php?data='+btoa(vals);
+				 	NewWindow(url, '일괄처리', 350, 250, 'no');
+				}
 			 
 			}
 
@@ -362,8 +430,36 @@
 				if (parseInt(navigator.appVersion) >= 4) { win.window.focus(); }
 			}
 
+			function goExcelBefore() {	
+				var checkboxes = document.getElementsByName('CheckItem');	
+				var fromDate = document.frmSearch.from_date.value;
+				var toDate = document.frmSearch.to_date.value;
+				
+				if(fromDate == ""){
+					alert("신청일자를 입력 해주세요");
+					return;
+				}	
+			/*
+				var vals = "";
+				for (var i=0;i<checkboxes.length;i++) {	    	
+					if (checkboxes[i].checked) {
+						vals += checkboxes[i].value+',';
+					}
+				}
+				vals = vals.slice(0, -1); 
 
-			
+				if(vals == ""){
+					alert("선택내역이 없습니다");
+					return;
+				}	
+				
+				*/
+				//document.frmSearch.idVal.value=vals;	
+				document.frmSearch.fromDate.value=fromDate;	
+				document.frmSearch.toDate.value=toDate;				
+
+				goExcelHistory('회원관리','후원자변경신청','<?=$excel_str?>');
+			}
 
 			function excelDown(){
 				var frm = document.frmSearch;
@@ -371,15 +467,8 @@
 				frm.action = "changeSponsor_excel.php";
 				frm.submit();
 			}
-
-			function goExecl(){
-				var frm = document.frmSearch;
-				frm.target = "";
-				frm.action = "changeSponsor_excel.php";
-				frm.submit();
-			}
 			
-						
+		
 	</script>
 
 	<?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>

@@ -123,7 +123,7 @@ function excelDown2(){
 }
 
 function excelDown3(){
-	location.href="user_off_mailing_excel_test.php";
+	location.href="user_off_mailing_excel_new2.php";
 }
 function updateSendResult(no){
 
@@ -159,6 +159,9 @@ function goPage(n){
 </script>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="javascript:check_data();">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

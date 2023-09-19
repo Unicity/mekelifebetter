@@ -40,6 +40,7 @@
 	$temp1			= $list[temp1];
 	$UserDept		= $list[temp2];
 	$en_pass		= $list[EN_PASS];
+	$status		= $list[status];
 
 ?>		
 <HTML>
@@ -220,7 +221,11 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <form name='frm' method='post' action='admin_db.php' autocomplete="off">
+<input type="hidden" name="status" value="<?=$status?>">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
 	<TD align="left"><B>관리자 관리 (수정)</B></TD>

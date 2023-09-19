@@ -276,6 +276,9 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <?
 	$y=date("Y");
 	$m=date("m");

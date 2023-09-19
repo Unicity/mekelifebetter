@@ -30,6 +30,8 @@ function cardDownload(n){
 </head>
 <BODY bgcolor="#FFFFFF" style="padding:10px">
 
+<?php include "common_load.php" ?>
+
 <? if($_GET['mno'] == "") { ?>
 	<script type="text/javascript">
 	alert("조회대상이 없습니다");

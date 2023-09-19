@@ -1,22 +1,24 @@
-<?
+<?php 
+error_reporting( E_ALL );
+  ini_set( "display_errors", 1 );
 session_start();
 
 if(!isset($_SERVER["HTTPS"])) {
-	header('Location: https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']);
-	exit;
+	//header('Location: https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']);
+	//exit;
 }
 
-	include "./inc/global_init.inc";
-	include "./inc/common_function.php";
+include "./inc/global_init.inc";
+include "./inc/common_function.php";
 
-	if(!session_is_registered("s_adm_id")){
+if(!isset($_SESSION["s_adm_id"])){
 ?>
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script language="javascript">
 		alert("세션이 종료 되어 다시 로그인 하셔야 합니다.");
-		document.location="admin.php";
+		document.location="https://unicore.makelifebetter.co.kr/";
 	</script>
 </head>
 </html>
@@ -42,11 +44,11 @@ if(!isset($_SERVER["HTTPS"])) {
 	<FRAME SRC="admin_top.php" NAME="frtop" MARGINWIDTH="0" MARGINHEIGHT="0" SCROLLING="no">
 	<FRAMESET COLS="190, *" frameborder=no border=0 framespacing=0 >
 		<FRAME SRC="admin_left.php" NAME="frleft" MARGINWIDTH="0" MARGINHEIGHT="0" SCROLLING="auto">
-<?if($s_flag == "3"){?>
+<?php  if($s_flag == "3"){ ?>
 		<FRAME SRC="/manager/pg/KSPAY_list.php" NAME="frmain" MARGINWIDTH="0" MARGINHEIGHT="0" SCROLLING="auto">
-<?}else{?>
+<?php  }else{ ?>
 		<FRAME SRC="admin_body.php" NAME="frmain" MARGINWIDTH="0" MARGINHEIGHT="0" SCROLLING="auto">
-<?}?>
+<?php  } ?>
 	</FRAMESET>
 	<NOFRAMES>
 	<BODY bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
@@ -55,6 +57,6 @@ if(!isset($_SERVER["HTTPS"])) {
 	</NOFRAMES>
 </FRAMESET>
 
-<?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>
+<?php //include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>
 
 </HTML>

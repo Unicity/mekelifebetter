@@ -707,6 +707,9 @@
 </SCRIPT>
 </HEAD>
 <BODY  onLoad="init();">
+
+<?php include "common_load.php" ?>
+
 <form name="frm_m" method="post" action="user_db.php">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

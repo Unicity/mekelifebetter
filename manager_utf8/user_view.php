@@ -307,7 +307,6 @@
 <script type="text/javascript" src="inc/jquery.js"></script>
 <LINK rel="stylesheet" HREF="inc/admin.css" TYPE="text/css">
 <TITLE><?echo $g_site_title?></TITLE>
-
 <SCRIPT language="javascript">
 <!--
 	function init() {
@@ -756,13 +755,17 @@
 //-->
 </SCRIPT>
 </HEAD>
-<BODY  onLoad="init();">
+<body onLoad="init();" >
+
+<?php include "common_load.php"; ?>
+
 <? if($_SERVER['HTTPS'] == "on"){ ?>
     <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <? }else{ ?>
     <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <? } ?>
 <script>
+
 //다음주소검색
 function execDaumPostcode(zip, addr1, addr2) {
 	new daum.Postcode({
@@ -890,8 +893,18 @@ function execDaumPostcode(zip, addr1, addr2) {
 	</th>
 	<td><? if (trim($sex) == "1" ) { echo "남"; } else {echo "여";} ?></td>
 </tr>
-<? if ($member_kind == "D") {?>
 <tr>
+	<th>
+		신청 종류 :
+	</th>
+	<td>
+		<input type="radio" name="member_kind" value="D" <?if ($member_kind == "D") echo "checked";?>>회원 &nbsp;
+		<input type="radio" name="member_kind" value="C" <?if ($member_kind == "C") echo "checked";?>>소비회원
+	</td>
+</tr>
+
+<? //if ($member_kind == "D") {?>
+<!-- <tr>
 	<th>
 		활동 유형 :
 	</th>
@@ -899,14 +912,14 @@ function execDaumPostcode(zip, addr1, addr2) {
         <input type="radio" name="active_kind" value="0" <?if ($active_kind == "0") echo "checked"; ?>>소매이익사업자(부가가치 신고대상자) 
         <input type="radio" name="active_kind" value="1" <?if ($active_kind == "1") echo "checked"; ?>>후원사업자 (자가소비)
 	</td>
-</tr>
-<?	}?>
+</tr> -->
+<?	//}?>
 <tr>
 	<th>
 		배우자 등록 :
 	</th>
 	<td>
-    	<input type="radio" name="couple" value="Y" <?if ($couple == "Y") echo "checked"; ?>>등록
+    	<input type="radio" name="couple" value="Y" <?if ($couple == "Y") echo "checked"; ?>>등록 &nbsp;
         <input type="radio" name="couple" value="N" <?if ($couple == "N") echo "checked"; ?>>등록 안함
 	</td>
 </tr>
@@ -982,7 +995,7 @@ function execDaumPostcode(zip, addr1, addr2) {
 		제품수령주소 :
 	</th>
 	<td>
-		<input type="text" name="del_addr" id="del_addr" size="60" value="<?echo $del_addr?>"> <input type="text" name="del_addr02" id="del_addr02" size="60" value="<?echo $del_addr_detail?>">
+		<input type="text" name="del_addr" id="del_addr" size="60" value="<?echo $del_addr?>"> <input type="text" name="del_addr02" id="del_addr02" size="60" value="<?echo $del_addr_detail?>" ondragstart="return false" onselectstart="return false">
 	</td>
 </tr>
 <tr>
@@ -1106,17 +1119,6 @@ function execDaumPostcode(zip, addr1, addr2) {
 		<input type="text" name="co_name" size="15" value="<?echo $co_name?>">
 	</td>
 </tr>
-<!--
-<tr>
-	<th>
-		회원종류 :
-	</th>
-	<td>
-		<input type="radio" name="member_kind" value="D" <?if ($member_kind == "D") echo "checked";?>> FO 회원 
-		<input type="radio" name="member_kind" value="C" <?if ($member_kind == "C") echo "checked";?>> 소비자 회원
-	</td>
-</tr>
--->
 <!--
 <tr>
 	<th>
@@ -1408,7 +1410,6 @@ function execDaumPostcode(zip, addr1, addr2) {
 <input type="hidden" name="interest" value="">
 <INPUT type="hidden" name="sex" value="<?echo $sex?>">
 <INPUT type="hidden" name="member_no" value="<?echo $member_no?>">
-<INPUT type="hidden" name="member_kind" value="<?echo $member_kind?>">
 <INPUT type="hidden" name="idxfield" value="<?echo $idxfield?>">
 <INPUT type="hidden" name="idx" value="<?echo $idx?>">
 <INPUT type="hidden" name="qry_str" value="<?echo $qry_str?>">

@@ -287,6 +287,9 @@ function ChgDate(cName_yy, cName_mm, cName_dd,cDD)	{
 </script>
 </head>
 <BODY bgcolor="#FFFFFF" onLoad="init();">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="javascript:goCheck();">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

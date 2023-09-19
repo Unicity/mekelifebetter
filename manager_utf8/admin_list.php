@@ -174,6 +174,9 @@ function getIds(){
 </script>
 </head>
 <BODY bgcolor="#FFFFFF" onLoad="init();">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="admin_list.php">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
@@ -195,12 +198,14 @@ function getIds(){
 <TR>
 	<TH width="3%">&nbsp;</TH> 
 	<TH width="13%">관리자 ID</TH>
-	<TH width="14%">관리자 성명</TH>
-	<TH width="14%">관리자 부서</TH>
-	<TH width="14%">관리자 그룹</TH>
-	<TH width="14%">연락처</TH>
+	<TH width="10%">관리자 성명</TH>
+	<TH width="10%">관리자 부서</TH>
+	<TH width="10%">관리자 그룹</TH>
+	<TH width="10%">연락처</TH>
 	<TH width="14%">E-Mail</TH>
-	<TH width="14%">등록일</TH>
+	<TH width="10%">등록일</TH>
+	<TH width="10%">상태</TH>
+	<TH width="10%">마지막로그인</TH>
 </TR>     
 <?
 	$result2 = mysql_query($query2);
@@ -213,7 +218,8 @@ function getIds(){
 
 			if ($i >= $First) {
 				
-				$date_s = date("Y-m-d [H:i]", strtotime($obj->regDate));
+				if($obj->regDate == "") $date_s = '-';
+				else $date_s = date("Y-m-d [H:i]", strtotime($obj->regDate));
 	
 ?>					
 <TR align="center">                    
@@ -225,6 +231,8 @@ function getIds(){
 	<TD><?echo $obj->Phone1?></TD>
 	<TD><?echo $obj->Email?></TD>
 	<TD><?echo $date_s?></TD>
+	<TD><?echo ($obj->status == "Y") ? "정상" : "제한"; ?></TD>
+	<TD><?=($obj->last_login == "") ? "-" : date("Y-m-d [H:i]", $obj->last_login);?></TD>
 </TR>
 <?
 			}

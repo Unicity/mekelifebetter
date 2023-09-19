@@ -20,6 +20,9 @@
 </style>
 </HEAD>
 <BODY onload="init();">
+
+<?php include "common_load.php" ?>
+
 <div class="a4">
 <table border=0 width=100%>
 	<tr>

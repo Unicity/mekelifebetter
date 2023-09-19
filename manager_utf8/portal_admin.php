@@ -312,6 +312,9 @@ td {FONT-SIZE: 9pt}
 </style>
 </head>
 <body bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <form name="frmSearch" method="post" action="javascript:check_data();">
 
 <table cellspacing="0" cellpadding="10" class="title">

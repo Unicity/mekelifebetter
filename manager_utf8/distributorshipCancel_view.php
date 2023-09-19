@@ -4,6 +4,9 @@
 	include "../dbconn_utf8.inc";
 	include "../AES.php";
 
+	$s_adm_id = str_quote_smart_session($s_adm_id);
+
+
 	function right($value, $count){
 		$value = substr($value, (strlen($value) - $count), strlen($value));
 		return $value;
@@ -74,6 +77,7 @@
 	$r_couple				= str_quote_smart(trim($r_couple));
 	$from_date			= str_quote_smart(trim($from_date));
 	$to_date				= str_quote_smart(trim($to_date));
+	$autoshipYn				= str_quote_smart(trim($autoshipYn));
 
 
 	$query = "select * from distributorshipCancel where no = '".$member_no."'";
@@ -281,31 +285,66 @@
 	function goIn(){
 		
 		if(confirm("수정하시겠습니까?")){   
-
-
-			
 			document.frm_m.action = "distributorshipCancel_confirm.php";
 			document.frm_m.submit();
 		}
 	}	
+
+	function goAutoship(val) {
+
+		/*
+		frm_m.target = "frmain";
+		document.frm_m.action="deleteAutoship.php";
+		document.frm_m.submit();
+		*/
+		if(confirm("해지까지 시간은 약 10초 정도 소요 됩니다.오토쉽을 해지 하시겠습니까?")){  
+			var param = {memberNo : val};
+
+			$.ajax({
+					url: "deleteAutoship.php",
+					async : false,
+					dataType : "json",
+					data:param,
+					type:"POST",
+					success	: function(result) {                
+						if(result.resultVal=='ok'){
+							alert("오토쉽 해지 완료");
+						}
+					}
+			});	
+		}
+		
+	}
 </SCRIPT>
 </HEAD>
 <body  onLoad="init();">
-<form name="frm_m" method="post">
-<input type="hidden" name="flag" value="update">
-<input type="hidden" name="no" value="<?echo $no?>">
-<input type="hidden" name="s_adm_name" value="<?echo $s_adm_name?>">
-<TABLE cellspacing="0" cellpadding="10" class="TITLE">
-<TR>
-	<TD align="left"><B>디스트리뷰터쉽 해지 관리</B></TD>
-	<TD align="right" width="300" align="center" bgcolor=silver>
-		<input type="button" onClick="goIn();" value="수정" name="btn3">
-		<input type="button" onClick="goBack();" value="목록" name="btn4">
 
-		<INPUT type="hidden" name="page" value="<?echo $page?>">
-	</TD>
-</TR>
-</TABLE>
+<?php include "common_load.php" ?>
+
+<form name="frm_m" method="post">
+
+	<input type="hidden" name="flag" value="update">
+	<input type="hidden" name="no" value="<?echo $no?>">
+	<input type="hidden" name="s_adm_name" value="<?echo $s_adm_name?>">
+	<input type="hidden" name="memberNo" value="<?echo $member_no?>">
+	<TABLE cellspacing="0" cellpadding="10" class="TITLE">
+		<TR>
+			<TD align="left"><B>디스트리뷰터쉽 해지 관리</B></TD>
+			<TD align="right" width="300" align="center" bgcolor=silver>
+				<input type="button" onClick="goIn();" value="수정" name="btn3">
+				<input type="button" onClick="goBack();" value="목록" name="btn4">
+				<?
+					if($autoshipYn=='Y'){
+				?>
+				<input type="button" onClick="goAutoship('<?echo $member_no?>');" value="오토쉽 해지" name="btn4">
+				<?
+					}
+				?>
+
+				<INPUT type="hidden" name="page" value="<?echo $page?>">
+			</TD>
+		</TR>
+	</TABLE>
 <table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
 <tr>
 	<td align='center'>
@@ -436,12 +475,21 @@
 						<tr>
 							<td><b>보류일</b> : <?echo $date_sw?></td>
 							<td><b>보류자</b> : <?echo $wait_ma?></td>
-							<td><input type="button" value="보류 내용 입력" onClick="goMemo('w');"></td>
+							<td>
+								<?php if ($reg_status != "4"){ ?>
+									<input type="button" value="보류 내용 입력" onClick="goMemo('w');">
+								<?php } ?>
+							</td>
+
 						</tr>
 						<tr>
 							<td><b>거부일</b> : <?echo $date_sr?></td>
 							<td><b>거부자</b> : <?echo $reject_ma?></td>
-							<td><input type="button" value="거부 내용 입력" onClick="goMemo('r');"></td>
+							<td>
+								<?php if ($reg_status != "4"){ ?>
+									<input type="button" value="거부 내용 입력" onClick="goMemo('r');">
+								<?php } ?>
+							</td>
 						</tr>
 					</table>
 				</td>
@@ -451,7 +499,11 @@
 				<th bgcolor="#DDDDDD">
 					회원 처리 사항:
 				</th>
-				<td bgcolor="#EEEEEE">
+				<td bgcolor="#EEEEEE" style="min-height:25px">
+					<?php if ($reg_status == "4"){ ?>
+						완료 &nbsp;&nbsp; <span style="font-size:11px;; color:#990066">* 수정 필요시 관리자에게 문의하여 주세요</span>
+						<input type="hidden" name="reg_status" value="<?echo $reg_status?>">
+					<?php }else{ ?>
 					<select name="reg_status">
 						<option value = "1" <?if ($reg_status == "1") echo "selected";?>>신청 (본인확인)</option>
 						<option value = "2" <?if ($reg_status == "2") echo "selected";?>>신청</option>
@@ -460,6 +512,7 @@
 						<option value = "8" <?if ($reg_status == "8") echo "selected";?>>보류</option>
 						<option value = "9" <?if ($reg_status == "9") echo "selected";?>>거부</option>
 					</select>&nbsp; <!--최고 관리자로 접속하셨을 경우만 변경 가능 합니다.-->
+					<?php } ?>
 				</td>
 			</tr>
 			<?	#} else { ?>

@@ -43,10 +43,11 @@
 	}
 
 	$search_id		= str_quote_smart(trim($search_id));
-	$search_email	= str_quote_smart(trim($search_email));
-
-
-	$query = "select Email from tb_admin where id = '$search_id' and Email = '$search_email' ";
+	//$search_email	= str_quote_smart(trim($search_email));
+	
+	/* 20230119 email 값 제거*/  
+	//$query = "select Email from tb_admin where id = '$search_id' and Email = '$search_email' ";
+	$query = "select Email from tb_admin where id = '$search_id'";
 	
 	$result = mysql_query($query);
 	$list = mysql_fetch_array($result);
@@ -56,15 +57,42 @@
 	if ($Email) {
 		
 		// 이메일을 전송 합니다.
-		$new_pwd = generateRandomPassword(8,8);
+		$new_pwd = generateRandomPassword();
+
+
 
 		$new_pass = str_quote_smart(trim($new_pwd));
-		$en_pass = encrypt($key, $iv, $new_pass);
 
-		$query = "update tb_admin set passwd = '$en_pass', EN_PASS = '$en_pass', pw_update_date = now(), PWD_EMAIL_DATE = now() where id = '$search_id' and Email = '$search_email' ";
+		//$en_pass = encrypt($key, $iv, $new_pass);
+		//$en_pass = password_hash($new_pass, PASSWORD_DEFAULT);
+		$en_pass = base64_encode(hash('sha256', $new_pass, true));
+
+		$query = "update tb_admin set passwd = '$en_pass', EN_PASS = '$en_pass', pw_update_date = now(), PWD_EMAIL_DATE = now() where id = '$search_id'";
 		
 		mysql_query($query) or die("Query Error");
 
+	
+		$main_body = "임시 비밀번호는 ".$new_pwd." 입니다. 로그인 후 새로운 비밀번호로 수정해 주세요.";
+		$ch = curl_init();
+		$url = "https://member-calls2.unicity.com/email-api/message";
+		$sendData = array();
+		$sendData["from"] = "[유니시티코리아] <cskorea@unicity.com>";
+		$sendData["to"] = $Email;
+		$sendData["subject"] ="유니코어 임시 비밀번호 안내";
+		$sendData["body"] =$main_body ;
+		
+		$ch = curl_init();  
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($sendData));
+		$response = curl_exec($ch);
+		$json_result = json_decode($response, true);
+	
+/*
 		$subject = "유니시티 기업 홈 관리자 임시 비밀번호를 보내드립니다.";
 		$sub_subject = "유니시티 기업 홈 관리자 임시 비밀번호를 보내드립니다.";
 
@@ -132,7 +160,7 @@
 		$mail_body = iconv("utf-8","euc-kr",$mail_body);
 
 		$flag = mail($Email, $subject, stripslashes($mail_body), $header);
-
+*/
 		mysql_close($connect);
 
 		echo "T";

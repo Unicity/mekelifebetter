@@ -1,12 +1,13 @@
 <?session_start();
 	ini_set("display_errors", 0);
+	include "../dbconn_utf8.inc";
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/str_check.php"); 
 
 	$s_adm_id = str_quote_smart_session($s_adm_id);
 	$s_number = str_quote_smart_session($s_number);
 
-	if(session_is_registered("s_adm_id")){
+	if(isset($_SESSION["s_adm_id"])){
 		$report_flag="Y";
 	}else{
 		if ($s_number) {
@@ -81,7 +82,7 @@
     </style>
   </head>
   <?
-	include "../dbconn_utf8.inc";
+
 
 	$id						= str_quote_smart(trim($id));
 	$VolumePeriod = str_quote_smart(trim($VolumePeriod));
@@ -124,6 +125,9 @@
 	$totl_ResidentTax_mlb=$ResidentTax_mlb+$ResidentTax;
 ?>
   <body>
+  
+<?php include "common_load.php" ?>
+
   <? if( $row !=null || $row !=''){ ?>
 	<div id="wrap">
 

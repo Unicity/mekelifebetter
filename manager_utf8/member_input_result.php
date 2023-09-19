@@ -64,6 +64,9 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
 	<TD align="left"><B>회원 갱신 결과</B></TD>

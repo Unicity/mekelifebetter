@@ -107,6 +107,9 @@
 </script>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmCategory" method="GET">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

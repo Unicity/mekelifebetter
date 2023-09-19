@@ -746,6 +746,9 @@
 </SCRIPT>
 </HEAD>
 <BODY  onLoad="init();">
+
+<?php include "common_load.php" ?>
+
 <? if($_SERVER['HTTPS'] == "on"){ ?>
     <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <? }else{ ?>

@@ -307,6 +307,9 @@ echo $query2."<br/>";
 
 	</head>
 	<body>
+	
+<?php include "common_load.php" ?>
+
 		<form name="frmSearch" method="post" action="javascript:check_data();">
 			<input type ="hidden" name="numVal" value="">
 			<table cellspacing="0" cellpadding="10" class="title">

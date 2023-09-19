@@ -90,6 +90,9 @@
         $text2=$row3[2];
     ?>
   <body>
+  
+<?php include "common_load.php" ?>
+
     <div id="rank-tab">
         <div class="">
             <div id="firstdiv"style="border: 0;margin-top: 10px; margin-bottom: 10px;padding-top: 0px;padding-bottom: 0px;">

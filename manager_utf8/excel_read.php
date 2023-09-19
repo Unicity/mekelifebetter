@@ -60,7 +60,7 @@ try {
                
         
     }
-    echo  $saveQuery;  
+    echo  ">>>".$saveQuery;  
     echo "<script>alert('$excelAlert');
     history.go(-1);</script>";
 }catch (exception $e) {

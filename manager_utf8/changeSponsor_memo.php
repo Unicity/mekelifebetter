@@ -47,6 +47,10 @@ $no				= str_quote_smart(trim($no));
 	<body>
 	<?	}?>
 
+	
+<?php include "common_load.php" ?>
+
+
 		<table border=0 width=100%>
 			<tr>
 				<td align="center">

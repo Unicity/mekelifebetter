@@ -1,9 +1,9 @@
 <?
 	include "admin_session_check.inc";
 	include "./inc/global_init.inc";
-	include "../dbconn_utf8.inc";
-	include "../AES.php";	
+	include "../dbconn_utf8.inc";	
 	include "./inc/common_function.php";
+	include "../AES.php";	
 	 
 	logging($s_adm_id,'open dup user list (dup_user_list.php)');
 
@@ -154,9 +154,6 @@
 		//	$que = $que." and reg_jumin1 = '$jumin1' and reg_jumin2 = '$jumin2' ";			
 			$que = $que." and ((concat(reg_jumin1,reg_jumin2) like '%$qry_str%') or (concat(birth_y,birth_m,birth_d) like '%$qry_str%')) ";
 		}
-		logging($s_adm_id,'search dup user '.$que);
-
-
 	}
 
 	if ($page <> "") {
@@ -175,21 +172,31 @@
 	
 	$offset = $nPageSize*($page-1);
 
-	$query = "select count(*) from tb_userinfo_dup where 1 = 1 ".$que;
-	$result = mysql_query($query,$connect);
-	$row = mysql_fetch_array($result);
-	$TotalArticle = $row[0];
-	logging($s_adm_id,'search dup user count '.$TotalArticle);
+	if($to_date != ""){ //검색종료일이 있는 경우만 쿼리
 
-	$query2 = "select * from tb_userinfo_dup where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize; ;
-	$result2 = mysql_query($query2);
+		$query = "select count(*) from tb_userinfo_dup where 1 = 1 ".$que;
+		$result = mysql_query($query,$connect);
+		$row = mysql_fetch_array($result);
+		$TotalArticle = $row[0];
+		
+		//for loging
+		$log_str = "";
+		$log_str .= "count:".$TotalArticle;
+		$log_str .= ",기간:".str_replace("-", "", $from_date)."~".str_replace("-", "", $to_date);
+		if(!empty($qry_str)) $log_str .= ",".$idxfield.":".$qry_str;
+		logging($s_adm_id,'search user '.$log_str); 
 
-	$now_que = " and date_format(date_sub(regdate, interval 0 day),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d') ";	
-	$now_query = "select count(*) from tb_userinfo_dup where 1 = 1 ".$now_que;
 
-	$now_result = mysql_query($now_query,$connect);
-	$now_row = mysql_fetch_array($now_result);
-	$now_TotalArticle = $now_row[0];
+		$query2 = "select * from tb_userinfo_dup where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize; ;
+		$result2 = mysql_query($query2);
+
+		$now_que = " and date_format(date_sub(regdate, interval 0 day),'%Y-%m-%d') = date_format(now(),'%Y-%m-%d') ";	
+		$now_query = "select count(*) from tb_userinfo_dup where 1 = 1 ".$now_que;
+
+		$now_result = mysql_query($now_query,$connect);
+		$now_row = mysql_fetch_array($now_result);
+		$now_TotalArticle = $now_row[0];
+	}
 
 //	$query3 = "select count(*) from tb_userinfo where member_no > '' ".$que. "  ";
 //	$result3 = mysql_query($query3,$connect);
@@ -277,7 +284,7 @@ function onSearch(){
 	
 	if (document.frmSearch.from_date.value != "") {
 		if (document.frmSearch.from_date.value.length != 10 ) {
-			alert("날짜의 형식은 20040420으로 입력 하셔야 합니다");
+			alert("날짜의 형식은 2004-04-20으로 입력 하셔야 합니다");
 			document.frmSearch.from_date.focus();
 			return;
 		} else {
@@ -306,7 +313,7 @@ function onSearch(){
 
 	if (document.frmSearch.to_date.value != "") {
 		if (document.frmSearch.to_date.value.length != 10 ) {
-			alert("날짜의 형식은 20040420으로 입력 하셔야 합니다");		
+			alert("날짜의 형식은 2004-04-20으로 입력 하셔야 합니다");		
 			document.frmSearch.to_date.focus();
 		} else {
 
@@ -330,6 +337,15 @@ function onSearch(){
 
 		}	
 	}
+
+	if (document.frmSearch.qry_str.value != "") {
+		if (document.frmSearch.qry_str.value.length < 2 ) {
+			alert("검색어를 2자이상 입력해 주세요");		
+			document.frmSearch.qry_str.focus();
+			return;
+		} 
+	}
+
 	
 	for(i=0; i < document.frmSearch.rsort.length ; i++) {
 		if (document.frmSearch.rsort[i].checked == true) {
@@ -763,6 +779,9 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="javascript:check_data();">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
@@ -780,14 +799,14 @@ TD {FONT-SIZE: 9pt}
 		<table width='99%' bgcolor="#EEEEEE">
 			<tr align="center">
 				<td align="left">
-					<input type="radio" name="r_status" value="A" <? if ($r_status == "A") echo "checked" ?>  onClick="check_data();"> 전체 &nbsp;&nbsp;
-					<!--input type="radio" name="r_status" value="1" <? if ($r_status == "1") echo "checked" ?>  onClick="check_data();"> 신청 (본인여부확인) &nbsp;&nbsp;-->
-					<input type="radio" name="r_status" value="2" <? if ($r_status == "2") echo "checked" ?>  onClick="check_data();"> 신청 &nbsp;&nbsp;
-					<input type="radio" name="r_status" value="3" <? if ($r_status == "3") echo "checked" ?>  onClick="check_data();"> 출력 처리 (프린트 출력) &nbsp;&nbsp;
-					<input type="radio" name="r_status" value="4" <? if ($r_status == "4") echo "checked" ?>  onClick="check_data();"> 완료 (서버 입력 완료)&nbsp;&nbsp;
-					<input type="radio" name="r_status" value="8" <? if ($r_status == "8") echo "checked" ?>  onClick="check_data();"> 보류&nbsp;&nbsp;
-					<input type="radio" name="r_status" value="9" <? if ($r_status == "9") echo "checked" ?>  onClick="check_data();"> 신청 거부&nbsp;&nbsp;
-					<input type="radio" name="r_status" value="F" <? if ($r_status == "F") echo "checked" ?>  onClick="check_data();"> 통신장애&nbsp;&nbsp;
+					<input type="radio" name="r_status" value="A" <? if ($r_status == "A") echo "checked" ?> > 전체 &nbsp;&nbsp;
+					<!--input type="radio" name="r_status" value="1" <? if ($r_status == "1") echo "checked" ?> > 신청 (본인여부확인) &nbsp;&nbsp;-->
+					<input type="radio" name="r_status" value="2" <? if ($r_status == "2") echo "checked" ?> > 신청 &nbsp;&nbsp;
+					<input type="radio" name="r_status" value="3" <? if ($r_status == "3") echo "checked" ?> > 출력 처리 (프린트 출력) &nbsp;&nbsp;
+					<input type="radio" name="r_status" value="4" <? if ($r_status == "4") echo "checked" ?> > 완료 (서버 입력 완료)&nbsp;&nbsp;
+					<input type="radio" name="r_status" value="8" <? if ($r_status == "8") echo "checked" ?> > 보류&nbsp;&nbsp;
+					<input type="radio" name="r_status" value="9" <? if ($r_status == "9") echo "checked" ?> > 신청 거부&nbsp;&nbsp;
+					<input type="radio" name="r_status" value="F" <? if ($r_status == "F") echo "checked" ?> > 통신장애&nbsp;&nbsp;
 				</td>
 			</tr>
 		</table>
@@ -805,7 +824,7 @@ TD {FONT-SIZE: 9pt}
 				</td>
 				<td>
 					<input type="text" name="from_date" value="<?echo $from_date?>" size="11" maxlength="10">~
-					<input type="text" name="to_date" value="<?echo $to_date?>" size="11" maxlength="10"> [2004-12-01의 형태로 입력하세요.]
+					<input type="text" name="to_date" value="<?=($to_date != "") ? $to_date : date("Y-m-d");?>" size="11" maxlength="10" placeholder="YYYY-MM-DD"> [2004-12-01의 형태로 입력, <font color="red">미입력시 리스트가 출력되지 않습니다.</font>]
 				</td>
 			</tr>
 			<tr>
@@ -881,15 +900,15 @@ TD {FONT-SIZE: 9pt}
 		<table width='99%' bgcolor="#EEEEEE">
 			<tr align="center">
 				<td align="left">
-					<b><input type="radio" name="rsort" value="regdate" <?if($con_sort == "regdate") echo "checked";?> onClick="check_data();"> 가입일 </b>
-					<b><input type="radio" name="rsort" value="ldate" <?if($con_sort == "ldate") echo "checked";?> onClick="check_data();"> 최근로그인일 </b>
-					<b><input type="radio" name="rsort" value="email_mod_date" <?if($con_sort == "email_mod_date") echo "checked";?> onClick="check_data();"> 이메일 수정일 </b>
-					<b><input type="radio" name="rsort" value="name" <?if($con_sort == "name") echo "checked";?> onClick="check_data();"> 이름 </b>
-					<b><input type="radio" name="rsort" value="number" <?if($con_sort == "number") echo "checked";?> onClick="check_data();"> 회원 </b>
-					<b><input type="radio" name="rsort" value="visit_count" <?if($con_sort == "visit_count") echo "checked";?> onClick="check_data();"> 방문수 </b>
+					<b><input type="radio" name="rsort" value="regdate" <?if($con_sort == "regdate") echo "checked";?>> 가입일 </b>
+					<b><input type="radio" name="rsort" value="ldate" <?if($con_sort == "ldate") echo "checked";?>> 최근로그인일 </b>
+					<b><input type="radio" name="rsort" value="email_mod_date" <?if($con_sort == "email_mod_date") echo "checked";?>> 이메일 수정일 </b>
+					<b><input type="radio" name="rsort" value="name" <?if($con_sort == "name") echo "checked";?>> 이름 </b>
+					<b><input type="radio" name="rsort" value="number" <?if($con_sort == "number") echo "checked";?>> 회원 </b>
+					<b><input type="radio" name="rsort" value="visit_count" <?if($con_sort == "visit_count") echo "checked";?>> 방문수 </b>
 				<td align="right">
-					<b><input type="radio" name="rorder" value="con_d" <?if($con_order == "con_d") echo "checked";?> onClick="check_data();">오름차순 </b>
-					<b><input type="radio" name="rorder" value="con_a" <?if($con_order == "con_a") echo "checked";?> onClick="check_data();">내림차순 </b>
+					<b><input type="radio" name="rorder" value="con_d" <?if($con_order == "con_d") echo "checked";?>>오름차순 </b>
+					<b><input type="radio" name="rorder" value="con_a" <?if($con_order == "con_a") echo "checked";?>>내림차순 </b>
 				</td>
 			</tr>
 		</table>
@@ -1108,6 +1127,8 @@ TD {FONT-SIZE: 9pt}
 				else if (trim($obj->sel_agree05) == "N") {$flag= "N";}
 				else $flag="N";
 
+				$obj->name = masking_name($obj->name);
+
 				if ($obj->reg_status != "F") $str_name = "<font color='blue'>".$str_mobile.$obj->name."</font>";
 				if ($obj->reg_status == "F") $str_name = "<font color='red'>".$str_mobile.$obj->name."</font>";
 				
@@ -1120,9 +1141,9 @@ TD {FONT-SIZE: 9pt}
 
 ?>
 <TR align="center">
-	<TD height="25"><A HREF="javascript:onView('<?echo $obj->member_no?>')"><?echo $str_name?></A></TD>
+	<TD height="25"><A HREF="javascript:onView('<?echo $obj->member_no?>')"><?=$obj->name?></A></TD>
 	<TD><?echo $obj->number?></TD>
-	<TD align="left"><?echo $obj->del_addr?> <!-- <?echo $obj->del_addr_detail?> --></TD>
+	<TD align="left"><?=masking_addr($obj->del_addr)?></TD>
 
 	<?php 
 	if (trim($obj->member_kind) == "D") { 
@@ -1130,19 +1151,19 @@ TD {FONT-SIZE: 9pt}
 		if($jumin1 == "") $jumin1 = decrypt($key, $iv, $obj->reg_jumin1);
 		if($jumin1 == "") $jumin1 = $obj->birth_y.$obj->birth_m.$obj->birth_d;
 		?>
-	<TD><?=$jumin1?><?=decrypt($key, $iv, 'VkL26oMc5xklbmeqvggHQw==')?></TD>	
+	<TD><?=masking_birth($jumin1)?></TD>	
 	<?php } else { ?>
-	<TD><?echo $obj->birth_y?><?echo $obj->birth_m?><?echo $obj->birth_d?></TD>
+	<TD><?echo $obj->birth_y?>****</TD>
 	<?php } ?>
 
 	<TD><?echo $gender;?></TD>
-	<TD><?echo $obj->hpho1?>-<?echo $obj->hpho2?>-<?echo $obj->hpho3?></TD>
+	<TD><?echo masking_phone($obj->hpho1."-".$obj->hpho2."-".$obj->hpho3)?></TD>
 	<TD>
 <?	
 	if (trim($obj->member_kind) == "D") {
 		echo "회원";
 	} else if (trim($obj->member_kind) == "C") {
-		echo "소비자회원";
+		echo "소비회원";
 	} 
 
 ?>	
@@ -1185,7 +1206,7 @@ TD {FONT-SIZE: 9pt}
 ?>	
 	</TD>
 	<TD><?echo $email_mod_date?></TD>
-	<TD><?echo $co_name?></TD>
+	<TD><?=masking_name($co_name)?></TD>
 	<TD><?echo $str_chk_type?></TD>
 	<TD><?echo $flag?></TD>
 <? if ($r_status == "2" || $r_status == "F") {

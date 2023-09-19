@@ -127,6 +127,9 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="javascript:check_data();">
 <input type="hidden" name="page" value="<?echo $page?>">
 <input type="hidden" name="atype" value="<?echo $atype?>">

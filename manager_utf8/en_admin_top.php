@@ -22,6 +22,9 @@
 <TITLE><?echo $g_site_title?></TITLE>
 </HEAD>
 <BODY class="TFRAME">
+
+<?php include "common_load.php" ?>
+
 <BASE target="frmain">
 <TABLE border=0 width="100%" cellpadding="0" cellspacing="0" background="../img/bg_pop.gif">
 <TR height="30">

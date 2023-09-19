@@ -4,7 +4,9 @@
     include "./inc/global_init.inc";
     include "../dbconn_utf8.inc";
     include "../AES.php";
+	include "./inc/common_function.php";
     include "excel_modal.php";
+
     $r_status = str_quote_smart(trim($r_status));
     $idxfield = str_quote_smart(trim($idxfield));
     $qry_str = str_quote_smart(trim($qry_str));
@@ -19,6 +21,9 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	</head>
 	<body bgcolor="#FFFFFF">
+	
+<?php include "common_load.php" ?>
+
 		<form name="frmSearch" method="post">
 			<table cellspacing="0" cellpadding="0 " class="title" border="0" width="100%">
 				<tr>

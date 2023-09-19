@@ -6,6 +6,7 @@
 
 	$strSubject = '※우수사원※ 강은영의 S회원 관리';
 	$strTo = 'EunYoung.Kang@unicity.com';
+    //$strTo = 'MinGu.Kim@unicity.com';
 
 
 	$query = "select count(*) from tb_smember where 1 = 1 and date_format(end_date,'%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d')";
@@ -57,7 +58,7 @@
 			$dataFeedPM = "message=".$msg."&subject=".$strSubject."&email=".$strTo;
 			if ($TotalArticle) {		
 				$chMail = curl_init();
-				curl_setopt($chMail, CURLOPT_URL,"https://member-th.unicity.com/email/mailgun.php");
+				curl_setopt($chMail, CURLOPT_URL,"https://member-calls4.unicity.com/ALL/email/mailgun.php");
 				curl_setopt($chMail, CURLOPT_POST, 1);
 				curl_setopt($chMail, CURLOPT_POSTFIELDS,$dataFeedPM);
 				curl_setopt($chMail, CURLOPT_SSL_VERIFYPEER,false);

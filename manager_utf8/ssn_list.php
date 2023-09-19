@@ -30,6 +30,9 @@
 
 	$mode					= str_quote_smart(trim($mode));
 
+	$from_date	= str_quote_smart(trim($from_date));
+	$to_date	= str_quote_smart(trim($to_date));
+
 	$qry_str			= str_quote_smart(trim($qry_str));
 	$idxfield			= str_quote_smart(trim($idxfield));
 	$page					= str_quote_smart(trim($page));
@@ -71,6 +74,15 @@
 	
 	$offset = $nPageSize*($page-1);
 
+	if (!empty($from_date)) {
+		$que = " and create_date >= '$from_date' ";		
+	}
+
+	if (!empty($to_date)) {
+		$que = $que." and date_sub(create_date, interval 1 day) <= '$to_date' ";	
+		//$que = $que." and regdate <= '$to_date' ";		
+	}
+
 	if (!empty($qry_str)) {
 
 		if ($idxfield == "0") {
@@ -82,14 +94,19 @@
 
 		logging($s_adm_id,'search ssn '.$que);
 	} else {
-		$query = "select count(*) from tb_distSSN where 1 = 1 ";
-		$query2 = "select * from tb_distSSN where 1 = 1  order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize; ;
+		$query = "select count(*) from tb_distSSN where 1 = 1 ".$que;
+		$query2 = "select * from tb_distSSN where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize; ;
 	}
 
-	$result = mysql_query($query,$connect);
-	$row = mysql_fetch_array($result);
-	$TotalArticle = $row[0];
-	logging($s_adm_id,'search ssn count '.$TotalArticle);
+	if($to_date != ""){
+		$result = mysql_query($query,$connect);
+		$row = mysql_fetch_array($result);
+
+		$TotalArticle = $row[0];
+		logging($s_adm_id,'search ssn count '.$TotalArticle);
+	}
+
+	
 	
 	$ListArticle = $nPageSize;
 	$PageScale = $nPageSize;
@@ -218,6 +235,15 @@
 		frm.submit();
 	}
 
+	function goExecl2() {
+		if(confirm("전체 다운로드는 시간이 다소 걸릴 수 있습니다.\n버튼 클릭 후 잠시 기다려 주세요.\n다운로드 받으시겠습니까?")){
+			var frm = document.frmSearch;
+			frm.target = "";
+			frm.action = "ssn_excel_list2.php";
+			frm.submit();
+		}
+	}
+
 	function toggleCheckbox(element){
 		var chkboxes = document.getElementsByName("chkSsn");
  	
@@ -265,16 +291,15 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="javascript:check_data();">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
 	<TD align="left"><B>세금신고용 주민번호 조회</B></TD>
 	<TD align="right" width="600" align="center" bgcolor=silver>
-	<SELECT NAME="idxfield">
-		<OPTION VALUE="0" <?if($idxfield == "0") echo "selected";?>>회원번호</OPTION>
-	</SELECT>
-	<INPUT TYPE="text" NAME="qry_str" VALUE="<?echo $qry_str?>">&nbsp;
-	<INPUT TYPE="button" VALUE="검색" onClick="onSearch();">
+	
 	<?php 
 		 	 
 	if ($s_flag == 8 || $s_flag == 2 || $s_flag == 1 ||$s_adm_id =='jihyun' ) {
@@ -287,10 +312,15 @@ TD {FONT-SIZE: 9pt}
 	?>
 	
 	<!-- <INPUT TYPE="button" VALUE="엑셀받기" onClick="goExecl();"> -->
-	<INPUT TYPE="button" VALUE="엑셀받기" onClick="goExcelHistory('수당관리','세금신고용 주민번호 조회','<?=$criteria?>');">
+	<INPUT TYPE="button" VALUE="엑셀받기" onClick="goExcelBefore()">
+
+	<?php if($_SESSION["s_adm_id"] == "admin" || $_SESSION["s_adm_id"] == "eycho" || $_SESSION["s_adm_id"] == "alsrnkmg"){ ?>
+	<!-- <INPUT TYPE="button" VALUE="전체엑셀받기" onClick="goExecl2()"> -->
+	<?php } ?>
 
 
-	<?php } if ($s_flag == 1 || ($s_flag == 8 && $s_adm_id=='eycho') ) { ?>
+	<?php } 
+	if ($s_flag == 1 || ($s_flag == 8 && $s_adm_id=='eycho') ) { ?>
 	 
 	<INPUT TYPE="button" VALUE="삭제" onClick="getCheckedValues();">	
 	<input type="button" value="데이터업로드" onClick="NewWindow('ssn_excel_upload.php', '데이터업로드', 650, 150, 'no');">
@@ -299,25 +329,58 @@ TD {FONT-SIZE: 9pt}
 	</TD>
 </TR>
 </TABLE>
+
 <table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
-<tr>
-	<td align='center'>
-		<table width='99%' bgcolor="#EEEEEE">
-			<tr align="center">
-				<td align="left">
-					<b><input type="radio" name="rsort" value="create_date" <?if($con_sort == "create_date") echo "checked";?> onClick="check_data();"> 등록일 </b>
-					<b><input type="radio" name="rsort" value="dist_id" <?if($con_sort == "dist_id") echo "checked";?> onClick="check_data();"> 회원번호 </b>
-				<td align="right">
-					<b><input type="radio" name="rorder" value="con_d" <?if($con_order == "con_d") echo "checked";?> onClick="check_data();">오름차순 </b>
-					<b><input type="radio" name="rorder" value="con_a" <?if($con_order == "con_a") echo "checked";?> onClick="check_data();">내림차순 </b>
-				</td>
-			</tr>
-		</table>
-	</td>
-</tr>
+	<tr>
+		<td align='center'>
+			<table bgcolor="#EEEEEE" width="100%" cellpadding='0' cellspacing='0' border='1' bordercolorlight='#FFFFFF' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>				
+				<tr>
+					<td align="right" width="100" style="height:27px">
+						<b>등록일자 : &nbsp;</b>
+					</td>
+					<td> &nbsp;
+						<input type="text" name="from_date" value="<?echo $from_date?>" size="11" maxlength="10">~
+						<input type="text" name="to_date" value="<?=($to_date != "") ? $to_date : date("Y-m-d");?>" size="11" maxlength="10" placeholder="YYYY-MM-DD"> [2004-12-01의 형태로 입력, <font color="red">미입력시 리스트가 출력되지 않습니다.</font>]
+					</td>
+				</tr>
+				<tr>
+					<td align="right" width="100" style="height:27px">
+						<b>검색 : &nbsp;</b>
+					</td>
+					<td>
+						&nbsp;
+						<SELECT NAME="idxfield">
+							<OPTION VALUE="0" <?if($idxfield == "0") echo "selected";?>>회원번호</OPTION>
+						</SELECT>
+						<INPUT TYPE="text" NAME="qry_str" VALUE="<?echo $qry_str?>">&nbsp;
+						<INPUT TYPE="button" VALUE="검색" onClick="onSearch();">
+					</td>
+				</tr>
+				<tr>
+					<td align="right" width="100" style="height:27px">
+						<b>정렬 : &nbsp;</b>
+					</td>
+					<td>
+						<table width='99%' bgcolor="#EEEEEE">
+							<tr align="center">
+								<td align="left">
+									<b><input type="radio" name="rsort" value="create_date" <?if($con_sort == "create_date") echo "checked";?> onClick="check_data();"> 등록일 </b>
+									<b><input type="radio" name="rsort" value="dist_id" <?if($con_sort == "dist_id") echo "checked";?> onClick="check_data();"> 회원번호 </b>
+								<td align="right">
+									<b><input type="radio" name="rorder" value="con_d" <?if($con_order == "con_d") echo "checked";?> onClick="check_data();">오름차순 </b>
+									<b><input type="radio" name="rorder" value="con_a" <?if($con_order == "con_a") echo "checked";?> onClick="check_data();">내림차순 </b>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 </table>
+
 <br>
-<TABLE cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver">
+<TABLE cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver"  style="margin-top:10px">
 <TR>
 	<TH width="2%" style="text-align: center;"><input type="checkbox" id="chckHead" onchange="toggleCheckbox(this);" /></td>
 	<TH width="10%">회원번호</TH>
@@ -410,7 +473,30 @@ else
 <input type="hidden" name="page" value="<?echo $page?>">
 <input type="hidden" name="con_sort" value="<?echo $con_sort?>">
 <input type="hidden" name="con_order" value="<?echo $con_order?>">
+<input type="hidden" name="idVal" value="">
 </form>
+
+<script type="text/javascript">
+function goExcelBefore() {	
+	var checkboxes = document.getElementsByName('chkSsn');	
+
+	var vals = "";
+	for (var i=0;i<checkboxes.length;i++) {	    	
+		if (checkboxes[i].checked) {
+			vals += checkboxes[i].value+',';
+		}
+	}
+	vals = vals.slice(0, -1); 
+
+	if(vals == ""){
+		alert("선택내역이 없습니다");
+		return;
+	}			
+	document.frmSearch.idVal.value=vals;				
+
+	goExcelHistory('수당관리','세금신고용 주민번호 조회','<?=$criteria?>');
+}
+</script>
 
 <?php include $_SERVER['DOCUMENT_ROOT']."/manager_utf8/inc/google-analytics.php"; ?>
 

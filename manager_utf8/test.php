@@ -1,13 +1,108 @@
 <?php 
 set_time_limit(0);
 session_start();
-	include "admin_session_check.inc";
-	include "./inc/global_init.inc";
-	include "../dbconn_utf8.inc";
-	include "../AES.php";
-	include "./inc/common_function.php";
-	
-	echo '<meta charset="utf-8">';
+//include "admin_session_check.inc";
+include "./inc/global_init.inc";
+include "../dbconn_utf8.inc";
+include "../AES.php";
+include "./inc/common_function.php";
+
+exit;
+ob_start();
+
+$result2 = mysql_query("select * from distributorshipCancel where reg_status = '4' order by cancelDate desc") or die(mysql_error());	
+for($k=0; $k<mysql_num_rows($result2); $k++) {
+	$row2 = mysql_fetch_array($result2);
+	echo $k.":".$row2['id'].$row2['UserName']."<Br>";
+
+	if($row2['id'] != ''){
+		
+		$tables = array('tb_userinfo', 'tb_userinfo_dup');
+		
+		for($j=0; $j<count($tables); $j++) {
+			
+			$result = mysql_query("select * from ".$tables[$j]." where number = '".$row2['id']."'") or die(mysql_error());	
+			
+			for($i=0; $i<mysql_num_rows($result); $i++) {
+				$row = mysql_fetch_object($result);
+
+				echo $row->member_no."<br>";
+
+				if($row->member_no != ''){
+
+					$sql = "";
+					$fields = array();
+					$values = array();
+					foreach($row as $key => $val){
+						if($key == "api_fail") $key = "sms_send_flag"; //tb_userinfo와 tb_userinfo_dup 필드명 다름 주의!!!
+
+						$fields[] = $key;
+						
+						if(strtolower($val) == "null") $values[] = "NULL";
+						else $values[] = "'".$val."'";
+					}
+
+					$fields[] = "tables"; 
+					$values[] = "'".$tables[$j]."'";
+
+					$fields = ' (' . implode(', ', $fields) . ')';
+					$values = '('. implode(', ', $values) .')';
+
+					$sql = "INSERT INTO tb_userinfo_out ".$fields .' VALUES '. $values;
+					//echo $sql."<br>";
+
+					$resultin = mysql_query($sql) or die(mysql_error());	
+
+					if($resultin){
+						mysql_query("delete from ".$tables[$j]." where number = '".$row->member_no."'") or die(mysql_error());	
+					}
+				}
+				
+				ob_flush();
+				flush();
+			}
+		}
+	}		
+}
+
+
+exit;
+
+$tables = array('tb_userinfo', 'tb_userinfo_dup');
+for($j=0; $j<count($tables); $j++) {
+	$result = mysql_query("select * from ".$tables[$j]." where number = '234409682'") or die(mysql_error());	
+	for($i=0; $i<mysql_num_rows($result); $i++) {
+		$row = mysql_fetch_object($result);
+
+		echo $row->member_no."<br>";
+
+
+		$sql = "";
+		$fields = array();
+		$values = array();
+		foreach($row as $key => $val){
+			if($key == "api_fail") $key = "sms_send_flag"; //tb_userinfo와 tb_userinfo_dup 필드명 다름 주의!!!
+
+			$fields[] = $key;
+			
+			if(strtolower($val) == "null") $values[] = "NULL";
+			else $values[] = "'".$val."'";
+		}
+
+		$fields[] = "tables"; 
+		$values[] = "'".$tables[$j]."'";
+
+		$fields = ' (' . implode(', ', $fields) . ')';
+		$values = '('. implode(', ', $values) .')';
+
+		$sql = "INSERT INTO tb_userinfo_out ".$fields .' VALUES '. $values;
+
+		$result2 = mysql_query($sql) or die(mysql_error());	
+		
+		echo $sql."<br>";	
+	}
+}
+exit;
 
 
 echo urldecode('mainAddress%5Bcity%5D=%EC%84%B1%EB%B6%81%EA%B5%AC&mainAddress%5Bcountry%5D=KR&mainAddress%5Bstate%5D=%EC%84%9C%EC%9A%B8&mainAddress%5Bzip%5D=02879&mainAddress%5Baddress1%5D=%EC%84%B1%EB%B6%81%EB%A1%9C23%EA%B0%80%EA%B8%B8+16&mainAddress%5Baddress2%5D=101+%28%EC%84%B1%EB%B6%81%EB%8F%99%29&humanName%5BfirstName%5D=Jy+lee&humanName%5BlastName%5D=+&humanName%5BfirstName%40ko%5D=%EC%9D%B4%EC%A0%95%EC%9C%A4&humanName%5BlastName%40ko%5D=+&type=WholesaleCustomer&status=Active&gender=female&password%5Bvalue%5D=123456&enroller%5Bhref%5D=https%3A%2F%2Fhydra.unicity.net%2Fv5a%2Fcustomers%3Fid.unicity%3D&birthDate=1989-01-26&email=ljyoon0303%40gmail.com&mobilePhone=01099957624&homePhone=&taxTerms%5BtaxId%5D=890126%EC%9D%B4%EC%A0%95%EC%9C%A4');

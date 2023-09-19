@@ -10,6 +10,9 @@
         <title>수당상세조회</title>
     </head>
     <body>
+	
+<?php include "common_load.php" ?>
+
         <table cellspacing="0" cellpadding="10" class="title">
             <tr>
                 <td align="center"><b>수당상세</b></td>

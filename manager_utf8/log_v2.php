@@ -11,8 +11,9 @@ include "../AES.php";
 	$atype		= str_quote_smart(trim($atype));
 
 	//if($atype == "") $atype = "B"; //계좌인증 기본
-	//if (!empty($qry_str)) { //검색어가 있는경우만 쿼리 실행
-		//$que = $que." and ".$idxfield." like '%".$qry_str."%' ";
+	if (!empty($qry_str)) { //검색어가 있는경우만 쿼리 실행
+		
+		$que = "";
 		
 		if($atype != ''){
 			if($atype == "realname") $que = " and check_kind != 'api' and  check_kind != 'bank'";
@@ -88,7 +89,7 @@ include "../AES.php";
 			$bankCode[$bnames] = $rows[code];
 		}
 		*/
-	//}
+	}
 ?>
 <html>
 <head>
@@ -133,6 +134,9 @@ TD {FONT-SIZE: 9pt}
 </STYLE>
 </head>
 <BODY bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="javascript:check_data();">
 <input type="hidden" name="page" value="<?echo $page?>">
 <input type="hidden" name="atype" value="<?echo $atype?>">
@@ -157,6 +161,7 @@ TD {FONT-SIZE: 9pt}
 				</td>
 				<td colspan="3">
 					&nbsp;&nbsp;
+					<input type="radio" name="atype" id="atype" value="" <?if($atype == "") echo "checked";?> /> 전체 &nbsp;&nbsp;
 					<input type="radio" name="atype" id="atype" value="bank" <?if($atype == "bank") echo "checked";?> /> 계좌인증 &nbsp;&nbsp;
 					<input type="radio" name="atype" id="atype" value="realname" <?if($atype == "realname") echo "checked";?> /> 실명인증
 					<input type="radio" name="atype" id="atype" value="api" <?if($atype == "api") echo "checked";?> /> API
@@ -216,12 +221,13 @@ TD {FONT-SIZE: 9pt}
 			<TR align="center">
 				<TD height="25" align="center"><?=$obj->tmpId?></TD>
 				<TD height="25" align="center"><?=($obj->memid != '') ? $obj->memid : '-';?></TD>
-				<TD align="center"><?=$obj->name?></TD>
+				<TD align="center"><?=masking_name($obj->name)?></TD>
 				<TD align="center">
 					<?php 
 					$obj->jumin1 = str_replace("-","", $obj->jumin1);
 					if(strlen($obj->jumin1) == 8) $obj->jumin1 = substr($obj->jumin1, 2,6);
-					echo $obj->jumin1;
+					if($obj->jumin1 == "") echo "-";
+					else echo masking_birth($obj->jumin1);
 					?>
 				</TD>
 				<TD align="left"><?=$obj->gubun?></TD>

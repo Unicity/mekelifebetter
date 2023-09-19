@@ -38,9 +38,9 @@ session_start();
 
 
       /**autoship DB연결 */
-      $db_host = 'unicity-database.cluster-c4ao3svuphls.ap-northeast-2.rds.amazonaws.com';
+      $db_host = '54.180.152.178';
       $db_user = 'autoship';
-      $db_passwd = 'Bioslife1!';
+      $db_passwd = 'inxide1!!';
       $db_name = 'autoship';
   
       $conn = mysql_connect($db_host,$db_user,$db_passwd) or die ("데이터베이스 연결에 실패!"); 
@@ -78,7 +78,7 @@ session_start();
                 
 
             $queryList ="select * from smart_order_autoship_list where oal_autoship_ordernum =".$order_no." and oal_autoship_templatenum=".$auto_no;
-    //echo  $queryList;
+    
                 $resultList = mysql_query($queryList);       
                 $list = mysql_fetch_array($resultList);
     
@@ -93,9 +93,7 @@ session_start();
                 $oalOrdernum = $list[oal_ordernum]; //order key
                 $autoNumber = $list[oal_autoship_templatenum]; //오토쉽 번호
                 $baNo = $list[oal_mid]; //오토쉽 번호
-                //echo $autoNumber."<br/>";
-                //echo $baNo."<br/>";
-       
+                
             $queryCount = "select count(*) as cnt from smart_order_autoship_list where oal_ordernum='$oalOrdernum'";
 
                 $resultList1 = mysql_query($queryCount);       

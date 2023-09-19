@@ -155,6 +155,9 @@ function get_goods_ids(){
 </script>
 </head>
 <BODY bgcolor="#FFFFFF" onLoad="init();">
+
+<?php include "common_load.php" ?>
+
 <FORM name="frmSearch" method="post" action="javascript:goCheck();">
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>

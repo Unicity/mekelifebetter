@@ -15,7 +15,7 @@
 
 	include "./inc/en_global_init.inc";
 
-	if(!session_is_registered("s_adm_id")){
+	if(!isset($_SESSION["s_adm_id"])){
 ?>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-Frame-Options" content="deny" />
@@ -57,3 +57,4 @@
 	</NOFRAMES>
 </FRAMESET>
 </HTML>
+TML>

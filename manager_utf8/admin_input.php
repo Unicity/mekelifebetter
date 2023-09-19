@@ -205,6 +205,9 @@
 </SCRIPT>
 </HEAD>
 <BODY>
+
+<?php include "common_load.php" ?>
+
 <form name='frm' method='post' action='admin_db.php'>
 <TABLE cellspacing="0" cellpadding="10" class="TITLE">
 <TR>
@@ -298,6 +301,17 @@
 	</th>
 	<td>
 		<textarea name="UserInfo" cols="60" rows="3"></textarea>
+	</td>
+</tr>
+<tr>
+	<th>
+		상태 :
+	</th>
+	<td>
+		<select name="status">
+			<option value="Y">정상</option>	
+			<option value="N">제한</option>	
+		</select>
 	</td>
 </tr>
 </TABLE>

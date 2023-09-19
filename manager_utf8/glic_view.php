@@ -50,6 +50,9 @@ $date_sc = date("Y-m-d [H:i]", strtotime($update_date));
 		
 	</head>
 	<body>
+	
+<?php include "common_load.php" ?>
+
 		<form name="frm_m" method="post">
 			<table cellspacing="0" cellpadding="10" class="title">
     			<tr>

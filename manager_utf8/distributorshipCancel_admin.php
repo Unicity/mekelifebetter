@@ -1,12 +1,10 @@
 <?php session_start();?>
 
 <?php
-
-
-	
 	include "admin_session_check.inc";
 	include "./inc/global_init.inc";
 	include "../dbconn_utf8.inc";
+	include "./inc/common_function.php";
 	include "../AES.php";
 
 	function right($value, $count){
@@ -72,6 +70,14 @@
 	}
 
 
+	if (!empty($from_date)) {
+		$que = " and cancelDate >= '$from_date' ";		
+	}
+
+	if (!empty($to_date)) {
+		$que = $que." and date_sub(cancelDate, interval 1 day) <= '$to_date' ";	
+		//$que = $que." and regdate <= '$to_date' ";		
+	}
 
 
 	if ((empty($r_status)) || ($r_status == "A")) {
@@ -108,15 +114,17 @@
 	
 	$offset = $nPageSize*($page-1);
 
-	$query = "select count(*) from distributorshipCancel where 1 = 1 ".$que;
-	$result = mysql_query($query,$connect);
-	$row = mysql_fetch_array($result);
-	$TotalArticle = $row[0];
+	if($to_date != ""){
 
-	$query2 = "select * from distributorshipCancel where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize; ;
-	$result2 = mysql_query($query2);
+		$query = "select count(*) from distributorshipCancel where 1 = 1 ".$que;
+		$result = mysql_query($query,$connect);
+		$row = mysql_fetch_array($result);
+		$TotalArticle = $row[0];
 
+		$query2 = "select * from distributorshipCancel where 1 = 1 ".$que." order by ".$con_sort." ".$order." limit ". $offset.", ".$nPageSize; ;
+		$result2 = mysql_query($query2);
 
+	}
 
 //	$query3 = "select count(*) from tb_userinfo where member_no > '' ".$que. "  ";
 //	$result3 = mysql_query($query3,$connect);
@@ -173,6 +181,15 @@
 
 <script language="javascript">
 	function onSearch(){
+
+		if (document.frmSearch.qry_str.value != "") {
+			if (document.frmSearch.qry_str.value.length < 2 ) {
+				alert("검색어를 2자이상 입력해 주세요");		
+				document.frmSearch.qry_str.focus();
+				return;
+			} 
+		}
+
 		
 		for(i=0; i < document.frmSearch.rsort.length ; i++) {
 			if (document.frmSearch.rsort[i].checked == true) {
@@ -373,17 +390,15 @@ td {FONT-SIZE: 9pt}
 </style>
 </head>
 <body bgcolor="#FFFFFF">
+
+<?php include "common_load.php" ?>
+
 <form name="frmSearch" method="post" action="javascript:check_data();">
 	<table cellspacing="0" cellpadding="10" class="title">
 		<tr>
 			<td align="left"><b>디스트리뷰터쉽 해지조회</b></td>
 			<td align="right" width="600" align="center" bgcolor=silver>
-			<select name="idxfield">
-				<option value="0" <?if($idxfield == "0") echo "selected";?>>회원번호</OPTION>
-				<OPTION VALUE="1" <?if($idxfield == "1") echo "selected";?>>회원이름</OPTION>
-			</select>
-			<input type="text" name="qry_str" value="<?echo $qry_str?>">&nbsp;
-			<input type="button" value="검색" onClick="onSearch();">
+			
 			<!--  <input type="button" value="엑셀 다운로드" onClick="goExecl();">-->
 			<!--
 			<INPUT TYPE="button" VALUE="삭제" onClick="goDel();">	
@@ -393,46 +408,73 @@ td {FONT-SIZE: 9pt}
 	</table>
 	
 	<b>* 처리 하실 단계를 선택하세요.</b>
-	<table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
-		<tr>
-			<td align='center'>
-				<table width='99%' bgcolor="#EEEEEE">
-					<tr align="center">
-						<td align="left">
-							<input type="radio" name="r_status" value="A" <? if ($r_status == "A") echo "checked" ?>  onClick="check_data();"> 전체 &nbsp;&nbsp;
-							<!--input type="radio" name="r_status" value="1" <? if ($r_status == "1") echo "checked" ?>  onClick="check_data();"> 신청 (본인여부확인) &nbsp;&nbsp;-->
-							<input type="radio" name="r_status" value="2" <? if ($r_status == "2") echo "checked" ?>  onClick="check_data();"> 신청 &nbsp;&nbsp;
-							<input type="radio" name="r_status" value="3" <? if ($r_status == "3") echo "checked" ?>  onClick="check_data();"> 출력 처리 (프린트 출력) &nbsp;&nbsp;
-							<input type="radio" name="r_status" value="4" <? if ($r_status == "4") echo "checked" ?>  onClick="check_data();"> 완료 (서버 입력 완료)&nbsp;&nbsp;
-							<input type="radio" name="r_status" value="8" <? if ($r_status == "8") echo "checked" ?>  onClick="check_data();"> 보류&nbsp;&nbsp;
-							<input type="radio" name="r_status" value="9" <? if ($r_status == "9") echo "checked" ?>  onClick="check_data();"> 신청 거부&nbsp;&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	
-	<table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
-		<tr>
-			<td align='center'>
-				<table width='99%' bgcolor="#EEEEEE">
-					<tr align="center">
-						<td align="left">
-							<b><input type="radio" name="rsort" value="cancelDate" <?if($con_sort == "cancelDate") echo "checked";?> onClick="check_data();"> 등록일 </b>
-							<b><input type="radio" name="rsort" value="address" <?if($con_sort == "address") echo "checked";?> onClick="check_data();"> 주소 </b>
-						<td align="right">
-							<b><input type="radio" name="rorder" value="con_d" <?if($con_order == "con_d") echo "checked";?> onClick="check_data();">오름차순 </b>
-							<b><input type="radio" name="rorder" value="con_a" <?if($con_order == "con_a") echo "checked";?> onClick="check_data();">내림차순 </b>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	
 
-	<table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver">
+	<table height='35' width='100%' cellpadding='0' cellspacing='0' border='1' bordercolorlight='#666666' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
+		<tr>
+			<td align='center'>
+				<table bgcolor="#EEEEEE" width="100%" cellpadding='0' cellspacing='0' border='1' bordercolorlight='#FFFFFF' bordercolordark='#FFFFFF' bgcolor='#FFFFFF' bordercolor='#FFFFFF'>
+					<tr>
+						<td align="right" width="100">
+							<b>구분 : &nbsp;</b>
+						</td>
+						<td>
+							<input type="radio" name="r_status" value="A" <? if ($r_status == "A") echo "checked" ?> > 전체 &nbsp;&nbsp;
+							<!--input type="radio" name="r_status" value="1" <? if ($r_status == "1") echo "checked" ?> > 신청 (본인여부확인) &nbsp;&nbsp;-->
+							<input type="radio" name="r_status" value="2" <? if ($r_status == "2") echo "checked" ?> > 신청 &nbsp;&nbsp;
+							<input type="radio" name="r_status" value="3" <? if ($r_status == "3") echo "checked" ?> > 출력 처리 (프린트 출력) &nbsp;&nbsp;
+							<input type="radio" name="r_status" value="4" <? if ($r_status == "4") echo "checked" ?> > 완료 (서버 입력 완료)&nbsp;&nbsp;
+							<input type="radio" name="r_status" value="8" <? if ($r_status == "8") echo "checked" ?> > 보류&nbsp;&nbsp;
+							<input type="radio" name="r_status" value="9" <? if ($r_status == "9") echo "checked" ?> > 신청 거부&nbsp;&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td align="right" width="100">
+							<b>해지신청일 : &nbsp;</b>
+						</td>
+						<td> &nbsp;
+							<input type="text" name="from_date" value="<?echo $from_date?>" size="11" maxlength="10">~
+							<input type="text" name="to_date" value="<?=($to_date != "") ? $to_date : date("Y-m-d");?>" size="11" maxlength="10" placeholder="YYYY-MM-DD"> [2004-12-01의 형태로 입력, <font color="red">미입력시 리스트가 출력되지 않습니다.</font>]
+						</td>
+					</tr>
+					<tr>
+						<td align="right" width="100">
+							<b>검색 : &nbsp;</b>
+						</td>
+						<td>
+							&nbsp;
+							<select name="idxfield">
+								<option value="0" <?if($idxfield == "0") echo "selected";?>>회원번호</OPTION>
+								<OPTION VALUE="1" <?if($idxfield == "1") echo "selected";?>>회원이름</OPTION>
+							</select>
+							<input type="text" name="qry_str" value="<?echo $qry_str?>">&nbsp;
+							<input type="button" value="검색" onClick="onSearch();">
+						</td>
+					</tr>
+					<tr>
+						<td align="right" width="100">
+							<b>정렬 : &nbsp;</b>
+						</td>
+						<td>
+							<table width='99%' bgcolor="#EEEEEE">
+								<tr align="center">
+									<td align="left">
+										<b><input type="radio" name="rsort" value="cancelDate" <?if($con_sort == "cancelDate") echo "checked";?>> 등록일 </b>
+										<b><input type="radio" name="rsort" value="address" <?if($con_sort == "address") echo "checked";?>> 주소 </b>
+									<td align="right">
+										<b><input type="radio" name="rorder" value="con_d" <?if($con_order == "con_d") echo "checked";?>>오름차순 </b>
+										<b><input type="radio" name="rorder" value="con_a" <?if($con_order == "con_a") echo "checked";?>>내림차순 </b>
+									</td>
+								</tr>
+							</table>
+
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+	<table cellspacing="1" cellpadding="5" class="LIST" border="0" bgcolor="silver" style="margin-top:10px">
 		<tr align="center">
 			<th width="3%" style="text-align: center;">주,부사업자</th>
 			<th width="5%" style="text-align: center;">성명</th>
@@ -547,11 +589,11 @@ td {FONT-SIZE: 9pt}
 	?>
 		<tr>
 			<td align="center"><?echo $mainsub?></td>
-			<td align="center"><?echo $obj->UserName?></td>
+			<td align="center"><?echo masking_name($obj->UserName)?></td>
 			<td align="center"><a HREF="javascript:onView('<?echo $obj->no?>')"><?echo $obj->id?></a></td>
 			<td align="center"><?echo $address?></td>
-			<td align="center"><?echo $birthDay1?>-<?echo $birthDay2?>-<?echo $birthDay3?></td>
-			<td align="center"><?echo $phone1?>-<?echo $phone2?>-<?echo $phone3?></td>
+			<td align="center"><?echo masking_birth($birthDay1."-".$birthDay2."-".$birthDay3)?></td>
+			<td align="center"><?echo masking_phone($phone1."-".$phone2."-".$phone3)?></td>
 			<!--  <td align="center"><?echo $autoYN?></td>
 			<td align="center"><?echo $cardYN?></td>
 			<td align="center"><?echo $obj->cardetc?></td>
